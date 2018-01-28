@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/code/git/IdolScheme/build",
+  "command": "/usr/bin/c++     -g   -o CMakeFiles/IdolScheme.dir/main.cpp.o -c /code/git/IdolScheme/main.cpp",
+  "file": "/code/git/IdolScheme/main.cpp"
+}
+]
