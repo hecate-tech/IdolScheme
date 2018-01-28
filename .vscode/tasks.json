@@ -6,7 +6,7 @@
         {
             "label": "IdolScheme",
             "type": "shell",
-            "command": "g++ -o ./log/Source.exe src/Source.cpp",
+            "command": "g++ -o ./log/IdolScheme.exe src/main.cpp",
             "args": [
                 
             ]
