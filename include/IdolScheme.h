@@ -35,12 +35,12 @@ class IdolScheme {
     /// Game settings
     /// -------------
     IdolSchemeStates State;
-    uint Width, Height;
+    unsigned int Width, Height;
     
 
     /// Constructor/Destructor
     /// ----------------------
-    IdolScheme(uint width_, uint height_);
+    IdolScheme(unsigned int width_, unsigned int height_);
     ~IdolScheme();
 
     /// Initialized game state (load all shaders/textures/beatmaps)

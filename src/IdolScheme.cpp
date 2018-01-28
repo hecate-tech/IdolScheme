@@ -1,6 +1,6 @@
 #include "../include/IdolScheme.h"
 
-IdolScheme::IdolScheme(uint width_, uint height_) : Width(width_), Height(height_) {
+IdolScheme::IdolScheme(unsigned int width_, unsigned int height_) : Width(width_), Height(height_) {
 
 }
 
@@ -12,11 +12,11 @@ void IdolScheme::Init() {
 
 }
 
-void IdolScheme::ProcessInput(uint deltaTime) {
+void IdolScheme::ProcessInput(float deltaTime) {
 
 }
 
-void IdolScheme::Update(uint deltaTime) {
+void IdolScheme::Update(float deltaTime) {
 
 }
 
