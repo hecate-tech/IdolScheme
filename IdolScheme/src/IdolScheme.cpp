@@ -5,6 +5,8 @@ void IdolScheme::setup() {
 	ofSetWindowShape(800, 600);
 	ofBackground(45, 45, 190, 255);
 
+	testingNote.note_color[1] = 0;
+	testingNote.note_color[2] = 0;
 	ofTrueTypeFont::setGlobalDpi(72);
 	textOut.load("verdana.ttf", 32, true, false);
 	textOut.setLetterSpacing(1.037);
