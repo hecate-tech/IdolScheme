@@ -54,6 +54,12 @@ enum NoteButton {
 	BUTTON_EMPTY,
 };
 
+/* @brief - Shadow
+ * The Shadow class is the second
+ * half of the note object and is
+ * essential that it does not move.
+ * (Amazing brief)
+ */
 class Shadow {
 public:
 	ofImage shadowSprite;
