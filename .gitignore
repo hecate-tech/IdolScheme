@@ -19,7 +19,8 @@ x64/
 x86/
 bld/
 [Bb]in/IdolScheme
-[Bb]in/IdolScheme.exe
+[Bb]in/*.exe
+[Bb]in/*.dll
 [Ll]og/
 
 # Visual Studio Code
