@@ -267,3 +267,5 @@ __pycache__/
 *.exe
 *.exp
 *.lib
+*.vcxproj
+*.filters
