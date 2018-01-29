@@ -54,6 +54,14 @@ enum NoteButton {
 	BUTTON_EMPTY,
 };
 
+class Shadow {
+public:
+	ofImage shadowSprite;
+	Shadow() {}
+	void resize(GLint width, GLint height);
+	void load();
+	void draw(GLfloat x, GLfloat y);
+};
 
 /* @brief - Note
  * The Note class is what stores 
@@ -83,8 +91,6 @@ public:
 	Note(ofPoint initCoords, ofPoint shadowCoords, NoteType type_, NoteButton button_);
 	Note(ofPoint initCoords, ofPoint shadowCoords, NoteType type_);
 	~Note();
-	
-	friend class Shadow;
 
 	bool destroy();
 	void setPosition(GLfloat x, GLfloat y, GLfloat xS, GLfloat yS);
@@ -99,15 +105,6 @@ public:
 	GLfloat notex, notey, shadowX, shadowY; // coords
 private:
 	Shadow *shadow; // The note shadow. (This object shouldn't move)
-};
-
-class Shadow : Note {
-public:
-	ofImage shadowSprite;
-	Shadow() {}
-	void resize(GLint width, GLint height);
-	void load();
-	void draw(GLfloat x, GLfloat y);
 };
 
 #endif //!NOTE_H
