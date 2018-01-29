@@ -190,6 +190,7 @@ C:\Users\damie\Desktop\of_v0.9.8_vs_release\of_v0.9.8_vs_release\addons\ofxThrea
     <ClCompile Include="..\..\..\..\Desktop\of_v0.9.8_vs_release\of_v0.9.8_vs_release\addons\ofxThreadedImageLoader\src\ofxThreadedImageLoader.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\IdolScheme.cpp" />
+    <ClCompile Include="src\Note.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\Desktop\of_v0.9.8_vs_release\of_v0.9.8_vs_release\addons\ofxGui\src\ofxBaseGui.h" />
@@ -202,7 +203,9 @@ C:\Users\damie\Desktop\of_v0.9.8_vs_release\of_v0.9.8_vs_release\addons\ofxThrea
     <ClInclude Include="..\..\..\..\Desktop\of_v0.9.8_vs_release\of_v0.9.8_vs_release\addons\ofxGui\src\ofxSliderGroup.h" />
     <ClInclude Include="..\..\..\..\Desktop\of_v0.9.8_vs_release\of_v0.9.8_vs_release\addons\ofxGui\src\ofxToggle.h" />
     <ClInclude Include="..\..\..\..\Desktop\of_v0.9.8_vs_release\of_v0.9.8_vs_release\addons\ofxThreadedImageLoader\src\ofxThreadedImageLoader.h" />
+    <ClInclude Include="include\ErrorCodes.h" />
     <ClInclude Include="include\Idolscheme.h" />
+    <ClInclude Include="include\Note.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">

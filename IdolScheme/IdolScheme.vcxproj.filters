@@ -34,6 +34,7 @@
     <ClCompile Include="src\IdolScheme.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Note.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -89,6 +90,8 @@
     <ClInclude Include="include\Idolscheme.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="include\Note.h" />
+    <ClInclude Include="include\ErrorCodes.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />

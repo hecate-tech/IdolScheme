@@ -1,12 +1,32 @@
 #pragma once
 
-#include "ofMain.h"
+#ifndef OFMAIN_H
+	#define OFMAIN_H
+	#include "../ofMain.h"
+#endif //!OFMAIN_H
+
+#ifndef NOTE_H
+	#include "Note.h"
+#endif //NOTE_H
+
+
+#ifndef IDOLSCHEME_H
+#define IDOLSCHEME_H
+
+
+enum GameState {
+	GAME_ACTIVE,
+	GAME_PAUSE,
+	GAME_LOSE,
+	GAME_WIN,
+	GAME_MENU,
+};
 
 class IdolScheme : public ofBaseApp {
 	public:
-		GLfloat counter;
-
-		ofTrueTypeFont verdana14A;
+		GameState IdolScheme_State;
+		ofTrueTypeFont textOut;
+		Note testingNote;
 
 		void setup();
 		void update();
@@ -23,5 +43,6 @@ class IdolScheme : public ofBaseApp {
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-		
 };
+
+#endif //!IDOLSCHEME_H

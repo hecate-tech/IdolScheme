@@ -3,39 +3,47 @@
 //--------------------------------------------------------------
 void IdolScheme::setup() {
 	ofSetWindowShape(800, 600);
-	ofBackground(70, 70, 209, 255);
+	ofBackground(45, 45, 190, 255);
+
+	ofTrueTypeFont::setGlobalDpi(72);
+	textOut.load("verdana.ttf", 32, true, false);
+	textOut.setLetterSpacing(1.037);
+	testingNote.setup(ofPoint(ofGetWindowWidth() / 2, ofGetWindowHeight() / 2), ofPoint(ofGetWindowWidth() / 2, ofGetWindowHeight() / 2), BUTTON, BUTTON_EMPTY);
 }
 
-//--------------------------------------------------------------
+///////////////////////////////////////////////////////////////
+   //////////////////      Game Loop      //////////////////
+///////////////////////////////////////////////////////////////
+
 void IdolScheme::update() {
-	counter += 0.033f;
+	testingNote.update();
 }
 
-//--------------------------------------------------------------
+//=============================================================
 void IdolScheme::draw() {
-
+	textOut.drawString(std::to_string(glfwGetTime()), 150, 50);
 	ofFill();
-	for (int i = 0; i < 200; i++) {
-		ofSetColor((int)ofRandom(0, 255), (int)ofRandom(0, 255), (int)ofRandom(0, 255));
-		ofDrawRectangle(ofRandom(100, 300), ofRandom(100, 500), ofRandom(10, 20), ofRandom(10, 20));
-	}
-	ofSetHexColor(0x000000);
-	ofDrawBitmapString("RECTANGLESSSS!!!", 275, 500);
 
 	ofSetHexColor(0x00FF33);
-	ofDrawRectangle(400, 350, 100, 100);
+	ofDrawRectangle(450, 450, 100, 100);
 	ofEnableAlphaBlending();
+	ofSetColor(255, 255, 255, 255);
+
+	testingNote.draw();
+
 	ofSetColor(255, 0, 0, 127);
-	ofDrawRectangle(450, 430, 100, 33);
-	ofSetColor(255, 0, 0, (int)(counter * 10.f) % 255);
-	ofDrawRectangle(450, 370, 100, 33);
+	ofDrawRectangle(500, 530, 100, 33);
+	ofDrawRectangle(500, 470, 100, 33);
 	ofDisableAlphaBlending();
 
 	ofSetHexColor(0x000000);
-	ofDrawBitmapString("TRANSPARENCY!!!", 410, 500);
+	textOut.drawString("TRANSPARENCY!!!", 100, 500);
 }
 
-//--------------------------------------------------------------
+///////////////////////////////////////////////////////////////
+   //////////////////      Callbacks      //////////////////
+///////////////////////////////////////////////////////////////
+
 void IdolScheme::keyPressed(int key) {
 
 }

@@ -1,9 +1,16 @@
-#include "ofMain.h"
-#include "../include/IdolScheme.h"
+#ifndef OFMAIN_H
+	#define OFMAIN_H
+	#include "../ofMain.h"
+#endif //!OFMAIN_H
+
+#ifndef IDOLSCHEME_H
+	#include "../include/IdolScheme.h"
+#endif //!IDOLSCHEME_H
+
 
 //========================================================================
 int main() {
-	ofSetupOpenGL(1024,768,OF_WINDOW);			// <-------- setup the GL context
+	ofSetupOpenGL(1024,768,OF_WINDOW);	// <------ setup the GL context
 	ofSetWindowTitle("Idol Scheme");
 	
 	// this kicks off the running of my app
