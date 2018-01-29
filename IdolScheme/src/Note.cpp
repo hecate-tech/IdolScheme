@@ -80,13 +80,11 @@ void Note::hit() {
 //----------------------------------------------------------------------------------
 void Note::draw(GLfloat *x, GLfloat *y) {
 	getptr()->draw(shadowX, shadowY);
-	ofSetHexColor(0xFF0000);
 	if (x != nullptr && y != nullptr) {
 		noteSprite.draw(*x, *y);
 	} else {
 		noteSprite.draw(notex, notey);
 	}
-	ofSetHexColor(0x000000);
 }
 
 //----------------------------------------------------------------------------------
