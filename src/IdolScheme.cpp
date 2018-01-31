@@ -11,6 +11,7 @@ void IdolScheme::setup() {
 	textOut.load("verdana.ttf", 32, true, false);
 	textOut.setLetterSpacing(1.037);
 	testingNote.setup(ofPoint(ofGetWindowWidth() / 2, ofGetWindowHeight() / 2), ofPoint(ofGetWindowWidth() / 2, ofGetWindowHeight() / 2), BUTTON, BUTTON_EMPTY);
+	
 }
 
 ///////////////////////////////////////////////////////////////
@@ -37,7 +38,7 @@ void IdolScheme::draw() {
 	ofDrawRectangle(500, 530, 100, 33);
 	ofDrawRectangle(500, 470, 100, 33);
 	ofDisableAlphaBlending();
-
+	
 	ofSetHexColor(0x000000);
 	textOut.drawString("TRANSPARENCY!!!", 100, 500);
 }
