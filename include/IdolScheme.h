@@ -27,7 +27,7 @@ class IdolScheme : public ofBaseApp {
 		GameState IdolScheme_State;
 		ofTrueTypeFont textOut;
 		Note testingNote;
-
+		
 		void setup();
 		void update();
 		void draw();

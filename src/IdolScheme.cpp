@@ -31,7 +31,7 @@ void IdolScheme::draw() {
 	ofDrawRectangle(450, 450, 100, 100);
 	ofEnableAlphaBlending();
 	ofSetColor(255, 255, 255, 255);
-
+	
 	testingNote.draw();
 
 	ofSetColor(255, 0, 0, 127);

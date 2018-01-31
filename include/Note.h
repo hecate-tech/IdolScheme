@@ -67,6 +67,8 @@ public:
 	void resize(GLint width, GLint height);
 	void load();
 	void draw(GLfloat x, GLfloat y);
+private:
+	GLchar *sprite_dir = "images/shadow.png";
 };
 
 /* @brief - Note
