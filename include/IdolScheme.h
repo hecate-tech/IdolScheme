@@ -14,24 +14,47 @@
 #define IDOLSCHEME_H
 
 
+/* @brief - GameState
+ * an easily accessible state that the
+ * game is currently in. This enum is
+ * accessible by the entire class and
+ * used to track where the game is.
+ */
 enum GameState {
 	GAME_ACTIVE,
 	GAME_PAUSE,
 	GAME_LOSE,
 	GAME_WIN,
 	GAME_MENU,
+	GAME_LOAD,
+	GAME_ERROR,
 };
 
+
+/* @brief - IdolScheme
+ * The IdolScheme class holds the entirety
+ * of the game into a class. This gives everything
+ * easy access to each other without having to use
+ * confusing global pointers and work-arounds.
+ */
 class IdolScheme : public ofBaseApp {
 	public:
-		GameState IdolScheme_State;
+		GameState IdolScheme_State; // describes what the game is doing.
 		ofTrueTypeFont textOut;
-		Note testingNote;
+		Note testingNote; // need a better solution than making each note.
 		
+		
+		/// initialization
+		/// --------------
 		void setup();
+
+		/// game loop
+		/// ---------
 		void update();
 		void draw();
 
+		/// callbacks
+		/// ---------
 		void keyPressed(int key);
 		void keyReleased(int key);
 		void mouseMoved(int x, int y);
