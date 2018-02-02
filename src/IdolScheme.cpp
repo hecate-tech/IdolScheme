@@ -1,44 +1,41 @@
 #include "../include/IdolScheme.h"
 
-//--------------------------------------------------------------
+
+
+////////////////////////////////////////////////////////////////
+   /////////////////      Initialization      ///////////////
+////////////////////////////////////////////////////////////////
+
 void IdolScheme::setup() {
 	ofBackground(45, 45, 190, 255);
-	
-	int w = ofGetWindowWidth();
-	int h = ofGetWindowHeight();
-	
+
 	ofTrueTypeFont::setGlobalDpi(72);
 	textOut.load("verdana.ttf", 32, true, false);
 	textOut.setLetterSpacing(1.037);
-	testingNote.setup(ofPoint(w / 2, h / 2), ofPoint(w / 2, h / 2), BUTTON, BUTTON_EMPTY);
-	
-	
+
+	note.setup(ofPoint(),ofPoint(),BUTTON,BUTTON_A);
+	note.setSize(100);
 }
+
+
 
 ///////////////////////////////////////////////////////////////
    //////////////////      Game Loop      //////////////////
 ///////////////////////////////////////////////////////////////
 
 void IdolScheme::update() {
-	//testingNote.update();
+	a += ofGetLastFrameTime() * 3.5f;
 }
 
-//=============================================================
+//--------------------------------------------------------------
 void IdolScheme::draw() {
-	//ofPushMatrix();
-		ofTranslate( ofGetWidth() / 2, ofGetHeight() / 2 );
-		//ofEnableAlphaBlending();
-		ofDrawRectangle(ofPoint(0, 0), 100, 100);
-		ofSetHexColor(0x00FF11);
-		ofDrawRectangle(ofPoint(1, 1), 100, 100);
-		ofSetHexColor(0xFFFFFF);
-		//testingNote.draw(0,0);
-		//std::cout << testingNote.notex << std::endl;
-		//testingNote.draw();
-		
-		//ofDisableAlphaBlending();
-	//ofPopMatrix();
+	ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2); // sets perspective to 0,0
+	
+	note.draw(-150, (sin(a) * ((ofGetHeight() / 2) - 100)), -150);
+	note.draw(150, (cos(a) * ((ofGetHeight() / 2) - 100)), 150);
 }
+
+
 
 ///////////////////////////////////////////////////////////////
    //////////////////      Callbacks      //////////////////
@@ -85,8 +82,7 @@ void IdolScheme::mouseExited(int x, int y) {
 
 //--------------------------------------------------------------
 void IdolScheme::windowResized(int w, int h) {
-	testingNote.setPosition((w/2), (h/2), (w/2), (h/2));
-	testingNote.setSize((w + h) * 0.1);
+	
 }
 
 //--------------------------------------------------------------

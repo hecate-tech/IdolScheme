@@ -3,6 +3,8 @@
 #ifndef ERRORCODES_H
 #define ERRORCODES_H
 
+#define BAD_COORDINATE -97852563948
+
 enum IdolSchemeErrorCodes {
 	BUTTON_INVALID = 199,
 	NOTE_BADTYPE,

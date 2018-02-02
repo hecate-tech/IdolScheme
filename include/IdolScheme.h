@@ -41,9 +41,10 @@ class IdolScheme : public ofBaseApp {
 	public:
 		GameState IdolScheme_State; // describes what the game is doing.
 		ofTrueTypeFont textOut;
-		Note testingNote; // need a better solution than making each note.
-		
-		
+		Note note; // need a better solution than making each note.
+
+		float a = 0.f;
+
 		/// initialization
 		/// --------------
 		void setup();

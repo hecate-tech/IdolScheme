@@ -3,6 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////
        //////////////////      Constructors/Desconstructors      //////////////////
 ////////////////////////////////////////////////////////////////////////////////////////
+
 Note::Note(GLfloat xInit, GLfloat yInit, GLfloat xShadow, GLfloat yShadow, NoteType type_, NoteButton button_)
 	: notex(xInit), notey(yInit), shadowX(xShadow), shadowY(yShadow), type(type_), button(button_) {
 	
@@ -54,36 +55,44 @@ bool Note::destroy() {
 	return false;
 }
 
+//----------------------------------------------------------------------------------
+void Note::init() {
+	shadow = new Shadow(); // creates the shadow.
+	shadow->load(); // loads the shadow image.
+
+	/// Setting the anchor point to the center of the note
+	/// --------------------------------------------------
+	noteSprite.setAnchorPercent(.5, .5);
+
+	noteSprite.resize(note_size, note_size); // resizing the note.
+	shadow->resize(note_size, note_size); // resizing the shadow.
+}
+
+
+
 ///////////////////////////////////////////////////////////////
    //////////////////      Functions      //////////////////
 ///////////////////////////////////////////////////////////////
 
-void Note::init() {
-	shadow = new Shadow();
-	shadow->load();
-	
-	noteSprite.setAnchorPercent(.5, .5);
-	noteSprite.resize(note_size, note_size);
-	shadow->resize(note_size, note_size);
-}
-
-//----------------------------------------------------------------------------------
 void Note::update() {
-	a += ofGetLastFrameTime() * 3.5f;
-	notex = (cos(a) * ((ofGetWindowWidth() / 2) - note_size / 2)) + ((ofGetWindowWidth() / 2));
+
 }
 
 //----------------------------------------------------------------------------------
 void Note::hit() {
-
+	/// This is when the user pressed the assigned note button.
+	/// -------------------------------------------------------
 }
 
 //----------------------------------------------------------------------------------
-void Note::draw(GLfloat *x, GLfloat *y) {
-	getptr()->draw(shadowX, shadowY);
-	if (x != nullptr && y != nullptr) {
-		noteSprite.draw(*x, *y);
+void Note::draw(GLfloat nX, GLfloat nY, GLfloat sX, GLfloat sY) {
+	/// checking if the x and y parameters are present.
+	/// -----------------------------------------------
+	if (nX != BAD_COORDINATE && nY != BAD_COORDINATE && sX != BAD_COORDINATE && sY != BAD_COORDINATE) {
+		getptr()->draw(sX, sY);
+		noteSprite.draw(nX, nY);
 	} else {
+		getptr()->draw(shadowX, shadowY);
 		noteSprite.draw(notex, notey);
 	}
 }
@@ -95,13 +104,13 @@ void Note::moveByBeats(GLfloat beats) {
 
 //----------------------------------------------------------------------------------
 void Note::setColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a) {
-
+	/// TODO
 }
 
 //----------------------------------------------------------------------------------
 void Note::setPosition(GLfloat x, GLfloat y, GLfloat xS, GLfloat yS) {
-	notex = x;
-	notey = y;
+	notex   = x;
+	notey   = y;
 	shadowX = xS;
 	shadowY = yS;
 }
@@ -109,20 +118,29 @@ void Note::setPosition(GLfloat x, GLfloat y, GLfloat xS, GLfloat yS) {
 //----------------------------------------------------------------------------------
 void Note::setSize(GLint newSize) {
 	note_size = newSize;
-	noteSprite.load(sprite_dir);
+
+	/// note resizing
+	/// -------------
+	noteSprite.load(sprite_dir); // reloads image
 	noteSprite.resize(note_size, note_size);
-	getptr()->shadowSprite.load(getptr()->shadow_dir);
+	
+	/// shadow resizing
+	/// ---------------
+	getptr()->shadowSprite.load(getptr()->shadow_dir); // reloads image
 	getptr()->shadowSprite.resize(note_size, note_size);
 }
 
 //----------------------------------------------------------------------------------
 Shadow *Note::getptr() {
-	return shadow;
+	return shadow; // returns the shadow object attached to the note.
 }
+
+
 
 //////////////////////////////////////////////////////////////
     //////////////////      Shadow      //////////////////
 //////////////////////////////////////////////////////////////
+
 void Shadow::draw(GLfloat x, GLfloat y) {
 	this->shadowSprite.draw(x, y);
 }

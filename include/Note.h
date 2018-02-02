@@ -13,6 +13,7 @@
 #endif //!ERRORCODES_H
 
 
+
 /* @brief - NoteType
  *
  * defines the type of note this is
@@ -84,7 +85,7 @@ class Note {
 public:
 	/// Note settings
 	/// -------------
-	GLint note_size = (ofGetWindowWidth() + ofGetWindowHeight()) * 0.1; // for width and the height.
+	GLint note_size = (ofGetWindowWidth() + ofGetWindowHeight()) * 0.08; // for width and the height.
 	GLint note_color[4] = { 255, 255, 255, 255 };
 	const GLchar *sprite_dir = "images/note.png";
 
@@ -92,7 +93,8 @@ public:
 	NoteType type; // The note type. Ex. Axis or Button.
 	NoteButton button; // the assigned button.
 	ofImage noteSprite;
-	GLfloat a = 0.f;
+
+	GLfloat a = 0.f; // debugging variable
 
 	/// Constructors/Desconstructor
 	/// ---------------------------
@@ -103,19 +105,22 @@ public:
 	Note(ofPoint initCoords, ofPoint shadowCoords, NoteType type_);
 	~Note();
 
+	void setup(ofPoint initCoords = ofPoint(0,0), ofPoint shadowCoords = ofPoint(0,0),
+		NoteType type_ = BUTTON, NoteButton button_ = BUTTON_EMPTY);
+
 	bool destroy();
 	void setSize(GLint newSize);
-	void setPosition(GLfloat x, GLfloat y, GLfloat xS, GLfloat yS);
+	void setPosition(GLfloat x = 0, GLfloat y = 0, GLfloat xS = 0, GLfloat yS = 0);
 	void init();
-	void setup(ofPoint initCoords, ofPoint shadowCoords, NoteType type_, NoteButton button_);
-	void draw(GLfloat *x = nullptr, GLfloat *y = nullptr); // draws the note and shadow objects.
+	void draw(GLfloat nX = 0, GLfloat nY = 0, GLfloat sX = 0, GLfloat sY = 0); // draws the note and shadow objects.
 	void moveByBeats(GLfloat beats);
 	void update(); // to be ran in the update method of IdolScheme.cpp
 	void hit(); // For catching key presses.
-	void setColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a = 255);
+	void setColor(GLfloat r = 0, GLfloat g = 0, GLfloat b = 0, GLfloat a = 255);
 	Shadow *getptr();
 private:
 	Shadow *shadow; // The note shadow. (This object shouldn't move)
 };
+
 
 #endif //!NOTE_H
