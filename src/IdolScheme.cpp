@@ -2,15 +2,16 @@
 
 //--------------------------------------------------------------
 void IdolScheme::setup() {
-	ofSetWindowShape(800, 600);
 	ofBackground(45, 45, 190, 255);
+	
 	int w = ofGetWindowWidth();
 	int h = ofGetWindowHeight();
-
+	
 	ofTrueTypeFont::setGlobalDpi(72);
 	textOut.load("verdana.ttf", 32, true, false);
 	textOut.setLetterSpacing(1.037);
 	testingNote.setup(ofPoint(w / 2, h / 2), ofPoint(w / 2, h / 2), BUTTON, BUTTON_EMPTY);
+	
 	
 }
 
@@ -19,16 +20,24 @@ void IdolScheme::setup() {
 ///////////////////////////////////////////////////////////////
 
 void IdolScheme::update() {
-	testingNote.update();
+	//testingNote.update();
 }
 
 //=============================================================
 void IdolScheme::draw() {
-	ofEnableAlphaBlending();
-	
-	testingNote.draw();
-	
-	ofDisableAlphaBlending();
+	//ofPushMatrix();
+		ofTranslate( ofGetWidth() / 2, ofGetHeight() / 2 );
+		//ofEnableAlphaBlending();
+		ofDrawRectangle(ofPoint(0, 0), 100, 100);
+		ofSetHexColor(0x00FF11);
+		ofDrawRectangle(ofPoint(1, 1), 100, 100);
+		ofSetHexColor(0xFFFFFF);
+		//testingNote.draw(0,0);
+		//std::cout << testingNote.notex << std::endl;
+		//testingNote.draw();
+		
+		//ofDisableAlphaBlending();
+	//ofPopMatrix();
 }
 
 ///////////////////////////////////////////////////////////////
