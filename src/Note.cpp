@@ -4,7 +4,7 @@
        //////////////////      Constructors/Desconstructors      //////////////////
 ////////////////////////////////////////////////////////////////////////////////////////
 Note::Note(GLfloat xInit, GLfloat yInit, GLfloat xShadow, GLfloat yShadow, NoteType type_, NoteButton button_)
-	: notex(xInit - (note_size / 2)), notey(yInit - (note_size / 2)), shadowX(xShadow - (note_size / 2)), shadowY(yShadow - (note_size / 2)), type(type_), button(button_) {
+	: notex(xInit), notey(yInit), shadowX(xShadow), shadowY(yShadow), type(type_), button(button_) {
 	
 	noteSprite.load(sprite_dir);
 	init();
@@ -12,14 +12,14 @@ Note::Note(GLfloat xInit, GLfloat yInit, GLfloat xShadow, GLfloat yShadow, NoteT
 
 //----------------------------------------------------------------------------------
 Note::Note(GLfloat xInit, GLfloat yInit, GLfloat xShadow, GLfloat yShadow, NoteType type_) 
-	: notex(xInit - (note_size / 2)), notey(yInit - (note_size / 2)), shadowX(xShadow - (note_size / 2)), shadowY(yShadow - (note_size / 2)), type(type_), button(BUTTON_EMPTY) {
+	: notex(xInit), notey(yInit), shadowX(xShadow), shadowY(yShadow), type(type_), button(BUTTON_EMPTY) {
 
 	noteSprite.load(sprite_dir);
 }
 
 //----------------------------------------------------------------------------------
 Note::Note(ofPoint initCoords, ofPoint shadowCoords, NoteType type_, NoteButton button_) 
-	: notex(initCoords[0] - (note_size / 2)), notey(initCoords[1] - (note_size / 2)), shadowX(shadowCoords[0] - (note_size / 2)), shadowY(shadowCoords[1] - (note_size / 2)), type(type_), button(button_) {
+	: notex(initCoords[0]), notey(initCoords[1]), shadowX(shadowCoords[0]), shadowY(shadowCoords[1]), type(type_), button(button_) {
 
 	noteSprite.load(sprite_dir);
 	init();
@@ -27,7 +27,7 @@ Note::Note(ofPoint initCoords, ofPoint shadowCoords, NoteType type_, NoteButton 
 
 //----------------------------------------------------------------------------------
 Note::Note(ofPoint initCoords, ofPoint shadowCoords, NoteType type_) 
-	: notex(initCoords[0] - (note_size / 2)), notey(initCoords[1] - (note_size / 2)), shadowX(shadowCoords[0] - (note_size / 2)), shadowY(shadowCoords[1] - (note_size / 2)), type(type_), button(BUTTON_EMPTY) {
+	: notex(initCoords[0]), notey(initCoords[1]), shadowX(shadowCoords[0]), shadowY(shadowCoords[1]), type(type_), button(BUTTON_EMPTY) {
 
 	noteSprite.load(sprite_dir);
 	init();
@@ -61,15 +61,16 @@ bool Note::destroy() {
 void Note::init() {
 	shadow = new Shadow();
 	shadow->load();
-
+	
+	noteSprite.setAnchorPercent(.5, .5);
 	noteSprite.resize(note_size, note_size);
 	shadow->resize(note_size, note_size);
 }
 
+//----------------------------------------------------------------------------------
 void Note::update() {
 	a += ofGetLastFrameTime() * 3.5f;
-	if (a > 600) a -= 600;
-	notex = (cos(a) * 300.f) + ((ofGetWindowWidth() / 2.) - (note_size / 2.));
+	notex = (cos(a) * ((ofGetWindowWidth() / 2) - note_size / 2)) + ((ofGetWindowWidth() / 2));
 }
 
 //----------------------------------------------------------------------------------
@@ -99,12 +100,22 @@ void Note::setColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a) {
 
 //----------------------------------------------------------------------------------
 void Note::setPosition(GLfloat x, GLfloat y, GLfloat xS, GLfloat yS) {
-	notex = x - (note_size / 2);
-	notey = y - (note_size / 2);
-	shadowX = xS - (note_size / 2);
-	shadowY = yS - (note_size / 2);
+	notex = x;
+	notey = y;
+	shadowX = xS;
+	shadowY = yS;
 }
 
+//----------------------------------------------------------------------------------
+void Note::setSize(GLint newSize) {
+	note_size = newSize;
+	noteSprite.load(sprite_dir);
+	noteSprite.resize(note_size, note_size);
+	getptr()->shadowSprite.load(getptr()->shadow_dir);
+	getptr()->shadowSprite.resize(note_size, note_size);
+}
+
+//----------------------------------------------------------------------------------
 Shadow *Note::getptr() {
 	return shadow;
 }
@@ -118,7 +129,8 @@ void Shadow::draw(GLfloat x, GLfloat y) {
 
 //----------------------------------------------------------------------------------
 void Shadow::load() {
-	shadowSprite.load("images/shadow.png");
+	shadowSprite.setAnchorPercent(.5, .5);
+	shadowSprite.load(shadow_dir);
 }
 
 //----------------------------------------------------------------------------------

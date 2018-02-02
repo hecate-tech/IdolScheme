@@ -4,13 +4,13 @@
 void IdolScheme::setup() {
 	ofSetWindowShape(800, 600);
 	ofBackground(45, 45, 190, 255);
+	int w = ofGetWindowWidth();
+	int h = ofGetWindowHeight();
 
-	testingNote.note_color[1] = 0;
-	testingNote.note_color[2] = 0;
 	ofTrueTypeFont::setGlobalDpi(72);
 	textOut.load("verdana.ttf", 32, true, false);
 	textOut.setLetterSpacing(1.037);
-	testingNote.setup(ofPoint(ofGetWindowWidth() / 2, ofGetWindowHeight() / 2), ofPoint(ofGetWindowWidth() / 2, ofGetWindowHeight() / 2), BUTTON, BUTTON_EMPTY);
+	testingNote.setup(ofPoint(w / 2, h / 2), ofPoint(w / 2, h / 2), BUTTON, BUTTON_EMPTY);
 	
 }
 
@@ -24,23 +24,11 @@ void IdolScheme::update() {
 
 //=============================================================
 void IdolScheme::draw() {
-	textOut.drawString(std::to_string(glfwGetTime()), 150, 50);
-	ofFill();
-
-	ofSetHexColor(0x00FF33);
-	ofDrawRectangle(450, 450, 100, 100);
 	ofEnableAlphaBlending();
-	ofSetColor(255, 255, 255, 255);
 	
 	testingNote.draw();
-
-	ofSetColor(255, 0, 0, 127);
-	ofDrawRectangle(500, 530, 100, 33);
-	ofDrawRectangle(500, 470, 100, 33);
-	ofDisableAlphaBlending();
 	
-	ofSetHexColor(0x000000);
-	textOut.drawString("TRANSPARENCY!!!", 100, 500);
+	ofDisableAlphaBlending();
 }
 
 ///////////////////////////////////////////////////////////////
@@ -88,7 +76,8 @@ void IdolScheme::mouseExited(int x, int y) {
 
 //--------------------------------------------------------------
 void IdolScheme::windowResized(int w, int h) {
-
+	testingNote.setPosition((w/2), (h/2), (w/2), (h/2));
+	testingNote.setSize((w + h) * 0.1);
 }
 
 //--------------------------------------------------------------

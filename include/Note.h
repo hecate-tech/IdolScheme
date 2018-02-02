@@ -63,12 +63,14 @@ enum NoteButton {
 class Shadow {
 public:
 	ofImage shadowSprite;
+	const char *shadow_dir = "images/shadow.png";
+	
 	Shadow() {}
 	void resize(GLint width, GLint height);
 	void load();
 	void draw(GLfloat x, GLfloat y);
 private:
-	GLchar *sprite_dir = "images/shadow.png";
+	const GLchar *sprite_dir = "images/shadow.png";
 };
 
 /* @brief - Note
@@ -80,12 +82,13 @@ private:
  */
 class Note {
 public:
-	/// Note constants
-	/// --------------
-	GLint note_size = 100.f; // for width and the height.
+	/// Note settings
+	/// -------------
+	GLint note_size = (ofGetWindowWidth() + ofGetWindowHeight()) * 0.1; // for width and the height.
 	GLint note_color[4] = { 255, 255, 255, 255 };
-	GLchar *sprite_dir = "images/note.png";
+	const GLchar *sprite_dir = "images/note.png";
 
+	GLfloat notex, notey, shadowX, shadowY; // coords
 	NoteType type; // The note type. Ex. Axis or Button.
 	NoteButton button; // the assigned button.
 	ofImage noteSprite;
@@ -101,6 +104,7 @@ public:
 	~Note();
 
 	bool destroy();
+	void setSize(GLint newSize);
 	void setPosition(GLfloat x, GLfloat y, GLfloat xS, GLfloat yS);
 	void init();
 	void setup(ofPoint initCoords, ofPoint shadowCoords, NoteType type_, NoteButton button_);
@@ -110,7 +114,6 @@ public:
 	void hit(); // For catching key presses.
 	void setColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a = 255);
 	Shadow *getptr();
-	GLfloat notex, notey, shadowX, shadowY; // coords
 private:
 	Shadow *shadow; // The note shadow. (This object shouldn't move)
 };
