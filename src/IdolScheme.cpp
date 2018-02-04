@@ -12,7 +12,7 @@ void IdolScheme::setup() {
 	ofTrueTypeFont::setGlobalDpi(72);
 	textOut.load("verdana.ttf", 32, true, false);
 	textOut.setLetterSpacing(1.037);
-
+	
 	note.setup(ofPoint(),ofPoint(),BUTTON,BUTTON_A);
 	note.setSize(100);
 }
@@ -30,9 +30,9 @@ void IdolScheme::update() {
 //--------------------------------------------------------------
 void IdolScheme::draw() {
 	ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2); // sets perspective to 0,0
-	
-	note.draw(-150, (sin(a) * ((ofGetHeight() / 2) - 100)), -150);
-	note.draw(150, (cos(a) * ((ofGetHeight() / 2) - 100)), 150);
+
+	note.draw(-150, (sin(a) * ((ofGetHeight() / 2) - (ofGetHeight() * 0.2))), -150); // Derek helped me because I'm stupid.
+	note.draw( 150, (cos(a) * ((ofGetHeight() / 2) - (ofGetHeight() * 0.2))),  150);
 }
 
 
