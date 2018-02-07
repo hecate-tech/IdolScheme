@@ -9,6 +9,9 @@
 	#include "Note.h"
 #endif //NOTE_H
 
+#ifndef CONDUCTOR_H
+	#include "Conductor.h"
+#endif
 
 #ifndef IDOLSCHEME_H
 #define IDOLSCHEME_H
@@ -42,7 +45,7 @@ class IdolScheme : public ofBaseApp {
 		GameState IdolScheme_State; // describes what the game is doing.
 		ofTrueTypeFont textOut;
 		Note testingNote; // need a better solution than making each note.
-		
+		Conductor mainConductor; // This will keep time.
 		
 		/// initialization
 		/// --------------

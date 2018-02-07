@@ -7,11 +7,18 @@ void IdolScheme::setup() {
 
 	testingNote.note_color[1] = 0;
 	testingNote.note_color[2] = 0;
-	ofTrueTypeFont::setGlobalDpi(72);
-	textOut.load("verdana.ttf", 32, true, false);
+	ofTrueTypeFont::setGlobalDpi(60);
+	textOut.load("verdana.ttf", 12, true, false);
 	textOut.setLetterSpacing(1.037);
 	testingNote.setup(ofPoint(ofGetWindowWidth() / 2, ofGetWindowHeight() / 2), ofPoint(ofGetWindowWidth() / 2, ofGetWindowHeight() / 2), BUTTON, BUTTON_EMPTY);
 	
+	cout << "Enter a bpm: ";
+	cin >> mainConductor._bpm;
+	cout << "Enter an offset (ms): ";
+	cin >> mainConductor._offsetInMs;
+	cout << "Enter a song length: ";
+	cin >> mainConductor._lengthInS;
+	mainConductor.startTimer();
 }
 
 ///////////////////////////////////////////////////////////////
@@ -20,13 +27,14 @@ void IdolScheme::setup() {
 
 void IdolScheme::update() {
 	testingNote.update();
+	mainConductor.refreshMembers();
+	mainConductor.beatSinceRefresh = mainConductor.currBeat;
 }
 
 //=============================================================
 void IdolScheme::draw() {
-	textOut.drawString(std::to_string(glfwGetTime()), 150, 50);
 	ofFill();
-
+		
 	ofSetHexColor(0x00FF33);
 	ofDrawRectangle(450, 450, 100, 100);
 	ofEnableAlphaBlending();
@@ -41,6 +49,13 @@ void IdolScheme::draw() {
 	
 	ofSetHexColor(0x000000);
 	textOut.drawString("TRANSPARENCY!!!", 100, 500);
+
+	string currBeatString = "Current beat: " + std::to_string(mainConductor.currBeat) + "/" + std::to_string(mainConductor.totalBeats); 	
+	textOut.drawString(currBeatString, 10, 40);
+	string lengthString = "Current time: " + std::to_string(((float) mainConductor.timeDiff.count()) / 1000) + "/" + std::to_string(mainConductor._lengthInS);
+	textOut.drawString(lengthString, 10, 60);
+	string beatDiffString = "Beats since last refresh: " + std::to_string(mainConductor.numBeatsSinceRefresh);
+	textOut.drawString(beatDiffString, 10, 80);
 }
 
 ///////////////////////////////////////////////////////////////
