@@ -2,7 +2,7 @@
 
 #ifndef OFMAIN_H
 	#define OFMAIN_H
-	#include "../ofMain.h"
+	#include "ofMain.h"
 #endif //!OFMAIN_H
 
 #ifndef NOTE_H
@@ -12,6 +12,8 @@
 #ifndef CONDUCTOR_H
 	#include "Conductor.h"
 #endif
+
+#include "OptionMenu.h"
 
 #ifndef IDOLSCHEME_H
 #define IDOLSCHEME_H
@@ -33,7 +35,6 @@ enum GameState {
 	GAME_ERROR,
 };
 
-
 /* @brief - IdolScheme
  * The IdolScheme class holds the entirety
  * of the game into a class. This gives everything
@@ -42,14 +43,20 @@ enum GameState {
  */
 class IdolScheme : public ofBaseApp {
 	public:
+		OptionMenu optionMenu;
+		
 		GameState IdolScheme_State; // describes what the game is doing.
+		WindowAspect IdolScheme_WindowAspect;
+		WindowSize IdolScheme_WindowSize;
 		ofTrueTypeFont textOut;
-		
-		Note testingNote; // need a better solution than making each note.
+
+
 		Conductor mainConductor; // This will keep time.
-		
 		Note note; // need a better solution than making each note.
+		
 		float a = 0.f;
+		bool optionMenuShow = false;
+		
 
 		/// initialization
 		/// --------------
@@ -59,6 +66,8 @@ class IdolScheme : public ofBaseApp {
 		/// ---------
 		void update();
 		void draw();
+
+		void drawOptionMenu();
 
 		/// callbacks
 		/// ---------

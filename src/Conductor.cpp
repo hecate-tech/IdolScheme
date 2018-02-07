@@ -37,6 +37,7 @@ void Conductor::conduct() {
 		cout << "\nTime (s): " << (double) timeDiff.count() / 1000 << " / " << _lengthInS;
 		cout << "\nOffset beats: " << offsetBeats;
 		cout << "\nCurrent beat: " << currBeat << " / " << totalBeats << std::endl;
+		
 		std::system("clear");
 	}
 }
