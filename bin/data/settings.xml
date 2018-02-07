@@ -1,0 +1,8 @@
+<group>
+	<resolution>800x600</resolution>
+	<Resolutions>
+		<4:3/>
+		<16:9/>
+		<16:10/>
+	</Resolutions>
+</group>

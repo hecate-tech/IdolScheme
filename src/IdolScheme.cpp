@@ -47,11 +47,11 @@ void IdolScheme::update() {
 //--------------------------------------------------------------
 void IdolScheme::draw() {
 	string currBeatString = "Current beat: " + std::to_string(mainConductor.currBeat) + "/" + std::to_string(mainConductor.totalBeats); 	
-	textOut.drawString(currBeatString, 10, 100);
+	textOut.drawString(currBeatString, 10, 20);
 	string lengthString = "Current time: " + std::to_string(((float) mainConductor.timeDiff.count()) / 1000) + "/" + std::to_string(mainConductor._lengthInS);
-	textOut.drawString(lengthString, 10, 120);
+	textOut.drawString(lengthString, 10, 40);
 	string beatDiffString = "Beats since last refresh: " + std::to_string(mainConductor.numBeatsSinceRefresh);
-	textOut.drawString(beatDiffString, 10, 140);
+	textOut.drawString(beatDiffString, 10, 60);
 
 	note.draw((ofGetWidth() / 2), (cos(a) * 150) + (ofGetHeight() / 2), (ofGetWidth() / 2), (ofGetHeight() / 2));
 

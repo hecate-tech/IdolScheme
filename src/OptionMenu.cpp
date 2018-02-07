@@ -4,29 +4,64 @@
 OptionMenu::OptionMenu() {
     winAspect = WIN_ASPECT_4_3;
 
-    gui.setup();
-    gui.add(screenRes.setup("resolution", (ofToString(ofGetWindowWidth()) + "x" + ofToString(ofGetWindowHeight()))));
-    /// 4:3 resolutions
-    gui.add(res_640x480.setup("640x480"));
-    gui.add(res_800x600.setup("800x600"));
-    gui.add(res_960x720.setup("960x720"));
-    /// 16:9 resolutions
-    gui.add(res_1280x768.setup("1280x768"));
-    gui.add(res_1600x900.setup("1600x900"));
-    gui.add(res_1920x1080.setup("1920x1080"));
-    /// 16:10 resolutions
-    gui.add(res_1280x720.setup("1280x720"));
-    gui.add(res_1280x800.setup("1280x800"));
-    gui.add(res_1366x768.setup("1366x768"));
-    gui.add(res_1920x1200.setup("1920x1200"));
+    gui.setup("options menu");
+
+	gui.add(screenRes.setup("resolution", (ofToString(ofGetWindowWidth()) + "x" + ofToString(ofGetWindowHeight()))));
+
+	/// constructing the main categories
+	gui.add(resolutions.setup("resolutions menu"));
+
+	/// resolutions global items
+	resolutions.add(fullscreen.setup("Fullscreen", false));
+
+	/// adding categories to resolution
+	resolutions.add(group_4_3.setup("4:3"));
+	resolutions.add(group_16_9.setup("16:9")); // problem
+	resolutions.add(group_16_10.setup("16:10")); // problem
+
+	/// adding labels to categories
+	group_4_3.setName("4:3");
+	group_16_9.setName("16:9");
+	group_16_10.setName("16:10");
+	resolutions.setName("Graphics");
+	
+	/// setting colors
+	resolutions.setBorderColor(ofColor::blueSteel);
+	group_4_3.setHeaderBackgroundColor(ofColor::darkSlateBlue);
+	group_16_9.setHeaderBackgroundColor(ofColor::darkGoldenRod);
+	group_16_10.setHeaderBackgroundColor(ofColor::darkGreen);
+
+	/// 4:3 resolutions
+	group_4_3.add(res_640x480.setup("640x480"));
+	group_4_3.add(res_800x600.setup("800x600"));
+	group_4_3.add(res_960x720.setup("960x720"));
+
+	/// 16:9 resolutions
+	group_16_9.add(res_1280x768.setup("1280x768"));
+	group_16_9.add(res_1600x900.setup("1600x900"));
+	group_16_9.add(res_1920x1080.setup("1920x1080"));
+
+	/// 16:10 resolutions
+	group_16_10.add(res_1280x720.setup("1280x720"));
+	group_16_10.add(res_1280x800.setup("1280x800"));
+	group_16_10.add(res_1366x768.setup("1366x768"));
+	group_16_10.add(res_1920x1200.setup("1920x1200"));
+
+	/// minimizing menus
+	resolutions.minimizeAll(); // minimizes contents
+	resolutions.minimize(); // minimizes resolutions
+
+	gui.setPosition(((ofGetWidth() / 2) - (gui.getWidth() / 2)), ((ofGetHeight() / 2) - (gui.getHeight() / 2)));
 }
 
 //----------------------------------------------------------------------------------
 void OptionMenu::draw() {
-    
     checkButtonPress();
 
-    gui.draw();
+	if (gui.getPosition() != ofPoint(((ofGetWidth() / 2) - (gui.getWidth() / 2)), ((ofGetHeight() / 2) - (gui.getHeight() / 2))))
+		gui.setPosition(((ofGetWidth() / 2) - (gui.getWidth() / 2)), ((ofGetHeight() / 2) - (gui.getHeight() / 2)));
+    
+	gui.draw();
 }
 
 //----------------------------------------------------------------------------------
@@ -131,4 +166,16 @@ void OptionMenu::checkButtonPress() {
             winSize = RES_1920x1200;
         }
     }
+
+	/// global resolutions buttons
+	if (fullscreen) {
+		if (ofGetWindowMode() != OF_FULLSCREEN) {
+			ofToggleFullscreen();
+		}
+	}
+	else if (!fullscreen) {
+		if (ofGetWindowMode() != OF_WINDOW) {
+			ofToggleFullscreen();
+		}
+	}
 }

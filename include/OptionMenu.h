@@ -40,6 +40,14 @@ private:
     void checkButtonPress();
 
     ofxLabel screenRes; // debugging label
+	
+	ofxToggle fullscreen;
+	
+	/// categories
+	ofxGuiGroup resolutions;
+	ofxGuiGroup group_4_3;
+	ofxGuiGroup group_16_9;
+	ofxGuiGroup group_16_10;
 
     /// 4:3 resolutions
     ofxButton res_640x480;
