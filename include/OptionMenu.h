@@ -16,16 +16,20 @@ enum WindowSize {
 
 	RES_43_COUNT,
 
-    RES_1280x768,
+    RES_1280x720,
+    // RES_1366x768,
     RES_1600x900,
     RES_1920x1080,
+    RES_2560x1440,
+    RES_3840x2160,
 
 	RES_169_COUNT,
 
-    RES_1280x720,
     RES_1280x800,
-    RES_1366x768,
+    RES_1440x900,
+    RES_1680x1050,
     RES_1920x1200,
+    RES_2560x1600,
 
 	RES_1610_COUNT,
 };
@@ -61,12 +65,12 @@ private:
     ofxButton res_960x720;
 
     /// 16:9 resolutions
-    ofxButton res_1280x768;
+    ofxButton res_1280x720;
     ofxButton res_1600x900;
     ofxButton res_1920x1080;
 
     /// 16:10 resolutions
-    ofxButton res_1280x720;
+    ofxButton res_1280x768;
     ofxButton res_1280x800;
     ofxButton res_1366x768;
     ofxButton res_1920x1200;
