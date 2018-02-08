@@ -4,29 +4,30 @@
 #include "ofMain.h"
 #include "ofxGui.h"
 
-enum WindowMode {
-    WIN_FULLSCREEN,
-    WIN_WINDOWED,
-    WIN_BORDERLESS,
-};
 enum WindowAspect {
+	WIN_ASPECT_4_3,
 	WIN_ASPECT_16_9,
 	WIN_ASPECT_16_10,
-	WIN_ASPECT_4_3,
 };
 enum WindowSize {
     RES_640x480,
-    RES_800X600,
-    RES_960X720,
+    RES_800x600,
+    RES_960x720,
+
+	RES_43_COUNT,
 
     RES_1280x768,
     RES_1600x900,
     RES_1920x1080,
 
+	RES_169_COUNT,
+
     RES_1280x720,
     RES_1280x800,
     RES_1366x768,
     RES_1920x1200,
+
+	RES_1610_COUNT,
 };
 
 class OptionMenu {
@@ -36,8 +37,13 @@ public:
 
     void draw();
     void windowResized(int w, int h);
+	void setWindowAspect(WindowAspect);
+	void setWindowSize(WindowSize);
+	WindowAspect getWindowAspect();
+	WindowSize getWindowSize();
 private:
-    void checkButtonPress();
+	ofPoint getRes(int j);
+	void checkButtonPress();
 
     ofxLabel screenRes; // debugging label
 	
@@ -58,7 +64,6 @@ private:
     ofxButton res_1280x768;
     ofxButton res_1600x900;
     ofxButton res_1920x1080;
-
 
     /// 16:10 resolutions
     ofxButton res_1280x720;

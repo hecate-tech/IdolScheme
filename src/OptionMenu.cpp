@@ -3,6 +3,7 @@
 //----------------------------------------------------------------------------------
 OptionMenu::OptionMenu() {
     winAspect = WIN_ASPECT_4_3;
+	winSize = RES_800x600;
 
     gui.setup("options menu");
 
@@ -65,117 +66,104 @@ void OptionMenu::draw() {
 }
 
 //----------------------------------------------------------------------------------
-void OptionMenu::windowResized(int w, int h) {
-    screenRes = (ofToString(w) + "x" + ofToString(h));
-}
-
-//----------------------------------------------------------------------------------
 void OptionMenu::checkButtonPress() {
-    /// 4:3 resolutions
-    if(res_640x480) {
-        if(winSize != RES_640x480) {
-            if(winAspect != WIN_ASPECT_4_3) {
-                winAspect = WIN_ASPECT_4_3;
-            }
-            ofSetWindowShape(640, 480);
-            winSize = RES_640x480;
-        }
-    }
-    if(res_800x600) {
-        if(winSize != RES_800X600) {
-            if(winAspect != WIN_ASPECT_4_3) {
-                winAspect = WIN_ASPECT_4_3;
-            }
-            ofSetWindowShape(800, 600);
-            winSize = RES_800X600;
-        }
-    }
-    if(res_960x720) {
-        if(winSize != RES_960X720) {
-            if(winAspect != WIN_ASPECT_4_3) {
-                winAspect = WIN_ASPECT_4_3;
-            }
-            ofSetWindowShape(960, 720);
-            winSize = RES_960X720;
-        }
-    }
+	
+	auto getName = [&](int j) { 
+		return (ofToString(getRes(j).x) + "x" + ofToString(getRes(j).y)); 
+	};
+	auto getAspect = [&](int k) {
+		return (k < RES_43_COUNT ? WIN_ASPECT_4_3 : k < RES_169_COUNT ? WIN_ASPECT_16_9 : WIN_ASPECT_16_10);
+	};
+	// I really don't know how to format this right. It looks bad no matter what.
+	for (int i = 0; i < RES_1610_COUNT; i++) {
+		if (i != RES_43_COUNT && i != RES_169_COUNT && i != RES_1610_COUNT) {
+			if ( (getAspect(i) == WIN_ASPECT_4_3  ? group_4_3 
+				: getAspect(i) == WIN_ASPECT_16_9 ? group_16_9 
+				: group_16_10).getButton(getName(i))) {
+				if (winSize != i) {
+					if (winAspect != getAspect(i))
+						winAspect = getAspect(i);
+					ofSetWindowShape(getRes(i).x, getRes(i).y);
+					winSize = (WindowSize)i;
+				}
+			}
+		}
+	}
 
-    /// 16:9 resolutions
-    if(res_1280x768) {
-        if(winSize != RES_1280x768) {
-            if(winAspect != WIN_ASPECT_16_9) {
-                winAspect = WIN_ASPECT_16_9;
-            }
-            ofSetWindowShape(1280, 768);
-            winSize = RES_1280x768;
-        }
-    }
-    if(res_1600x900) {
-        if(winSize != RES_1600x900) {
-            if(winAspect != WIN_ASPECT_16_9) {
-                winAspect = WIN_ASPECT_16_9;
-            }
-            ofSetWindowShape(1600, 900);
-            winSize = RES_1600x900;
-        }
-    }
-    if(res_1920x1080) {
-        if(winSize != RES_1920x1080) {
-            if(winAspect != WIN_ASPECT_16_9) {
-                winAspect = WIN_ASPECT_16_9;
-            }
-            ofSetWindowShape(1920, 1080);
-            winSize = RES_1920x1080;
-        }
-    }
-
-    /// 16:10 resolutions
-    if(res_1280x720) {
-        if(winSize != RES_1280x720) {
-            if(winAspect != WIN_ASPECT_16_10) {
-                winAspect = WIN_ASPECT_16_10;
-            }
-            ofSetWindowShape(1280, 720);
-            winSize = RES_1280x720;
-        }
-    }
-    if(res_1280x800) {
-        if(winSize != RES_1280x800) {
-            if(winAspect != WIN_ASPECT_16_10) {
-                winAspect = WIN_ASPECT_16_10;
-            }
-            ofSetWindowShape(1280, 800);
-            winSize = RES_1280x800;
-        }
-    }
-    if(res_1366x768) {
-        if(winSize != RES_1366x768) {
-            if(winAspect != WIN_ASPECT_16_10) {
-                winAspect = WIN_ASPECT_16_10;
-            }
-            ofSetWindowShape(1366, 768);
-            winSize = RES_1366x768;
-        }
-    }
-    if(res_1920x1200) {
-        if(winSize != RES_1920x1200) {
-            if(winAspect != WIN_ASPECT_16_10) {
-                winAspect = WIN_ASPECT_16_10;
-            }
-            ofSetWindowShape(1920, 1200);
-            winSize = RES_1920x1200;
-        }
-    }
-
-	/// global resolutions buttons
 	if (fullscreen) {
 		if (ofGetWindowMode() != OF_FULLSCREEN) {
 			ofToggleFullscreen();
 		}
-	}
-	else if (!fullscreen) {
+	} else if (!fullscreen) {
 		if (ofGetWindowMode() != OF_WINDOW) {
 			ofToggleFullscreen();
 		}
 	}
+}
+
+//----------------------------------------------------------------------------------
+void OptionMenu::windowResized(int w, int h) {
+	screenRes = (ofToString(w) + "x" + ofToString(h));
+}
+
+/////////////////////////////////////////////////////////////////
+   /////////////////      Getters/Setters      ///////////////
+/////////////////////////////////////////////////////////////////
+
+ofPoint OptionMenu::getRes(int j) {
+	switch (j) {
+		case RES_640x480:
+			return ofPoint(640,480);
+			break;
+		case RES_800x600:
+			return ofPoint(800,600);
+			break;
+		case RES_960x720:
+			return ofPoint(960,720);
+			break;
+		case RES_1280x768:
+			return ofPoint(1280,768);
+			break;
+		case RES_1600x900:
+			return ofPoint(1600,900);
+			break;
+		case RES_1920x1080:
+			return ofPoint(1920,1080);
+			break;
+		case RES_1280x720:
+			return ofPoint(1280,720);
+			break;
+		case RES_1280x800:
+			return ofPoint(1280,800);
+			break;
+		case RES_1366x768:
+			return ofPoint(1366,768);
+			break;
+		case RES_1920x1200:
+			return ofPoint(1920,1200);
+			break;
+		default:
+			return ofPoint(0,0,0);
+			break;
+	}
+}
+
+//----------------------------------------------------------------------------------
+WindowAspect OptionMenu::getWindowAspect() {
+	return winAspect;
+}
+
+//----------------------------------------------------------------------------------
+WindowSize OptionMenu::getWindowSize() {
+	return winSize;
+}
+
+//----------------------------------------------------------------------------------
+void OptionMenu::setWindowAspect(WindowAspect newAspect) {
+	winAspect = newAspect;
+}
+
+//----------------------------------------------------------------------------------
+void OptionMenu::setWindowSize(WindowSize newSize) {
+	winSize = newSize;
 }

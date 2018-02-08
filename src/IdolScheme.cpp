@@ -10,8 +10,8 @@ void IdolScheme::setup() {
 	ofBackground(45, 45, 190, 255);
 
 	IdolScheme_State = GAME_ACTIVE;
-	IdolScheme_WindowAspect = optionMenu.winAspect;
-	IdolScheme_WindowSize = optionMenu.winSize;
+	IdolScheme_WindowAspect = optionMenu.getWindowAspect();
+	IdolScheme_WindowSize = optionMenu.getWindowSize();
 
 	ofTrueTypeFont::setGlobalDpi(60);
 	textOut.load("verdana.ttf", 20, true, false);
