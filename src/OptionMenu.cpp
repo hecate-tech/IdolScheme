@@ -67,10 +67,7 @@ void OptionMenu::draw() {
 
 //----------------------------------------------------------------------------------
 void OptionMenu::checkButtonPress() {
-	
-	auto getName = [&](int j) { 
-		return (ofToString(getRes(j).x) + "x" + ofToString(getRes(j).y)); 
-	};
+
 	auto getAspect = [&](int k) {
 		return (k < RES_43_COUNT ? WIN_ASPECT_4_3 : k < RES_169_COUNT ? WIN_ASPECT_16_9 : WIN_ASPECT_16_10);
 	};
@@ -79,7 +76,10 @@ void OptionMenu::checkButtonPress() {
 		if (i != RES_43_COUNT && i != RES_169_COUNT && i != RES_1610_COUNT) {
 			if ( (getAspect(i) == WIN_ASPECT_4_3  ? group_4_3 
 				: getAspect(i) == WIN_ASPECT_16_9 ? group_16_9 
-				: group_16_10).getButton(getName(i))) {
+				: group_16_10)
+					.getButton(ofToString(getRes(i).x) 
+						+ "x" + ofToString(getRes(i).y))) {
+				
 				if (winSize != i) {
 					if (winAspect != getAspect(i))
 						winAspect = getAspect(i);
