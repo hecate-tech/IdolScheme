@@ -7,6 +7,7 @@
 OptionMenu::OptionMenu() {
     winAspect = ASPECT_4_3;
 	winSize = RES_800x600;
+	winFullScreen = false;
 
     gui.setup("options menu");
 
@@ -82,109 +83,108 @@ void OptionMenu::draw() {
 void OptionMenu::checkButtonPress() {
 	// fullscreen is actually borderless windowed, 
 	// but I don't know how to set the window mode manually.
-	if (t_fullscreen) { 
-		if (ofGetWindowMode() != OF_FULLSCREEN) {
-			ofToggleFullscreen();
+	
+	/* @brief - getAspect
+	* based on the 'WindowSize' this lambda function returns
+	* which 'WindowAspect' the size belongs to.
+	*/
+	auto getAspect = [&](int k) {
+		return (k < RES_4_3_MAX ? ASPECT_4_3 : k < RES_16_9_MAX ? ASPECT_16_9 : k < RES_16_10_MAX ? ASPECT_16_10 : ASPECT_16_10_ALT);
+	};
+
+
+	/* @brief - getWH
+	* this is the formula used to calculate the resolutions.
+	* It's hard to explain exactly how I came up with this, because
+	* all I did was a bunch of trial and error until something worked.
+	*/
+	auto getWH = [&](int step, auto mod1, auto offset1 = 0, auto mod2 = 1, auto offset2 = 0) {
+		return (mod1 * (step + (offset1)) + offset2) * mod2;
+	};
+
+
+	/* @brief - getParameters
+	* this is a tool to create the parameters needed for 'getWH'
+	* It takes the iterator and finds the aspect ratio that belongs
+	* to it. Then once the aspect ratio is found then it returns the
+	* parameters needed to calculate the screen resolution.
+	*/
+	auto getParameters = [&](int n) {
+		int numOfParams = 4; // the number of parameters for 'getWH'
+
+		int size_169 = (RES_16_9_MAX - RES_4_3_MAX) - 1; // the available resolutions that are 16:9
+		int size_1610 = (RES_16_10_MAX - RES_16_9_MAX) - 1; // the available resolutions that are 16:10
+															// available resolutions of 4:3 are just (RES_43_COUNT - 1)
+
+		switch (getAspect(n)) {
+			case ASPECT_4_3:
+				// I an array twice the size of the needed parameters to store them for the x and y 
+				// individually. Using a two dimensional array is a lot of extra work and memory space.
+				// I'd rather use a large float pointer instead.
+				return new float[numOfParams * 2]
+				{ 160.F,4.F,1.F,0.F,	 // x - parameters
+					120.F,4.F,1.F,0.F }; // y - parameters
+				break;
+			case ASPECT_16_9:
+				// the 16:9 aspect ratio has two exceptions with the iterator.
+				// When it reaches 7 and 8 I change the returned parameters to achieve the
+				// desired resolution. Still making exceptions for 683:384 aspect ratio resolutions.
+				return new float[numOfParams * 2]
+				{ 320.F, n == 7 ? 1.F : 0.F, n == 8 ? 1.5F : 1.F, 0.F,	   // x - parameters
+					180.F, n == 7 ? 1.F : 0.F, n == 8 ? 1.5F : 1.F, 0.F }; // y - parameters
+				break;
+			case ASPECT_16_10:
+				// 16:10 resolutions were split into two, because the parameters were so different for
+				// calculating from 1280x800 to 1440x900. Other than that the 16:10 resolutions are easy to
+				// calculate, because the width is always 1.6 times the height. The ratio is based on the golden ratio.
+				return new float[numOfParams * 2]
+				{ 320.F,(-1.F*(RES_16_10_MAX - RES_16_9_MAX) + (size_1610 - size_169)),1.F,0.F,		     // x - parameters
+					320.F,(-1.F * (RES_16_10_MAX - RES_16_9_MAX) + (size_1610 - size_169)),0.625F,0.F }; // y - parameters
+				break;
+			case ASPECT_16_10_ALT:
+				// This is for the alternate resolutions of 16:10 such as 1440x900 and 1680x1050, because
+				// they're so different from the other resolutions. They don't follow any sensical
+				// pattern except that the 1.6 ratio is retained.
+				return new float[numOfParams * 2]
+				{ 150.F,(-1.F*(RES_16_10_MAX + 1.F)),1.6F,900.F,	   // x - paramater
+					150.F,(-1.F * (RES_16_10_MAX + 1.F)),1.F,900.F };  // y - parameter
+				break;
+			default: break; // not sure what I should put for a default.
 		}
-	} else if (!t_fullscreen) {
-		if (ofGetWindowMode() != OF_WINDOW) {
-			ofToggleFullscreen();
-		}
+	};
 
 
-		/* @brief - getAspect
-		 * based on the 'WindowSize' this lambda function returns
-		 * which 'WindowAspect' the size belongs to.
-		 */
-		auto getAspect = [&](int k) {
-			return (k < RES_4_3_MAX ? ASPECT_4_3 : k < RES_16_9_MAX ? ASPECT_16_9 : k < RES_16_10_MAX ? ASPECT_16_10 : ASPECT_16_10_ALT);
-		};
+	for (int n = 0; n < RES_16_10_ALT_MAX; n++) { // goes through all resolutions in the 'WindowSize' enum.
+		if (n != RES_4_3_MAX && n != RES_16_9_MAX && n != RES_16_10_MAX && n != RES_16_10_ALT_MAX) { // excludes seperator enum values.
+			float *a = getParameters(n); // retrieves all paramaters needed for the resolution.
+			ofPoint res; // what will store the resolution.
 
+			res.x = getWH(n, a[0], a[1], a[2], a[3]); // gets the width.
+			res.y = getWH(n, a[4], a[5], a[6], a[7]); // gets the height.
 
-		/* @brief - getWH
-		 * this is the formula used to calculate the resolutions.
-		 * It's hard to explain exactly how I came up with this, because
-		 * all I did was a bunch of trial and error until something worked.
-		 */
-		auto getWH = [&](int step, auto mod1, auto offset1 = 0, auto mod2 = 1, auto offset2 = 0) {
-			return (mod1 * (step + (offset1)) + offset2) * mod2;
-		};
-
-
-		/* @brief - getParameters
-		 * this is a tool to create the parameters needed for 'getWH'
-		 * It takes the iterator and finds the aspect ratio that belongs
-		 * to it. Then once the aspect ratio is found then it returns the 
-		 * parameters needed to calculate the screen resolution.
-		 */
-		auto getParameters = [&](int n) {
-			int numOfParams = 4; // the number of parameters for 'getWH'
-
-			int size_169 = (RES_16_9_MAX - RES_4_3_MAX) - 1; // the available resolutions that are 16:9
-			int size_1610 = (RES_16_10_MAX - RES_16_9_MAX) - 1; // the available resolutions that are 16:10
-			// available resolutions of 4:3 are just (RES_43_COUNT - 1)
-
-			switch (getAspect(n)) {
-				case ASPECT_4_3:
-					// I an array twice the size of the needed parameters to store them for the x and y 
-					// individually. Using a two dimensional array is a lot of extra work and memory space.
-					// I'd rather use a large float pointer instead.
-					return new float[numOfParams * 2] 
-					{ 160.F,4.F,1.F,0.F,	 // x - parameters
-						120.F,4.F,1.F,0.F }; // y - parameters
-					break;
-				case ASPECT_16_9:
-					// the 16:9 aspect ratio has two exceptions with the iterator.
-					// When it reaches 7 and 8 I change the returned parameters to achieve the
-					// desired resolution. Still making exceptions for 683:384 aspect ratio resolutions.
-					return new float[numOfParams * 2]
-					{ 320.F, n == 7 ? 1.F : 0.F, n == 8 ? 1.5F : 1.F, 0.F,	   // x - parameters
-						180.F, n == 7 ? 1.F : 0.F, n == 8 ? 1.5F : 1.F, 0.F }; // y - parameters
-					break;
-				case ASPECT_16_10:
-					// 16:10 resolutions were split into two, because the parameters were so different for
-					// calculating from 1280x800 to 1440x900. Other than that the 16:10 resolutions are easy to
-					// calculate, because the width is always 1.6 times the height. The ratio is based on the golden ratio.
-					return new float[numOfParams * 2]
-					{ 320.F,(-1.F*(RES_16_10_MAX - RES_16_9_MAX) + (size_1610 - size_169)),1.F,0.F,		     // x - parameters
-						320.F,(-1.F * (RES_16_10_MAX - RES_16_9_MAX) + (size_1610 - size_169)),0.625F,0.F }; // y - parameters
-					break;
-				case ASPECT_16_10_ALT:
-					// This is for the alternate resolutions of 16:10 such as 1440x900 and 1680x1050, because
-					// they're so different from the other resolutions. They don't follow any sensical
-					// pattern except that the 1.6 ratio is retained.
-					return new float[numOfParams * 2]
-					{ 150.F,(-1.F*(RES_16_10_MAX + 1.F)),1.6F,900.F,	   // x - paramater
-						150.F,(-1.F * (RES_16_10_MAX + 1.F)),1.F,900.F };  // y - parameter
-					break;
-				default: break; // not sure what I should put for a default.
-			}
-		};
-
-
-		for (int n = 0; n < RES_16_10_ALT_MAX; n++) { // goes through all resolutions in the 'WindowSize' enum.
-			if (n != RES_4_3_MAX && n != RES_16_9_MAX && n != RES_16_10_MAX && n != RES_16_10_ALT_MAX) { // excludes seperator enum values.
-				float *a = getParameters(n); // retrieves all paramaters needed for the resolution.
-				ofPoint res; // what will store the resolution.
-
-				res.x = getWH(n, a[0], a[1], a[2], a[3]); // gets the width.
-				res.y = getWH(n, a[4], a[5], a[6], a[7]); // gets the height.
-
-				if ((getAspect(n) == ASPECT_4_3 ? g_4_3
-					: getAspect(n) == ASPECT_16_9 ? g_16_9
-					: g_16_10).getButton(ofToString(res.x) + "x" + ofToString(res.y))) { // checks if the button is pressed
-					if (currMouseState == true && prevMouseState == false) { // on mousedown (by using mouse activity stamps)
-						if (winSize != n) { // if the 'WindowSize' is currently not equal to the iterator.
-							if (winAspect != getAspect(n)) // if the 'WindowAspect' is not equal to the iterator.
-								winAspect = getAspect(n);
-							ofSetWindowShape(res.x, res.y); // sets the resolution.
-							winSize = (WindowSize)n; // sets the 'WindowSize'
-						}
+			if ((getAspect(n) == ASPECT_4_3 ? g_4_3
+				: getAspect(n) == ASPECT_16_9 ? g_16_9
+				: g_16_10).getButton(ofToString(res.x) + "x" + ofToString(res.y))) { // checks if the button is pressed
+				if (currMouseState == true && prevMouseState == false) { // on mousedown (by using mouse activity stamps)
+					if (winSize != n) { // if the 'WindowSize' is currently not equal to the iterator.
+						if (winAspect != getAspect(n)) // if the 'WindowAspect' is not equal to the iterator.
+							winAspect = getAspect(n);
+						ofSetWindowShape(res.x, res.y); // sets the resolution.
+						winSize = (WindowSize)n; // sets the 'WindowSize'
 					}
 				}
 			}
-		}
 
+			delete(a);
+		}
+	}
+
+	if (t_fullscreen) {
+		if(ofGetWindowMode() != OF_FULLSCREEN)
+			ofGetWindowPtr()->setFullscreen(true);
+	} else {
+		if (ofGetWindowMode() == OF_FULLSCREEN)
+			ofGetWindowPtr()->setFullscreen(false);
 	}
 
 

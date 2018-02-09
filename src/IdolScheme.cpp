@@ -48,6 +48,7 @@ void IdolScheme::draw() {
 	textOut.drawString(lengthString, 10, 40);
 	string beatDiffString = "Beats since last refresh: " + std::to_string(mainConductor.numBeatsSinceRefresh);
 	textOut.drawString(beatDiffString, 10, 60);
+	textOut.drawString(ofToString(ofGetFrameRate()), 10, 80);
 
 	note.draw((ofGetWidth() / 2), (cos(a) * 150) + (ofGetHeight() / 2), (ofGetWidth() / 2), (ofGetHeight() / 2));
 

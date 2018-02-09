@@ -53,6 +53,7 @@ class OptionMenu {
 public:
     WindowAspect winAspect; // stores current window aspect ratio.
     WindowSize   winSize;   // stores current window resolution.
+	bool winFullScreen;
 
     void draw();
     void windowResized(int w, int h);
