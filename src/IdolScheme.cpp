@@ -16,9 +16,6 @@ void IdolScheme::setup() {
 	ofTrueTypeFont::setGlobalDpi(60);
 	textOut.load("verdana.ttf", 20, true, false);
 	textOut.setLetterSpacing(1.037);
-	
-	//gui.setup();
-	//gui.add(screenRes.setup("resolution", (ofToString(ofGetWidth()) + "x" + ofToString(ofGetHeight()))));
 
 	cout << "Enter a bpm: ";
 	cin  >> mainConductor._bpm;
@@ -29,7 +26,6 @@ void IdolScheme::setup() {
 	
 	mainConductor.startTimer();
 	note.setup(ofPoint(),ofPoint(0,(ofGetHeight() / 2)),BUTTON,BUTTON_A);
-	//note.setSize(100);
 }
 
 
@@ -73,8 +69,9 @@ void IdolScheme::keyPressed(int key) {
 
 //--------------------------------------------------------------
 void IdolScheme::keyReleased(int key) {
-	if(key == 'o') {
-		optionMenuShow = !optionMenuShow;
+	switch (key) {
+		case 'o':
+			optionMenuShow = !optionMenuShow;
 	}
 }
 

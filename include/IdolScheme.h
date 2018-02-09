@@ -50,7 +50,6 @@ class IdolScheme : public ofBaseApp {
 		WindowSize IdolScheme_WindowSize;
 		ofTrueTypeFont textOut;
 
-
 		Conductor mainConductor; // This will keep time.
 		Note note; // need a better solution than making each note.
 		
