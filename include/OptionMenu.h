@@ -8,6 +8,7 @@ enum WindowAspect {
 	WIN_ASPECT_4_3,
 	WIN_ASPECT_16_9,
 	WIN_ASPECT_16_10,
+	WIN_ASPECT_16_10_ALT,
 };
 enum WindowSize {
     RES_640x480,
@@ -26,12 +27,15 @@ enum WindowSize {
 	RES_169_COUNT,
 
     RES_1280x800,
-    RES_1440x900,
-    RES_1680x1050,
+	RES_1600x1000,
     RES_1920x1200,
-    RES_2560x1600,
 
 	RES_1610_COUNT,
+
+	RES_1440x900, 
+	RES_1680x1050, 
+
+	RES_1610_ALT_COUNT,
 };
 
 class OptionMenu {
@@ -48,6 +52,9 @@ public:
 private:
 	ofPoint getRes(int j);
 	void checkButtonPress();
+
+	bool prevMouseState = false;
+	bool currMouseState = false;
 
     ofxLabel screenRes; // debugging label
 	
@@ -68,12 +75,16 @@ private:
     ofxButton res_1280x720;
     ofxButton res_1600x900;
     ofxButton res_1920x1080;
+	ofxButton res_2560x1440;
+	ofxButton res_3840x2160;
 
     /// 16:10 resolutions
-    ofxButton res_1280x768;
     ofxButton res_1280x800;
-    ofxButton res_1366x768;
-    ofxButton res_1920x1200;
+	ofxButton res_1600x1000;
+	ofxButton res_1920x1200;
+
+	ofxButton res_1440x900;
+	ofxButton res_1680x1050;
 
     ofxPanel gui;
 public:

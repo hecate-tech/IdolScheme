@@ -44,12 +44,16 @@ OptionMenu::OptionMenu() {
 	group_16_9.add(res_1280x720.setup("1280x720"));
 	group_16_9.add(res_1600x900.setup("1600x900"));
 	group_16_9.add(res_1920x1080.setup("1920x1080"));
+	group_16_9.add(res_2560x1440.setup("2560x1440"));
+	group_16_9.add(res_3840x2160.setup("3840x2160"));
 
 	/// 16:10 resolutions
-	group_16_10.add(res_1280x768.setup("1280x768"));
 	group_16_10.add(res_1280x800.setup("1280x800"));
-	group_16_10.add(res_1366x768.setup("1366x768"));
+	group_16_10.add(res_1600x1000.setup("1600x1000"));
 	group_16_10.add(res_1920x1200.setup("1920x1200"));
+
+	group_16_10.add(res_1440x900.setup("1440x900"));
+	group_16_10.add(res_1680x1050.setup("1680x1050"));
 
 	/// minimizing menus
 	resolutions.minimizeAll(); // minimizes contents
@@ -57,59 +61,16 @@ OptionMenu::OptionMenu() {
 
 	gui.setPosition(((ofGetWidth() / 2) - (gui.getWidth() / 2)), ((ofGetHeight() / 2) - (gui.getHeight() / 2)));
 	
-	auto getAsp = [&](int k) {
-		return (k < RES_43_COUNT ? WIN_ASPECT_4_3 : k < RES_169_COUNT ? WIN_ASPECT_16_9 : WIN_ASPECT_16_10);
+	auto getAspect = [&](int k) {
+		return (k < RES_43_COUNT ? WIN_ASPECT_4_3 : k < RES_169_COUNT ? WIN_ASPECT_16_9 : k < RES_1610_COUNT ? WIN_ASPECT_16_10 : WIN_ASPECT_16_10_ALT);
 	};
-
-	auto testResGet = [&](int l, int mod) {
-		int ad = (l + 4) * mod;
-		return ad;
-	};
-	//std::cout << ofToString((1 + 4) * 160) + "x" + ofToString((1 + 4) * 120) << std::endl;
-	for(int m = 0; m < RES_1610_COUNT; m++) {
-		if(m != RES_43_COUNT && m != RES_169_COUNT && m != RES_1610_COUNT) {
-			int res_169_size = (RES_169_COUNT - RES_43_COUNT) - 1;
-			int res_1610_size = (RES_1610_COUNT - RES_169_COUNT) - 1;
-			switch(getAsp(m)) {
-				case WIN_ASPECT_4_3:
-					std::cout << "4:3 " + ofToString(m) << std::endl;
-					std::cout << ofToString((m + 4) * 160) + "x" + ofToString((m + 4) * 120) << std::endl;
-					break;
-				case WIN_ASPECT_16_9:
-					if(m < 7) {
-						std::cout << "16:9 " + ofToString(m) << std::endl;
-					std::cout << ofToString((m) * 320) + "x" + ofToString((m) * 180) << std::endl;
-					} else if(m == 7) {
-						std::cout << "16:9 " + ofToString(m) << std::endl;
-						std::cout << ofToString((m + 1) * 320) + "x" + ofToString((m + 1) * 180) << std::endl;
-					} else if(m == 8) {
-						std::cout << "16:9 " + ofToString(m) << std::endl;
-						std::cout << ofToString(((m) * 320) * 1.5) + "x" + ofToString(((m) * 180) * 1.5) << std::endl;
-					}
-					break;
-				case WIN_ASPECT_16_10:
-					if(m != 9) { 
-						std::cout << "16:10 " + ofToString(m) << std::endl; // arbitrary number
-						std::cout << ofToString((m - (RES_1610_COUNT - RES_169_COUNT) + (res_1610_size - res_169_size)) * 320) + "x" + ofToString(((m - (RES_1610_COUNT - RES_169_COUNT) + (res_1610_size - res_169_size)) * 320) / 1.6) << std::endl;
-					}
-					
-					if(m < 10) {
-						 std::cout << "16:10 " + ofToString(m) << std::endl;
-						 std::cout << ofToString((150 * (m - (RES_1610_COUNT - RES_169_COUNT) - (res_1610_size - res_169_size)) + 900) * 1.6) + "x" + ofToString((150 * (m - (RES_1610_COUNT - RES_169_COUNT) - (res_1610_size - res_169_size)) + 900)) << std::endl;
-					}
-					break;
-				default:
-					break;
-			}
-		}
-		
-	}
 }
 
 //----------------------------------------------------------------------------------
 void OptionMenu::draw() {
     checkButtonPress();
-
+	prevMouseState = currMouseState;
+	currMouseState = ofGetMousePressed(OF_MOUSE_BUTTON_LEFT);
 	if (gui.getPosition() != ofPoint(((ofGetWidth() / 2) - (gui.getWidth() / 2)), ((ofGetHeight() / 2) - (gui.getHeight() / 2))))
 		gui.setPosition(((ofGetWidth() / 2) - (gui.getWidth() / 2)), ((ofGetHeight() / 2) - (gui.getHeight() / 2)));
     
@@ -118,60 +79,6 @@ void OptionMenu::draw() {
 
 //----------------------------------------------------------------------------------
 void OptionMenu::checkButtonPress() {
-
-	auto getAspect = [&](int k) {
-		return (k < RES_43_COUNT ? WIN_ASPECT_4_3 : k < RES_169_COUNT ? WIN_ASPECT_16_9 : WIN_ASPECT_16_10);
-	};
-
-	auto getResNew = [&](std::string a) {
-		std::vector<int> vect;
-		std::stringstream ss(a);
-		std::string result;
-		unsigned int i;
-		while(ss >> i) {
-			vect.push_back(i);
-			if(ss.peek() == 'x')
-				ss.ignore();
-		}
-		return vect;
-	};
-
-	
-/*
-	for(int i = 0; i < RES_1610_COUNT; i++) {
-		if(i != RES_43_COUNT &&  i != RES_169_COUNT && i != RES_1610_COUNT) {
-			switch(getAspect(i)) {
-				case WIN_ASPECT_4_3: // mod = 160
-					testResGet(i, 160);
-					break;
-				case WIN_ASPECT_16_9: // mod = 320, mody = 9 * 120 = 1080
-					break;
-				case WIN_ASPECT_16_10: // mod = 320, mody = 240
-					break;
-				default:
-					break;
-			}
-		}
-	}*/
-
-	// I really don't know how to format this right. It looks bad no matter what.
-	for (int i = 0; i < RES_1610_COUNT; i++) {
-		if (i != RES_43_COUNT && i != RES_169_COUNT && i != RES_1610_COUNT) {
-			if ( (getAspect(i) == WIN_ASPECT_4_3  ? group_4_3 
-				: getAspect(i) == WIN_ASPECT_16_9 ? group_16_9 
-				: group_16_10)
-					.getButton(ofToString(getRes(i).x) + "x" + ofToString(getRes(i).y))) {
-				
-				if (winSize != i) {
-					if (winAspect != getAspect(i))
-						winAspect = getAspect(i);
-					ofSetWindowShape(getRes(i).x, getRes(i).y);
-					winSize = (WindowSize)i;
-				}
-			}
-		}
-	}
-
 	if (fullscreen) {
 		if (ofGetWindowMode() != OF_FULLSCREEN) {
 			ofToggleFullscreen();
@@ -179,6 +86,70 @@ void OptionMenu::checkButtonPress() {
 	} else if (!fullscreen) {
 		if (ofGetWindowMode() != OF_WINDOW) {
 			ofToggleFullscreen();
+		}
+
+		auto getAspect = [&](int k) {
+			return (k < RES_43_COUNT ? WIN_ASPECT_4_3 : k < RES_169_COUNT ? WIN_ASPECT_16_9 : k < RES_1610_COUNT ? WIN_ASPECT_16_10 : WIN_ASPECT_16_10_ALT);
+		};
+
+		auto getWH = [&](int n, auto mod, auto offset = 0, auto mod2 = 1, auto offset2 = 0) {
+			return (mod * (n + (offset)) + offset2) * mod2;
+		};
+
+		auto getMods = [&](int n) {
+			int numOfMods = 4;
+			int s_169 = (RES_169_COUNT - RES_43_COUNT) - 1;
+			int s_1610 = (RES_1610_COUNT - RES_169_COUNT) - 1;
+			switch (getAspect(n)) {
+				case WIN_ASPECT_4_3:
+					return new float[numOfMods * 2]
+					{ 160.F,4.F,1.F,0.F,
+						120.F,4.F,1.F,0.F };
+					break;
+				case WIN_ASPECT_16_9:
+					return new float[numOfMods * 2]
+					{ 320.F,n == 7 ? 1.F : 0.F,n == 8 ? 1.5F : 1.F,0.F,
+						180.F,n == 7 ? 1.F : 0.F,n == 8 ? 1.5F : 1.F,0.F };
+					break;
+				case WIN_ASPECT_16_10:
+					return new float[numOfMods * 2]
+					{ 320.F,(-1.F*(RES_1610_COUNT - RES_169_COUNT) + (s_1610 - s_169)),1.F,0.F,
+						320.F,(-1.F * (RES_1610_COUNT - RES_169_COUNT) + (s_1610 - s_169)),0.625F,0.F };
+					break;
+				case WIN_ASPECT_16_10_ALT:
+					return new float[numOfMods * 2]
+					{ 150.F,(-1.F*(RES_1610_COUNT + 1.F)),1.6F,900.F,
+						150.F,(-1.F * (RES_1610_COUNT + 1.F)),1.F,900.F };
+					break;
+				default:
+					break;
+			}
+		};
+
+		for (int n = 0; n < RES_1610_ALT_COUNT; n++) {
+			if (n != RES_43_COUNT && n != RES_169_COUNT && n != RES_1610_COUNT && n != RES_1610_ALT_COUNT) {
+				float *a = getMods(n);
+				ofPoint res;
+
+				res.x = getWH(n, a[0], a[1], a[2], a[3]);
+				res.y = getWH(n, a[4], a[5], a[6], a[7]);
+
+				if ((getAspect(n) == WIN_ASPECT_4_3 ? group_4_3
+					: getAspect(n) == WIN_ASPECT_16_9 ? group_16_9
+					: group_16_10).getButton(ofToString(res.x) + "x" + ofToString(res.y))) {
+					if (currMouseState == true && prevMouseState == false) {
+						std::cout << ofToString(res.x) + "x" + ofToString(res.y) << std::endl;
+						if (winSize != n) {
+							if (winAspect != getAspect(n))
+								winAspect = getAspect(n);
+							std::cout << winAspect << std::endl;
+							ofSetWindowShape(res.x, res.y);
+							winSize = (WindowSize)n;
+						}
+					}
+
+				}
+			}
 		}
 	}
 }
@@ -191,45 +162,6 @@ void OptionMenu::windowResized(int w, int h) {
 /////////////////////////////////////////////////////////////////
    /////////////////      Getters/Setters      ///////////////
 /////////////////////////////////////////////////////////////////
-
-ofPoint OptionMenu::getRes(int j) {
-	
-	switch (j) {
-		case RES_640x480:
-			return ofPoint(640,480);
-			break;
-		case RES_800x600:
-			return ofPoint(800,600);
-			break;
-		case RES_960x720:
-			return ofPoint(960,720);
-			break;
-		//case RES_1280x768:
-		//	return ofPoint(1280,768);
-		//	break;
-		case RES_1600x900:
-			return ofPoint(1600,900);
-			break;
-		case RES_1920x1080:
-			return ofPoint(1920,1080);
-			break;
-		case RES_1280x720:
-			return ofPoint(1280,720);
-			break;
-		case RES_1280x800:
-			return ofPoint(1280,800);
-			break;
-		//case RES_1366x768:
-		//	return ofPoint(1366,768);
-		//	break;
-		case RES_1920x1200:
-			return ofPoint(1920,1200);
-			break;
-		default:
-			return ofPoint(0,0,0);
-			break;
-	}
-}
 
 //----------------------------------------------------------------------------------
 WindowAspect OptionMenu::getWindowAspect() {
