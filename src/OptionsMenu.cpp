@@ -17,12 +17,12 @@ OptionMenu::OptionMenu() {
 	windowMode.panel.setName("Window Mode");
 	windowMode.panel.setHeaderBackgroundColor(ofColor::orange);
 
-	for (int k = 0; k < windowMode.choices.size(); k++) {
+	for (unsigned int k = 0; k < windowMode.choices.size(); k++) {
 		windowMode.panel.add(windowMode.choices.at(k).toggle.setup(windowMode.choices.at(k).name, windowMode.choices.at(k).chosen));
 	}
 
 	/// Adding all Ratios
-	for (int j = 0; j < ratioGroups.size(); j++) {
+	for (unsigned int j = 0; j < ratioGroups.size(); j++) {
 		if (confirmValidRatio((WindowAspect)j))
 			graphics.add(ratioGroups.at(j).setup(ofToString(j)));
 		
@@ -46,7 +46,7 @@ OptionMenu::OptionMenu() {
 	}
 	
 	/// Adding all resolutions
-	for (int i = 0; i < resolutions.size(); i++) {
+	for (unsigned int i = 0; i < resolutions.size(); i++) {
 		if (resolutions.at(i).h <= mode->height && resolutions.at(i).w <= mode->width) {
 			ratioGroups.at((int)resolutions.at(i).ratio).add(resolutions.at(i).button.setup(resolutions.at(i).getName()));
 			resolutions.at(i).button.setName(resolutions.at(i).getName());
@@ -69,7 +69,7 @@ void OptionMenu::draw() {
 //-------------------------------------------
 void OptionMenu::buttonCheck() {
 	if (ofGetWindowMode() == OF_WINDOW) {
-		for (int i = 0; i < resolutions.size(); i++) {
+		for (unsigned int i = 0; i < resolutions.size(); i++) {
 			if (resolutions.at(i).h <= mode->height && resolutions.at(i).w <= mode->width) {
 				if (resolutions.at(i).button) {
 					if (getResolution().compare(resolutions.at(i).getName()) != 0)
@@ -84,7 +84,7 @@ void OptionMenu::buttonCheck() {
 		}
 	}
 
-	for (int j = 0; j < windowMode.choices.size(); j++) {
+	for (unsigned int j = 0; j < windowMode.choices.size(); j++) {
 		windowMode.choices.at(j).prevState = windowMode.choices.at(j).currState;
 		windowMode.choices.at(j).currState = windowMode.choices.at(j).toggle;
 
@@ -95,7 +95,7 @@ void OptionMenu::buttonCheck() {
 			if (ofGetWindowMode() != windowMode.choices.at(j).windowMode)
 				ofGetWindowPtr()->setFullscreen(windowMode.choices.at(j).fullScrn());
 			
-			for (int k = 0; k < windowMode.choices.size(); k++) {
+			for (unsigned int k = 0; k < windowMode.choices.size(); k++) {
 				if (k != j) {
 					windowMode.choices.at(k).chosen = false;
 					windowMode.choices.at(k).toggle = false;
@@ -132,7 +132,7 @@ void OptionMenu::setResolution(string resolution) {
 
 //-------------------------------------------
 WindowAspect OptionMenu::getRatioOnMonitor() {
-	for (int i = 0; i < resolutions.size(); i++) {
+	for (unsigned int i = 0; i < resolutions.size(); i++) {
 		if (resolutions.at(i).h == mode->height && resolutions.at(i).w == mode->width) {
 			return resolutions.at(i).ratio;
 		}
@@ -145,7 +145,7 @@ WindowAspect OptionMenu::getRatioOnMonitor() {
 bool OptionMenu::confirmValidRatio(WindowAspect ratio) {
 	bool result = false;
 
-	for (int i = 0; i < resolutions.size(); i++) {
+	for (unsigned int i = 0; i < resolutions.size(); i++) {
 		if (resolutions.at(i).h <= mode->height 
 			&& resolutions.at(i).w <= mode->width
 			&& resolutions.at(i).ratio == ratio) {
@@ -154,4 +154,24 @@ bool OptionMenu::confirmValidRatio(WindowAspect ratio) {
 	}
 	
 	return result;
+}
+
+//-------------------------------------------
+int OptionMenu::getWinHeight() {
+	for(unsigned int i = 0; i < resolutions.size(); i++) {
+		if(resolutions.at(i).getName().compare(getResolution()) == 0) {
+			return resolutions.at(i).h;
+		}
+	}
+	return 1;
+}
+
+//-------------------------------------------
+int OptionMenu::getWinWidth() {
+	for(unsigned int i = 0; i < resolutions.size(); i++) {
+		if(resolutions.at(i).getName().compare(getResolution()) == 0) {
+			return resolutions.at(i).w;
+		}
+	}
+	return 1;
 }

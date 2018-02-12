@@ -41,7 +41,11 @@ struct resButton {
 			: "21:9");
 	}
 	resButton() {}
-	resButton(int w_, int h_, WindowAspect ratio_) : w(w_), h(h_), ratio(ratio_) {};
+	resButton(int w_, int h_, WindowAspect ratio_) {
+		w = w_;
+		h = h_;
+		ratio = ratio_;
+	};
 };
 
 /* @brief - resChoice
@@ -91,7 +95,8 @@ public:
 	void setResolution(string resolution = "800x600");
 	WindowAspect getAspectRatio();
 	string getResolution();
-
+	int getWinHeight();
+	int getWinWidth();
 private:
 	WindowAspect getRatioOnMonitor();
 	WindowAspect currentWindowAspectRatio;
