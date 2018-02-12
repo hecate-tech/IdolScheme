@@ -81,6 +81,13 @@ struct winModeDropDown {
 	bool folded = true;
 };
 
+struct controlsGroup {
+	ofxGuiGroup group;
+	string name;
+	controlsGroup(string name_) {
+		name = name_;
+	};
+};
 
 /* @brief - OptionMenu
  * This is the class responsible for keeping track
@@ -104,6 +111,7 @@ private:
 
 	ofxPanel gui;
 	ofxGuiGroup graphics;
+	ofxGuiGroup controls;
 	winModeDropDown windowMode;
 
 	void buttonCheck();
@@ -116,6 +124,14 @@ private:
 		ofxGuiGroup(), ofxGuiGroup(), ofxGuiGroup(), ofxGuiGroup()
 	};
 	
+	/// control categories ------------
+	vector<controlsGroup> controlsGroups {
+		controlsGroup("xbox_controller"),
+		controlsGroup("ps_controller"),
+		controlsGroup("steam_controller"),
+		controlsGroup("keyboard")
+	};
+
 	/// resolution buttons ------------
 	vector<resButton> resolutions = {
 		

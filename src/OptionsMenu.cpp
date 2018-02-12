@@ -10,8 +10,13 @@ OptionMenu::OptionMenu() {
 	gui.setup("Options"); // "Options" is the ID given to the gui.
 	gui.setName("Options"); // setName() is used to create the label.
 	gui.add(graphics.setup("Graphics"));
+	gui.add(controls.setup("Options"));
 
-	/// Adding the Graphics category.
+	/// Setting up the Controls category.
+	controls.setName("Controls");
+	controls.setBorderColor(ofColor::cadetBlue);
+
+	/// Setting up the Graphics category.
 	graphics.setName("Graphics");
 	graphics.setBorderColor(ofColor::cadetBlue);
 
@@ -19,6 +24,10 @@ OptionMenu::OptionMenu() {
 	graphics.add(windowMode.panel.setup("Window Mode"));
 	windowMode.panel.setName("Window Mode");
 	windowMode.panel.setHeaderBackgroundColor(ofColor::orange);
+
+	for(unsigned int n = 0; n < controlsGroups.size(); n++) {
+		controls.add(controlsGroups.at(n).group.setup(controlsGroups.at(n).name));
+	}
 
 	/// Adding the dropdown menu contents
 	for (unsigned int k = 0; k < windowMode.choices.size(); k++) {
