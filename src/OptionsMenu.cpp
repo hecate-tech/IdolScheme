@@ -107,6 +107,21 @@ void OptionMenu::buttonCheck() {
 	}
 }
 
+//-------------------------------------------
+bool OptionMenu::confirmValidRatio(WindowAspect ratio) {
+	bool result = false;
+
+	for (unsigned int i = 0; i < resolutions.size(); i++) {
+		if    (resolutions.at(i).h     <= mode->height 
+			&& resolutions.at(i).w     <= mode->width
+			&& resolutions.at(i).ratio == ratio) {
+			result = true;
+		}
+	}
+	
+	return result;
+}
+
 /////////////////////////////////////////////////////////////////
    /////////////////      Getters/Setters      ///////////////
 /////////////////////////////////////////////////////////////////
@@ -142,36 +157,21 @@ WindowAspect OptionMenu::getRatioOnMonitor() {
 }
 
 //-------------------------------------------
-bool OptionMenu::confirmValidRatio(WindowAspect ratio) {
-	bool result = false;
-
-	for (unsigned int i = 0; i < resolutions.size(); i++) {
-		if (resolutions.at(i).h <= mode->height 
-			&& resolutions.at(i).w <= mode->width
-			&& resolutions.at(i).ratio == ratio) {
-			result = true;
-		}
-	}
-	
-	return result;
+int OptionMenu::getWinWidth() {
+	return getWinRes().x;
 }
 
 //-------------------------------------------
 int OptionMenu::getWinHeight() {
-	for(unsigned int i = 0; i < resolutions.size(); i++) {
-		if(resolutions.at(i).getName().compare(getResolution()) == 0) {
-			return resolutions.at(i).h;
-		}
-	}
-	return 1;
+	return getWinRes().y;
 }
 
 //-------------------------------------------
-int OptionMenu::getWinWidth() {
+ofPoint OptionMenu::getWinRes() {
 	for(unsigned int i = 0; i < resolutions.size(); i++) {
 		if(resolutions.at(i).getName().compare(getResolution()) == 0) {
-			return resolutions.at(i).w;
+			return ofPoint(resolutions.at(i).w, resolutions.at(i).h);
 		}
 	}
-	return 1;
+	return ofPoint(1,1);
 }

@@ -97,6 +97,7 @@ public:
 	string getResolution();
 	int getWinHeight();
 	int getWinWidth();
+	ofPoint getWinRes();
 private:
 	WindowAspect getRatioOnMonitor();
 	WindowAspect currentWindowAspectRatio;
