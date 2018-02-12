@@ -13,7 +13,9 @@
 	#include "Conductor.h"
 #endif
 
-#include "OptionMenu.h"
+#ifndef OPTIONSMENU_H
+	#include "OptionsMenu.h"
+#endif //!OPTIONSMENU_H
 
 #ifndef IDOLSCHEME_H
 #define IDOLSCHEME_H
@@ -43,19 +45,15 @@ enum GameState {
  */
 class IdolScheme : public ofBaseApp {
 	public:
-		OptionMenu optionMenu;
-		
 		GameState IdolScheme_State; // describes what the game is doing.
-		WindowAspect IdolScheme_WindowAspect;
-		WindowSize IdolScheme_WindowSize;
 		ofTrueTypeFont textOut;
 
+		OptionMenu optionMenu;
 		Conductor mainConductor; // This will keep time.
 		Note note; // need a better solution than making each note.
 		
 		float a = 0.f;
 		bool optionMenuShow = false;
-		
 
 		/// initialization
 		/// --------------
@@ -65,8 +63,12 @@ class IdolScheme : public ofBaseApp {
 		/// ---------
 		void update();
 		void draw();
-
-		void drawOptionMenu();
+		
+		/// misc. functions
+		/// ---------------
+		float qSetHCoord(float coordinate);
+		float qSetWCoord(float coordinate);
+		ofPoint qSetCoords(ofPoint coordinates);
 
 		/// callbacks
 		/// ---------

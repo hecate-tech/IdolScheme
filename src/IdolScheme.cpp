@@ -8,10 +8,7 @@
 
 void IdolScheme::setup() {
 	ofBackground(45, 45, 190, 255);
-
 	IdolScheme_State = GAME_ACTIVE;
-	IdolScheme_WindowAspect = optionMenu.getWindowAspect();
-	IdolScheme_WindowSize = optionMenu.getWindowSize();
 
 	ofTrueTypeFont::setGlobalDpi(60);
 	textOut.load("verdana.ttf", 20, true, false);
@@ -27,7 +24,6 @@ void IdolScheme::setup() {
 	mainConductor.startTimer();
 	note.setup(ofPoint(),ofPoint(0,(ofGetHeight() / 2)),BUTTON,BUTTON_A);
 }
-
 
 
 ///////////////////////////////////////////////////////////////
@@ -50,30 +46,45 @@ void IdolScheme::draw() {
 	textOut.drawString(beatDiffString, 10, 60);
 	textOut.drawString(ofToString(ofGetFrameRate()), 10, 80);
 
-	note.draw((ofGetWidth() / 2), (cos(a) * 150) + (ofGetHeight() / 2), (ofGetWidth() / 2), (ofGetHeight() / 2));
+	note.draw(0.5 * ofGetWidth(), (cos(a) * 150) + (ofGetHeight() / 2), (ofGetWidth() / 2), (ofGetHeight() / 2));
 
 	if(optionMenuShow)
 		optionMenu.draw();
 }
 
-void IdolScheme::drawOptionMenu() {
-	optionMenu.draw();
+///////////////////////////////////////////////////////////////
+   ///////////////      Misc. Functions      ///////////////
+///////////////////////////////////////////////////////////////
+
+float IdolScheme::qSetHCoord(float coordinate) {
+	return coordinate * ofGetHeight();
 }
+
+//--------------------------------------------------------------
+float IdolScheme::qSetWCoord(float coordinate) {
+	return coordinate * ofGetWidth();
+}
+
+//--------------------------------------------------------------
+ofPoint IdolScheme::qSetCoords(ofPoint coordinates) {
+	return ofPoint(coordinates.x * ofGetWidth(), coordinates.y * ofGetHeight());
+}
+
 
 ///////////////////////////////////////////////////////////////
    //////////////////      Callbacks      //////////////////
 ///////////////////////////////////////////////////////////////
 
 void IdolScheme::keyPressed(int key) {
-
-}
-
-//--------------------------------------------------------------
-void IdolScheme::keyReleased(int key) {
 	switch (key) {
 		case 'o':
 			optionMenuShow = !optionMenuShow;
 	}
+}
+
+//--------------------------------------------------------------
+void IdolScheme::keyReleased(int key) {
+	
 }
 
 //--------------------------------------------------------------
@@ -108,7 +119,7 @@ void IdolScheme::mouseExited(int x, int y) {
 
 //--------------------------------------------------------------
 void IdolScheme::windowResized(int w, int h) {
-	optionMenu.windowResized(w, h);
+	//optionMenu.windowResized(w, h);
 }
 
 //--------------------------------------------------------------
