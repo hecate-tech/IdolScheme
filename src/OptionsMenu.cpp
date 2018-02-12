@@ -4,19 +4,23 @@
     /////////////////      Constructor      ///////////////
 ///////////////////////////////////////////////////////////////
 OptionMenu::OptionMenu() {
-	currentWindowResolution = "800x600";
-	currentWindowAspectRatio = ASPECT_4_3;
+	currentWindowResolution = "800x600";   // default resolution.
+	currentWindowAspectRatio = ASPECT_4_3; // default aspect ratio.
 
-	gui.setup("Options");
-	gui.setName("Options");
+	gui.setup("Options"); // "Options" is the ID given to the gui.
+	gui.setName("Options"); // setName() is used to create the label.
 	gui.add(graphics.setup("Graphics"));
 
+	/// Adding the Graphics category.
 	graphics.setName("Graphics");
 	graphics.setBorderColor(ofColor::cadetBlue);
+
+	/// Adding and setting up the dropdown menu.
 	graphics.add(windowMode.panel.setup("Window Mode"));
 	windowMode.panel.setName("Window Mode");
 	windowMode.panel.setHeaderBackgroundColor(ofColor::orange);
 
+	/// Adding the dropdown menu contents
 	for (unsigned int k = 0; k < windowMode.choices.size(); k++) {
 		windowMode.panel.add(windowMode.choices.at(k).toggle.setup(windowMode.choices.at(k).name, windowMode.choices.at(k).chosen));
 	}
@@ -47,6 +51,7 @@ OptionMenu::OptionMenu() {
 	
 	/// Adding all resolutions
 	for (unsigned int i = 0; i < resolutions.size(); i++) {
+		// if the button res is equal or smaller than the monitor res.
 		if (resolutions.at(i).h <= mode->height && resolutions.at(i).w <= mode->width) {
 			ratioGroups.at((int)resolutions.at(i).ratio).add(resolutions.at(i).button.setup(resolutions.at(i).getName()));
 			resolutions.at(i).button.setName(resolutions.at(i).getName());
@@ -59,25 +64,29 @@ OptionMenu::OptionMenu() {
 
 //-------------------------------------------
 void OptionMenu::draw() {
-	gui.setPosition((ofGetWidth() / 2) - (gui.getWidth() / 2),(ofGetHeight() / 2) - (gui.getHeight() / 2));
+	gui.setPosition((0.5 * ofGetWidth()) - (gui.getWidth() / 2),(0.5 * ofGetHeight()) - (gui.getHeight() / 2));
 
-	buttonCheck();
+	buttonCheck(); // checks all button presses.
 
-	gui.draw();
+	gui.draw(); // draws all the menus.
 }
 
 //-------------------------------------------
 void OptionMenu::buttonCheck() {
-	if (ofGetWindowMode() == OF_WINDOW) {
+	if (ofGetWindowMode() == OF_WINDOW) { // only check when windowed.
 		for (unsigned int i = 0; i < resolutions.size(); i++) {
+			// if the resolution button is equal or smaller than monitor resolution.
 			if (resolutions.at(i).h <= mode->height && resolutions.at(i).w <= mode->width) {
-				if (resolutions.at(i).button) {
+				if (resolutions.at(i).button) { // if the button is pressed
+					// if the current res isn't equal to the button's res.
 					if (getResolution().compare(resolutions.at(i).getName()) != 0)
 						setResolution(resolutions.at(i).getName());
 
+					// if the current ratio isn't equal to the button's ratio.
 					if (resolutions.at(i).ratio != getAspectRatio())
 						setAspectRatio(resolutions.at(i).ratio);
 
+					// sets the resolution of the window to the button you pressed.
 					ofSetWindowShape(resolutions.at(i).w, resolutions.at(i).h);
 				}
 			}
@@ -88,20 +97,24 @@ void OptionMenu::buttonCheck() {
 		windowMode.choices.at(j).prevState = windowMode.choices.at(j).currState;
 		windowMode.choices.at(j).currState = windowMode.choices.at(j).toggle;
 
+		/// On MouseDown
 		if (windowMode.choices.at(j).prevState == false 
 			&& windowMode.choices.at(j).currState == true) {
 			windowMode.choices.at(j).chosen = true;
 			
+			/// If the window modes are not equal to the toggle you pressed.
 			if (ofGetWindowMode() != windowMode.choices.at(j).windowMode)
 				ofGetWindowPtr()->setFullscreen(windowMode.choices.at(j).fullScrn());
 			
 			for (unsigned int k = 0; k < windowMode.choices.size(); k++) {
+				/// deselecting the rest of the toggles in the dropdown menu.
 				if (k != j) {
 					windowMode.choices.at(k).chosen = false;
 					windowMode.choices.at(k).toggle = false;
 				}
 			}
 		} else {
+			/// Makes sure you don't deselect the toggle you pressed.
 			windowMode.choices.at(j).toggle = windowMode.choices.at(j).chosen;
 		}
 	}
