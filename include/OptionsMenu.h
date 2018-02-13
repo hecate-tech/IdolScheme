@@ -10,6 +10,10 @@
 	#include "ofxGui.h"
 #endif // !OFXGUI_H
 
+#ifndef CONTROLS_H
+	#include "Controls.h"
+#endif //!CONTROLS_H
+
 #ifndef OPTIONSMENU_H
 #define OPTIONSMENU_H
 
@@ -97,6 +101,7 @@ struct controlsGroup {
  */
 class OptionMenu {
 public:
+	Controls ctrls;
 	void draw();
 	void setAspectRatio(WindowAspect ratio = ASPECT_4_3);
 	void setResolution(string resolution = "800x600");
@@ -126,10 +131,10 @@ private:
 	
 	/// control categories ------------
 	vector<controlsGroup> controlsGroups {
-		controlsGroup("xbox_controller"),
-		controlsGroup("ps_controller"),
-		controlsGroup("steam_controller"),
-		controlsGroup("keyboard")
+		controlsGroup("Xbox"),
+		controlsGroup("PlayStation"),
+		controlsGroup("Steam"),
+		controlsGroup("Keyboard")
 	};
 
 	/// resolution buttons ------------
