@@ -1,7 +1,5 @@
 #include "../include/IdolScheme.h"
 
-
-
 ////////////////////////////////////////////////////////////////
    /////////////////      Initialization      ///////////////
 ////////////////////////////////////////////////////////////////
@@ -13,6 +11,42 @@ void IdolScheme::setup() {
 	ofTrueTypeFont::setGlobalDpi(60);
 	textOut.load("verdana.ttf", 20, true, false);
 	textOut.setLetterSpacing(1.037);
+
+	string test;
+	ifstream infile;
+
+	infile.open("beatmaps/test.txt");
+	int lineNum = 1;
+	
+	size_t pos  = 0;
+	size_t last = 0;
+	size_t next = 0;
+
+	string token;
+	string delimiter = "|";
+	string cmtPrefix = "#";
+	while(!infile.eof()) {
+		getline(infile, test);
+		
+		if(test.find_first_not_of(' ') != std::string::npos
+			&& test.compare(0, cmtPrefix.size(), cmtPrefix)) {
+			
+			string resa = test.substr(last);
+			for(int i = 0; i < resa.length(); i++)
+				if(resa[i] == ' ')  resa.erase( remove( resa.begin(), resa.end(), ' ' ), resa.end() );
+			
+			while((pos = resa.find(delimiter)) != string::npos) {
+				token = resa.substr(0, pos);
+				std::cout << lineNum << ": " << token << std::endl;
+				resa.erase(0, pos + delimiter.length());
+			}
+			
+			std::cout << lineNum << ": " << resa << std::endl;
+		}
+		lineNum++;
+	}
+	infile.close();
+
 
 	cout << "Enter a bpm: ";
 	cin  >> mainConductor._bpm;

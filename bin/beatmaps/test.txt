@@ -1,0 +1,8 @@
+# lines that begin with '#' is a comment.
+
+#  obj  |  bpm  | offset(ms) | length(s)
+
+note |  60   |     100    | 0
+note |  10   |     0      | 10
+
+# remove spaces and seperate by '|'
