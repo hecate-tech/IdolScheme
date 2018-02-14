@@ -15,7 +15,12 @@ void IdolScheme::setup() {
 	string test;
 	ifstream infile;
 
+#ifdef TARGET_WIN32
+	infile.open("bin/beatmaps/test.txt");
+#else
 	infile.open("beatmaps/test.txt");
+#endif
+
 	int lineNum = 1;
 	
 	size_t pos  = 0;
@@ -25,15 +30,17 @@ void IdolScheme::setup() {
 	string token;
 	string delimiter = "|";
 	string cmtPrefix = "#";
+	std::cout << "test" << std::endl;
 	while(!infile.eof()) {
 		getline(infile, test);
-		
+
 		if(test.find_first_not_of(' ') != std::string::npos
 			&& test.compare(0, cmtPrefix.size(), cmtPrefix)) {
 			
 			string resa = test.substr(last);
 			for(int i = 0; i < resa.length(); i++)
-				if(resa[i] == ' ')  resa.erase( remove( resa.begin(), resa.end(), ' ' ), resa.end() );
+				if(resa[i] == ' ')
+					resa.erase(remove(resa.begin(), resa.end(), ' '), resa.end());
 			
 			while((pos = resa.find(delimiter)) != string::npos) {
 				token = resa.substr(0, pos);
