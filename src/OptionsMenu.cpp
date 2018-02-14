@@ -25,24 +25,6 @@ OptionMenu::OptionMenu() {
 	windowMode.panel.setName("Window Mode");
 	windowMode.panel.setHeaderBackgroundColor(ofColor::orange);
 
-	for(unsigned int n = 0; n < controlsGroups.size(); n++) {
-		controls.add(controlsGroups.at(n).group.setup(controlsGroups.at(n).name));
-		controlsGroups.at(n).group.setName(controlsGroups.at(n).name);
-		
-		/// Setting colors up to groups
-		controlsGroups.at(n).group.setHeaderBackgroundColor(
-			 n == 0 ? ofColor::yellowGreen
-			:n == 1 ? ofColor::darkSlateBlue
-			:n == 2 ? ofColor::navy
-			:n == 3 ? ofColor::dimGrey
-			:		  ofColor::white
-		);
-		
-		ctrls.DisplayControls();
-		/// Setting controls to groups
-
-	}
-
 	/// Adding the dropdown menu contents
 	for (unsigned int k = 0; k < windowMode.choices.size(); k++) {
 		windowMode.panel.add(windowMode.choices.at(k).toggle.setup(windowMode.choices.at(k).name, windowMode.choices.at(k).chosen));

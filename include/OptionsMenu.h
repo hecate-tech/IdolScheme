@@ -10,10 +10,6 @@
 	#include "ofxGui.h"
 #endif // !OFXGUI_H
 
-#ifndef CONTROLS_H
-	#include "Controls.h"
-#endif //!CONTROLS_H
-
 #ifndef OPTIONSMENU_H
 #define OPTIONSMENU_H
 
@@ -101,7 +97,6 @@ struct controlsGroup {
  */
 class OptionMenu {
 public:
-	Controls ctrls;
 	void draw();
 	void setAspectRatio(WindowAspect ratio = ASPECT_4_3);
 	void setResolution(string resolution = "800x600");
