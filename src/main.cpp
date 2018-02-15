@@ -24,6 +24,7 @@ int main() {
 #elif defined(TARGET_LINUX) // linux needs to be treated differently for now.
 
 	ofSetupOpenGL(800, 600, OF_WINDOW);
+	ofSetWindowTitle("Idol Scheme");
 #endif
 	/// other settings
 	/// --------------

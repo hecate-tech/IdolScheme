@@ -56,7 +56,9 @@ beatMap BeatMapHandler::setNoteParameters(string path) {
 	ifstream infile; // the file that's being read
 	size_t pos = 0;  // which section of text you're on
 	int lineNum = 1; // line number
+	int defbpm = 30; // default bpm set to all notes.
 	bool nameCheck = false; // checks if you're setting beatmap name
+	bool bpmSet = false;
 	string rawText; // the raw text in each line
 	beatMap result;
 
@@ -69,8 +71,10 @@ beatMap BeatMapHandler::setNoteParameters(string path) {
 			for (noteInfo &a : result.noteParams) {
 				if (a.lineNum == lineNum) {
 					a.args.push_back(str);
-					if (a.args.size() > 5) // if enough arguments to make a note.
+					if (a.args.size() > 7) {  // if enough arguments to make a note.
+						a.bpm = defbpm;
 						a.convert();
+					}
 				}
 			}
 		}
@@ -97,13 +101,17 @@ beatMap BeatMapHandler::setNoteParameters(string path) {
 				else if (!rawText.substr(0, pos).compare(0, nameText.size(), nameText)) { // if there's "beatname"
 					nameCheck = true; // enable the name check
 				}
+				else if (!rawText.substr(0, pos).compare(0, bpmText.size(), bpmText)) {
+					bpmSet = true;
+				}
 
 				pb_Element(rawText.substr(0, pos)); // adds string to 'args'
 				rawText.erase(0, pos + delimiter.length()); // erases what it just saved
 			}
+
 			pb_Element(rawText); // adds last string to 'args'
 
-			if (nameCheck) {
+			if (nameCheck) { // if changing beatmap name
 				string temp = rawText;
 				char c;
 				for (unsigned int i = 0; i < temp.length(); i++) {
@@ -116,7 +124,10 @@ beatMap BeatMapHandler::setNoteParameters(string path) {
 				result.name = rawText;
 				nameCheck = false;
 			}
-
+			if(bpmSet) { // if you're changing the bpm
+				defbpm = ofToInt(rawText);
+				bpmSet = false;
+			}
 		}
 		lineNum++;
 	}

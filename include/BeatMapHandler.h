@@ -17,16 +17,21 @@ struct noteInfo {
 	int offset;
 	double length;
 
+	float xS, yS;  // the X and Y position of the note shadow.
+	float angle; // possible angle where the note comes from.
+
 	NoteType type;
 	NoteButton button;
 	
 	vector<string> args;
 	void convert() {
-		bpm    = ofToInt(args.at(1));
-		offset = ofToInt(args.at(2));
-		length = ofToDouble(args.at(3));
-		type = (NoteType)ofToInt(args.at(4));
-		button = (NoteButton)ofToInt(args.at(5));
+		offset = ofToInt(args.at(1));
+		length = ofToDouble(args.at(2));
+		type   = (NoteType)ofToInt(args.at(3));
+		button = (NoteButton)ofToInt(args.at(4));
+		xS     = ofToFloat(args.at(5));
+		yS 	   = ofToFloat(args.at(6));
+		angle  = ofToFloat(args.at(7));
 	}
 	noteInfo(int lineNumber) { lineNum = lineNumber; }
 };
@@ -54,6 +59,7 @@ private:
 	const string commentPrefix = "#";
 	const string noteText      = "note";
 	const string nameText      = "beatname";
+	const string bpmText 	   = "bpm";
 
 	vector<string> getBeatMapDirectories(const string &path);
 	beatMap setNoteParameters(string path);
