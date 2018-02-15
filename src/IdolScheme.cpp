@@ -12,47 +12,6 @@ void IdolScheme::setup() {
 	textOut.load("verdana.ttf", 20, true, false);
 	textOut.setLetterSpacing(1.037);
 
-	string test;
-	ifstream infile;
-
-#ifdef TARGET_WIN32
-	infile.open("bin/beatmaps/test.txt");
-#else
-	infile.open("beatmaps/test.txt");
-#endif
-	/*
-	int lineNum = 1;
-	
-	size_t pos  = 0;
-
-	string token;
-	string delimiter = "|";
-	string cmtPrefix = "#";
-	while(!infile.eof()) {
-		getline(infile, test);
-
-		if(test.find_first_not_of(' ') != std::string::npos
-			&& test.compare(0, cmtPrefix.size(), cmtPrefix)) {
-			
-			for (int i = 0; i < test.length(); i++)
-				if (test[i] == ' ')
-					test.erase(remove(test.begin(), test.end(), ' '), test.end());
-
-			while ((pos = test.find(delimiter)) != string::npos) {
-				token = test.substr(0, pos);
-				std::cout << lineNum << ": " << token << std::endl;
-				test.erase(0, pos + delimiter.length());
-			}
-
-			std::cout << lineNum << ": " << test << std::endl;
-		}
-		lineNum++;
-	}
-	infile.close();
-	*/
-
-	
-
 	cout << "Enter a bpm: ";
 	cin  >> mainConductor._bpm;
 	cout << "Enter an offset (ms): ";

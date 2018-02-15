@@ -4,7 +4,7 @@
    /////////////////      Constructor      ///////////////
 ///////////////////////////////////////////////////////////////
 
-BeatMapReader::BeatMapReader() {
+BeatMapHandler::BeatMapHandler() {
 #ifdef TARGET_WIN32
 	vector<string> directories = getBeatMapDirectories("bin\\beatmaps\\");
 #else // UNIX SYSTEMS
@@ -16,6 +16,7 @@ BeatMapReader::BeatMapReader() {
 		// beatmap available in the directory and loads them all.
 		beatMaps.push_back(setNoteParameters(directories.at(i)));
 	}
+	/// debug beatmap printing
 	for (beatMap bm : beatMaps) {
 		std::cout << "BeatMap: " + bm.name << std::endl << std::endl;
 		for (int j = 0; j < bm.noteParams.size(); j++) {
@@ -32,7 +33,7 @@ BeatMapReader::BeatMapReader() {
    /////////////////      Getters/Setters      ///////////////
 /////////////////////////////////////////////////////////////////
 
-vector<string> BeatMapReader::getBeatMapDirectories(const string &path) {
+vector<string> BeatMapHandler::getBeatMapDirectories(const string &path) {
 	vector<string> fileList;
 
 	if (!path.empty()) {
@@ -49,22 +50,24 @@ vector<string> BeatMapReader::getBeatMapDirectories(const string &path) {
 }
 
 //-------------------------------------------------------
-beatMap BeatMapReader::setNoteParameters(string path) {
-	ifstream infile;
-	size_t pos = 0;
-	int lineNum = 1;
-	bool nameCheck = false;
-	string rawText;
+beatMap BeatMapHandler::setNoteParameters(string path) {
+	ifstream infile; // the file that's being read
+	size_t pos = 0;  // which section of text you're on
+	int lineNum = 1; // line number
+	bool nameCheck = false; // checks if you're setting beatmap name
+	string rawText; // the raw text in each line
 	beatMap result;
 
+	/// opens text file
 	infile.open(path);
 	
+	/// lambda to push strings into note objects.
 	auto pb_Element = [&](string str) {
 		if (!result.noteParams.empty()) {
 			for (noteInfo &a : result.noteParams) {
 				if (a.lineNum == lineNum) {
 					a.args.push_back(str);
-					if (a.args.size() > 3)
+					if (a.args.size() > 3) // if enough arguments to make a note.
 						a.convert();
 				}
 			}
@@ -72,29 +75,31 @@ beatMap BeatMapReader::setNoteParameters(string path) {
 	};
 
 	while (!infile.eof()) {
-		getline(infile, rawText);
+		getline(infile, rawText); // one line of text
 
+		/// check if it's not whitespace or a comment.
 		if (rawText.find_first_not_of(' ') != string::npos
 			&& rawText.compare(0, commentPrefix.size(), commentPrefix)) {
-
+			
 			for (int i = 0; i < rawText.length(); i++) {
-				if (rawText[i] == ' ') {
+				if (rawText[i] == ' ') { // removes all whitespace
 					rawText.erase(remove(rawText.begin(), rawText.end(), ' '), rawText.end());
 				}
 			}
 
+			/// while it can find more delimiters
 			while ((pos = rawText.find(delimiter)) != string::npos) {
-				if (!rawText.substr(0, pos).compare(0, noteText.size(), noteText)) {
-					result.noteParams.push_back(noteInfo(lineNum));
+				if (!rawText.substr(0, pos).compare(0, noteText.size(), noteText)) { // if there's "note"
+					result.noteParams.push_back(noteInfo(lineNum)); // adds new note
 				}
-				else if (!rawText.substr(0, pos).compare(0, nameText.size(), nameText)) {
-					nameCheck = true;
+				else if (!rawText.substr(0, pos).compare(0, nameText.size(), nameText)) { // if there's "beatname"
+					nameCheck = true; // enable the name check
 				}
 
-				pb_Element(rawText.substr(0, pos));
-				rawText.erase(0, pos + delimiter.length());
+				pb_Element(rawText.substr(0, pos)); // adds string to 'args'
+				rawText.erase(0, pos + delimiter.length()); // erases what it just saved
 			}
-			pb_Element(rawText);
+			pb_Element(rawText); // adds last string to 'args'
 
 			if (nameCheck) {
 				string temp = rawText;
@@ -109,9 +114,9 @@ beatMap BeatMapReader::setNoteParameters(string path) {
 				result.name = rawText;
 				nameCheck = false;
 			}
+
 		}
 		lineNum++;
 	}
-
 	return result;
 }

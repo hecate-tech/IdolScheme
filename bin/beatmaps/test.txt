@@ -3,7 +3,7 @@
 
 #  obj  |  bpm  | offset(ms) | length(s)
 
-beatname | My Amazing BeatMap
+beatname | My Amazing BeatMap!
 #			 ^
 #                   I didn't space this out
 #		 but the interpreter spaces out words

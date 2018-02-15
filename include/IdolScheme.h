@@ -52,7 +52,7 @@ class IdolScheme : public ofBaseApp {
 		GameState IdolScheme_State; // describes what the game is doing.
 		ofTrueTypeFont textOut;
 
-		BeatMapReader bmr;
+		BeatMapHandler bmr;
 		OptionMenu optionMenu;
 		Conductor mainConductor; // This will keep time.
 		Note note; // need a better solution than making each note.
