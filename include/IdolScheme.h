@@ -17,8 +17,9 @@
 	#include "OptionsMenu.h"
 #endif //!OPTIONSMENU_H
 
-#include <ostream>
-#include <fstream>
+#ifndef BEATMAPREADER_H
+	#include "BeatMapReader.h"
+#endif //!BEATMAPREADER_H
 
 #ifndef IDOLSCHEME_H
 #define IDOLSCHEME_H
@@ -51,6 +52,7 @@ class IdolScheme : public ofBaseApp {
 		GameState IdolScheme_State; // describes what the game is doing.
 		ofTrueTypeFont textOut;
 
+		BeatMapReader bmr;
 		OptionMenu optionMenu;
 		Conductor mainConductor; // This will keep time.
 		Note note; // need a better solution than making each note.
