@@ -12,12 +12,18 @@ void IdolScheme::setup() {
 	textOut.load("verdana.ttf", 20, true, false);
 	textOut.setLetterSpacing(1.037);
 
+	/// debug beatmap picker
+	/// --------------------
+	beatMap currBeatMap = bmh.beatMapMenu();
+
+	/*
 	cout << "Enter a bpm: ";
 	cin  >> mainConductor._bpm;
 	cout << "Enter an offset (ms): ";
 	cin  >> mainConductor._offsetInMs;
 	cout << "Enter a song length: ";
 	cin  >> mainConductor._lengthInS;
+	*/
 	
 	mainConductor.startTimer();
 	note.setup(ofPoint(),ofPoint(0,(ofGetHeight() / 2)),BUTTON,BUTTON_A);
@@ -34,10 +40,10 @@ void IdolScheme::update() {
 	a += ofGetLastFrameTime() * 3.5f;
 
 #ifdef TARGET_LINUX
-	int w = ofGetWidth();			  
-	int h = ofGetHeight();  
-
-	if(w != optionMenu.getWinHeight() || h != optionMenu.getWinWidth()) ofSetWindowShape(optionMenu.getWinWidth(), optionMenu.getWinHeight());
+	int w = ofGetWidth();
+	int h = ofGetHeight();
+	if(w != optionMenu.getWinHeight() || h != optionMenu.getWinWidth())
+		ofSetWindowShape(optionMenu.getWinWidth(), optionMenu.getWinHeight());
 #endif
 }
 
@@ -84,6 +90,14 @@ void IdolScheme::keyPressed(int key) {
 	switch (key) {
 		case 'o':
 			optionMenuShow = !optionMenuShow;
+			break;
+		case OF_KEY_DOWN:
+			system("cls");
+			break;
+		case OF_KEY_UP:
+			break;
+		case OF_KEY_RETURN:
+			break;
 	}
 }
 

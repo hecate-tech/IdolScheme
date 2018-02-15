@@ -133,3 +133,28 @@ beatMap BeatMapHandler::setNoteParameters(string path) {
 	}
 	return result;
 }
+
+//-------------------------------------------------------
+beatMap BeatMapHandler::beatMapMenu() {
+	int i;
+	begin:
+#ifdef TARGET_WIN32
+	system("cls");
+#else
+	system("clear");
+#endif
+	for (i = 0; i < beatMaps.size(); i++) {
+		cout << ofToString(i + 1) << ": " << beatMaps.at(i).name << endl;
+	}
+	cout << "\nEnter index of beatmap:" << endl << endl << "> ";
+	cin  >> i;
+	if (i > beatMaps.size() || i < 1)
+		goto begin; // using labels
+	for (int j = 0; j < beatMaps.size(); j++) {
+		if (i == (j+1)) {
+			cout << "You chose: " << beatMaps.at(j).name << endl;
+			return beatMaps.at(j);
+		}
+	}
+	return beatMaps.at(0);
+}

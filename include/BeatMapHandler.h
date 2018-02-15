@@ -6,6 +6,7 @@
 #include "ofMain.h"
 #include "Note.h"
 
+
 /* @brief - noteInfo
  * What makes up a note is quite a bit more.
  * A note holds all its arguments and in order
@@ -36,6 +37,7 @@ struct noteInfo {
 	noteInfo(int lineNumber) { lineNum = lineNumber; }
 };
 
+
 /* @brief - beatMap
  * What makes up a beat map is pretty small.
  * At the moment what makes it up is just a collection
@@ -46,6 +48,7 @@ struct beatMap {
 	vector<noteInfo> noteParams;
 };
 
+
 /* @brief - BeatMapHandler
  * This class reads and contains all available
  * beatmaps located in 'bin/beatmaps' of the game
@@ -54,6 +57,7 @@ struct beatMap {
 class BeatMapHandler {
 public:
 	vector<beatMap> beatMaps;
+	beatMap beatMapMenu();
 private:
 	const string delimiter     = "|";
 	const string commentPrefix = "#";
