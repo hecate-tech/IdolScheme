@@ -1,16 +1,16 @@
 # lines that begin with '#' is a comment.
 # lines that begin in a ' ' (space) won't be registered.
 
-#  obj  |  bpm  | offset(ms) | length(s)
-
 beatname | My Amazing BeatMap!
 #			 ^
 #                   I didn't space this out
 #		 but the interpreter spaces out words
 #		on every capital letter there is.
 
-note |  60   |     100    | 0
-note |  10   |     0      | 10
-note | 159  |    9 | 237
+#obj | bpm | offset(ms) | length(s) | NoteType | Button
+
+note |  60   |     100    | 0 | 0 | 2
+note |  10   |     0      | 10 | 0 | 1
+note | 159  |    9 | 237 | 0 | 1
 
 # remove spaces and seperate by '|'

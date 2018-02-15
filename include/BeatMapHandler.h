@@ -4,6 +4,7 @@
 #define BEATMAPHANDLER_H
 
 #include "ofMain.h"
+#include "Note.h"
 
 /* @brief - noteInfo
  * What makes up a note is quite a bit more.
@@ -15,11 +16,17 @@ struct noteInfo {
 	int bpm;
 	int offset;
 	double length;
+
+	NoteType type;
+	NoteButton button;
+	
 	vector<string> args;
 	void convert() {
 		bpm    = ofToInt(args.at(1));
 		offset = ofToInt(args.at(2));
 		length = ofToDouble(args.at(3));
+		type = (NoteType)ofToInt(args.at(4));
+		button = (NoteButton)ofToInt(args.at(5));
 	}
 	noteInfo(int lineNumber) { lineNum = lineNumber; }
 };

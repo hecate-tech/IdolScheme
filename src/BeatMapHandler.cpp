@@ -21,9 +21,11 @@ BeatMapHandler::BeatMapHandler() {
 		std::cout << "BeatMap: " + bm.name << std::endl << std::endl;
 		for (unsigned int j = 0; j < bm.noteParams.size(); j++) {
 			std::cout << "Note: " + ofToString(j + 1) + " : line " + ofToString(bm.noteParams.at(j).lineNum) << std::endl;
-			std::cout << "bpm: " + ofToString(bm.noteParams.at(j).bpm) << std::endl;
-			std::cout << "off: " + ofToString(bm.noteParams.at(j).offset) << std::endl;
-			std::cout << "len: " + ofToString(bm.noteParams.at(j).length) << std::endl << std::endl;
+			std::cout << "bpm:  " + ofToString(bm.noteParams.at(j).bpm) << std::endl;
+			std::cout << "off:  " + ofToString(bm.noteParams.at(j).offset) << std::endl;
+			std::cout << "len:  " + ofToString(bm.noteParams.at(j).length) << std::endl;
+			std::cout << "type: " + ofToString(bm.noteParams.at(j).type) << std::endl;
+			std::cout << "btn:  " + ofToString(bm.noteParams.at(j).button) << std::endl << std::endl;
 		}
 	}
 	std::cout << "BeatMaps Loaded!" << std::endl << std::endl;
@@ -67,7 +69,7 @@ beatMap BeatMapHandler::setNoteParameters(string path) {
 			for (noteInfo &a : result.noteParams) {
 				if (a.lineNum == lineNum) {
 					a.args.push_back(str);
-					if (a.args.size() > 3) // if enough arguments to make a note.
+					if (a.args.size() > 5) // if enough arguments to make a note.
 						a.convert();
 				}
 			}

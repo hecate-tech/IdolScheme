@@ -1,4 +1,0 @@
-beatname | My Second Beat Map.
-
-note | 39 | 0 | 100
-note | 42 | 3 | 0
