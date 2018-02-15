@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef BEATMAPREADER_H
-#define BEATMAPREADER_H
+#ifndef BEATMAPHANDLER_H
+#define BEATMAPHANDLER_H
 
 #include "ofMain.h"
 
@@ -54,4 +54,4 @@ public:
 	BeatMapHandler();
 };
 
-#endif !BEATMAPREADER_H
+#endif //!BEATMAPHANDLER_H

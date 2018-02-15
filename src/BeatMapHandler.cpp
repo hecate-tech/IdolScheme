@@ -1,4 +1,4 @@
-#include "../include/BeatMapReader.h"
+#include "../include/BeatMapHandler.h"
 
 ///////////////////////////////////////////////////////////////
    /////////////////      Constructor      ///////////////
@@ -11,7 +11,7 @@ BeatMapHandler::BeatMapHandler() {
 	vector<string> directories = getBeatMapDirectories("beatmaps/");
 #endif //!TARGET_WIN32
 
-	for (int i = 0; i < directories.size(); i++) {
+	for (unsigned int i = 0; i < directories.size(); i++) {
 		// for debugging purposes the loop goes through every
 		// beatmap available in the directory and loads them all.
 		beatMaps.push_back(setNoteParameters(directories.at(i)));
@@ -19,7 +19,7 @@ BeatMapHandler::BeatMapHandler() {
 	/// debug beatmap printing
 	for (beatMap bm : beatMaps) {
 		std::cout << "BeatMap: " + bm.name << std::endl << std::endl;
-		for (int j = 0; j < bm.noteParams.size(); j++) {
+		for (unsigned int j = 0; j < bm.noteParams.size(); j++) {
 			std::cout << "Note: " + ofToString(j + 1) + " : line " + ofToString(bm.noteParams.at(j).lineNum) << std::endl;
 			std::cout << "bpm: " + ofToString(bm.noteParams.at(j).bpm) << std::endl;
 			std::cout << "off: " + ofToString(bm.noteParams.at(j).offset) << std::endl;
@@ -81,7 +81,7 @@ beatMap BeatMapHandler::setNoteParameters(string path) {
 		if (rawText.find_first_not_of(' ') != string::npos
 			&& rawText.compare(0, commentPrefix.size(), commentPrefix)) {
 			
-			for (int i = 0; i < rawText.length(); i++) {
+			for (unsigned int i = 0; i < rawText.length(); i++) {
 				if (rawText[i] == ' ') { // removes all whitespace
 					rawText.erase(remove(rawText.begin(), rawText.end(), ' '), rawText.end());
 				}
@@ -104,7 +104,7 @@ beatMap BeatMapHandler::setNoteParameters(string path) {
 			if (nameCheck) {
 				string temp = rawText;
 				char c;
-				for (int i = 0; i < temp.length(); i++) {
+				for (unsigned int i = 0; i < temp.length(); i++) {
 					c = rawText[i];
 					if (isupper(c) && i != 0) {
 						rawText.insert(i, " ");
