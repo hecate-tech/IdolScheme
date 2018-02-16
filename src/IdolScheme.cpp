@@ -14,7 +14,7 @@ void IdolScheme::setup() {
 
 	/// debug beatmap picker
 	/// --------------------
-	beatMap *currBeatMap = &bmh.beatMapMenu();
+	beatMap currBeatMap = bmh.beatMapMenu();
 
 
 	mainConductor.startTimer();
