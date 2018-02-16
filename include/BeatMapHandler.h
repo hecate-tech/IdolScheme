@@ -13,18 +13,17 @@
  * for it to be instantiated in-game.
  */
 struct noteInfo {
-	int lineNum;
-	int bpm;
-	int offset;
-	double length;
-
+	int lineNum;   // note's line number in its .isbm file.
+	int bpm;	   // note's bpm (only used if diff from last note's)
+	int offset;	   // note's offset (Milliseconds)
+	double length; // length of song? (seconds)
 	float xS, yS;  // the X and Y position of the note shadow.
-	float angle; // possible angle where the note comes from.
+	float angle;   // possible angle where the note comes from.
 
-	NoteType type;
-	NoteButton button;
-	
-	vector<string> args;
+	NoteType type;       // Note type (Axis or Button)
+	NoteButton button;   // Note's assigned button (A, B, X, Y)
+	vector<string> args; // temporary args vector
+
 	void convert() {
 		offset = ofToInt(args.at(1));
 		length = ofToDouble(args.at(2));
@@ -33,6 +32,8 @@ struct noteInfo {
 		xS     = ofToFloat(args.at(5));
 		yS 	   = ofToFloat(args.at(6));
 		angle  = ofToFloat(args.at(7));
+		
+		vector<string>().swap(args); // releases memory from args
 	}
 	noteInfo(int lineNumber) { lineNum = lineNumber; }
 };
@@ -59,12 +60,16 @@ public:
 	vector<beatMap> beatMaps;
 	beatMap beatMapMenu();
 private:
-	const string delimiter     = "|";
-	const string commentPrefix = "#";
-	const string noteText      = "note";
-	const string nameText      = "beatname";
-	const string bpmText 	   = "bpm";
+	/// beatmap language properties
+	/// ---------------------------
+	const string DELIMITER = "|";
+	const string CMTPREFIX = "#";
+	const string NOTEKEY   = "note";
+	const string NAMEKEY   = "beatname";
+	const string BPMKEY    = "bpm";
 
+	/// Misc Beat Map management methods
+	/// --------------------------------
 	vector<string> getBeatMapDirectories(const string &path);
 	beatMap setNoteParameters(string path);
 public:

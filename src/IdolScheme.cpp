@@ -14,16 +14,8 @@ void IdolScheme::setup() {
 
 	/// debug beatmap picker
 	/// --------------------
-	beatMap currBeatMap = bmh.beatMapMenu();
+	beatMap *currBeatMap = &bmh.beatMapMenu();
 
-	/*
-	cout << "Enter a bpm: ";
-	cin  >> mainConductor._bpm;
-	cout << "Enter an offset (ms): ";
-	cin  >> mainConductor._offsetInMs;
-	cout << "Enter a song length: ";
-	cin  >> mainConductor._lengthInS;
-	*/
 	
 	mainConductor.startTimer();
 	note.setup(ofPoint(),ofPoint(0,(ofGetHeight() / 2)),BUTTON,BUTTON_A);
@@ -49,11 +41,11 @@ void IdolScheme::update() {
 
 //--------------------------------------------------------------
 void IdolScheme::draw() {
-	string currBeatString = "Current beat: " + std::to_string(mainConductor.currBeat) + "/" + std::to_string(mainConductor.totalBeats); 	
+	string currBeatString = "Current beat: " + ofToString(mainConductor.currBeat) + "/" + ofToString(mainConductor.totalBeats); 	
 	textOut.drawString(currBeatString, 10, 20);
-	string lengthString = "Current time: " + std::to_string(((float) mainConductor.timeDiff.count()) / 1000) + "/" + std::to_string(mainConductor._lengthInS);
+	string lengthString = "Current time: " + ofToString(((float) mainConductor.timeDiff.count()) / 1000) + "/" + ofToString(mainConductor._lengthInS);
 	textOut.drawString(lengthString, 10, 40);
-	string beatDiffString = "Beats since last refresh: " + std::to_string(mainConductor.numBeatsSinceRefresh);
+	string beatDiffString = "Beats since last refresh: " + ofToString(mainConductor.numBeatsSinceRefresh);
 	textOut.drawString(beatDiffString, 10, 60);
 	textOut.drawString(ofToString(ofGetFrameRate()), 10, 80);
 
@@ -90,13 +82,6 @@ void IdolScheme::keyPressed(int key) {
 	switch (key) {
 		case 'o':
 			optionMenuShow = !optionMenuShow;
-			break;
-		case OF_KEY_DOWN:
-			system("cls");
-			break;
-		case OF_KEY_UP:
-			break;
-		case OF_KEY_RETURN:
 			break;
 	}
 }
@@ -138,7 +123,7 @@ void IdolScheme::mouseExited(int x, int y) {
 
 //--------------------------------------------------------------
 void IdolScheme::windowResized(int w, int h) {
-	//optionMenu.windowResized(w, h);
+
 }
 
 //--------------------------------------------------------------
