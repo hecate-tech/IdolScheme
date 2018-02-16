@@ -30,6 +30,13 @@ void IdolScheme::update() {
 	mainConductor.refreshMembers();
 	mainConductor.beatSinceRefresh = mainConductor.currBeat;
 	note.moveByBeats(mainConductor.numBeatsSinceRefresh);
+
+#ifdef TARGET_LINUX
+	int w = ofGetWidth();
+	int h = ofGetHeight();
+	if(w != optionMenu.getWinHeight() || h != optionMenu.getWinWidth())
+		ofSetWindowShape(optionMenu.getWinWidth(), optionMenu.getWinHeight());
+#endif
 //	a += ofGetLastFrameTime() * 3.5f;
 }
 
