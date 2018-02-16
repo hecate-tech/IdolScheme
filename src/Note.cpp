@@ -99,7 +99,8 @@ void Note::draw(GLfloat nX, GLfloat nY, GLfloat sX, GLfloat sY) {
 
 //----------------------------------------------------------------------------------
 void Note::moveByBeats(GLfloat beats) {
-
+	auto dist = (beats * ((GLfloat) ofGetHeight() / 2)); 
+	notey -= dist;
 }
 
 //----------------------------------------------------------------------------------

@@ -12,7 +12,10 @@
 	#include "ErrorCodes.h"
 #endif //!ERRORCODES_H
 
-
+#ifndef CONDUCTOR_H
+#define CONDUCTOR_H
+    #include "Conductor.h"
+#endif
 
 /* @brief - NoteType
  *
@@ -65,7 +68,7 @@ class Shadow {
 public:
 	ofImage shadowSprite;
 	const char *shadow_dir = "images/shadow.png";
-	
+
 	Shadow() {}
 	void resize(GLint width, GLint height);
 	void load();
@@ -75,7 +78,7 @@ private:
 };
 
 /* @brief - Note
- * The Note class is what stores 
+ * The Note class is what stores
  * all the characteristics that
  * makes a note a note. These
  * include the note size, the
@@ -96,6 +99,7 @@ public:
 
 	GLfloat a = 0.f; // debugging variable
 
+	ChronoTimePoint renderStartTime;
 	/// Constructors/Desconstructor
 	/// ---------------------------
 	Note() {}

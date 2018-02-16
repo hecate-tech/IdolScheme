@@ -9,6 +9,7 @@
 #endif //!_WIN32
 
 #ifndef CONDUCTOR_TIME
+#define CONDUCTOR_TIME
 	#include <chrono>
 	#include <ctime>
 	#include "ChronoTypes.h"

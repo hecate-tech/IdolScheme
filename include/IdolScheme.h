@@ -5,6 +5,7 @@
 	#include "ofMain.h"
 #endif //!OFMAIN_H
 
+
 #ifndef NOTE_H
 	#include "Note.h"
 #endif //NOTE_H
@@ -56,7 +57,8 @@ class IdolScheme : public ofBaseApp {
 		OptionMenu optionMenu;
 		Conductor mainConductor; // This will keep time.
 		Note note; // need a better solution than making each note.
-		
+        std::vector<Note> notes;
+
 		float a = 0.f;
 		bool optionMenuShow = false;
 
@@ -68,7 +70,7 @@ class IdolScheme : public ofBaseApp {
 		/// ---------
 		void update();
 		void draw();
-		
+
 		/// misc. functions
 		/// ---------------
 		float qSetHCoord(float coordinate);

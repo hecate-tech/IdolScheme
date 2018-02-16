@@ -16,9 +16,9 @@ void IdolScheme::setup() {
 	/// --------------------
 	beatMap *currBeatMap = &bmh.beatMapMenu();
 
-	
+
 	mainConductor.startTimer();
-	note.setup(ofPoint(),ofPoint(0,(ofGetHeight() / 2)),BUTTON,BUTTON_A);
+	note.setup(ofPoint(0, (ofGetHeight())),ofPoint(0, 0),BUTTON,BUTTON_A);
 }
 
 
@@ -29,19 +29,13 @@ void IdolScheme::setup() {
 void IdolScheme::update() {
 	mainConductor.refreshMembers();
 	mainConductor.beatSinceRefresh = mainConductor.currBeat;
-	a += ofGetLastFrameTime() * 3.5f;
-
-#ifdef TARGET_LINUX
-	int w = ofGetWidth();
-	int h = ofGetHeight();
-	if(w != optionMenu.getWinHeight() || h != optionMenu.getWinWidth())
-		ofSetWindowShape(optionMenu.getWinWidth(), optionMenu.getWinHeight());
-#endif
+	note.moveByBeats(mainConductor.numBeatsSinceRefresh);
+//	a += ofGetLastFrameTime() * 3.5f;
 }
 
 //--------------------------------------------------------------
 void IdolScheme::draw() {
-	string currBeatString = "Current beat: " + ofToString(mainConductor.currBeat) + "/" + ofToString(mainConductor.totalBeats); 	
+	string currBeatString = "Current beat: " + ofToString(mainConductor.currBeat) + "/" + ofToString(mainConductor.totalBeats);
 	textOut.drawString(currBeatString, 10, 20);
 	string lengthString = "Current time: " + ofToString(((float) mainConductor.timeDiff.count()) / 1000) + "/" + ofToString(mainConductor._lengthInS);
 	textOut.drawString(lengthString, 10, 40);
@@ -49,7 +43,8 @@ void IdolScheme::draw() {
 	textOut.drawString(beatDiffString, 10, 60);
 	textOut.drawString(ofToString(ofGetFrameRate()), 10, 80);
 
-	note.draw(0.5 * ofGetWidth(), (cos(a) * 150) + (ofGetHeight() / 2), (ofGetWidth() / 2), (ofGetHeight() / 2));
+//	note.draw(-150, note.notey, -150, 0);
+	note.draw(0.5 * ofGetWidth(), note.notey, (ofGetWidth() / 2), (ofGetHeight() / 2));
 
 	if(optionMenuShow)
 		optionMenu.draw();
@@ -88,7 +83,7 @@ void IdolScheme::keyPressed(int key) {
 
 //--------------------------------------------------------------
 void IdolScheme::keyReleased(int key) {
-	
+
 }
 
 //--------------------------------------------------------------
@@ -132,6 +127,6 @@ void IdolScheme::gotMessage(ofMessage msg) {
 }
 
 //--------------------------------------------------------------
-void IdolScheme::dragEvent(ofDragInfo dragInfo) { 
+void IdolScheme::dragEvent(ofDragInfo dragInfo) {
 
 }
