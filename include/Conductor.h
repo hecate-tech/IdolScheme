@@ -25,10 +25,11 @@
 #endif //!_WIN32
 
 
-using std::cin;
-using std::cout;
-
-
+/* @brief - Conductor
+ * The conductor is a representation of a
+ * metronome and tells what note you are currently
+ * on based on the given parameters.
+ */
 class Conductor {
 public:
 	ChronoTimePoint startTime;
@@ -41,7 +42,7 @@ public:
 	double offsetBeats;
 	double currBeat;
 	double beatSinceRefresh;
-	float numBeatsSinceRefresh;	
+	float numBeatsSinceRefresh;
 
 	float calcTotalBeats(double lengthInS, int bpm) {
 		return (lengthInS / 60) * bpm;
@@ -58,6 +59,5 @@ public:
 	float calcCurrentBeat();
 	float calcBeatsInMs(int bpm);
 	void startTimer();
-	void refreshMembers();	
-	void conduct();
+	void refreshMembers();
 };

@@ -24,20 +24,3 @@ void Conductor::refreshMembers() {
 	currBeat = calcCurrentBeat();
 	numBeatsSinceRefresh = fabs(currBeat) - fabs(beatSinceRefresh);
 }
-
-void Conductor::conduct() {
-	auto startTimeT = ChronoSysClock::to_time_t((std::chrono::system_clock::time_point&)startTime);
-	time_t currTimeT;
-	while(timeDiff.count() / 1000 < _lengthInS) {
-		refreshMembers();
-		currTimeT = ChronoSysClock::to_time_t((std::chrono::system_clock::time_point&)currTime);
-		cout << "Start time (s): " << startTimeT;
-		cout << "\nCurrent time (s): " << currTimeT;
-		cout << "\nOffset (ms): " << _offsetInMs;
-		cout << "\nTime (s): " << (double) timeDiff.count() / 1000 << " / " << _lengthInS;
-		cout << "\nOffset beats: " << offsetBeats;
-		cout << "\nCurrent beat: " << currBeat << " / " << totalBeats << std::endl;
-		
-		std::system("clear");
-	}
-}
