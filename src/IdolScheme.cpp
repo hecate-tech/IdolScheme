@@ -16,9 +16,17 @@ void IdolScheme::setup() {
 	/// --------------------
 	beatMap currBeatMap = bmh.beatMapMenu();
 
+	mainConductor._bpm = 45;
+	mainConductor._offsetInMs = 0;
+	mainConductor._lengthInS = 10.;
 
 	mainConductor.startTimer();
-	note.setup(ofPoint(0, (ofGetHeight())),ofPoint(0, 0),BUTTON,BUTTON_A);
+	note.setup(ofPoint(200, -100), ofPoint(400, 300), BUTTON, BUTTON_A);
+	//note.setup(ofPoint(0, (ofGetHeight())),ofPoint(0, 0),BUTTON,BUTTON_A);
+	note.calcNoteParams();
+	
+	//cout << ofToString(ofAngleDifferenceDegrees(note.notex, note.shadowX)) << endl;
+	//cout << ofToString(ofAngleDifferenceDegrees(note.notey, note.shadowY)) << endl;
 }
 
 
@@ -29,7 +37,8 @@ void IdolScheme::setup() {
 void IdolScheme::update() {
 	mainConductor.refreshMembers();
 	mainConductor.beatSinceRefresh = mainConductor.currBeat;
-	note.moveByBeats(mainConductor.numBeatsSinceRefresh);
+	
+	//note.moveByBeats(mainConductor.numBeatsSinceRefresh);
 
 #ifdef TARGET_LINUX
 	int w = ofGetWidth();
@@ -37,7 +46,6 @@ void IdolScheme::update() {
 	if(w != optionMenu.getWinHeight() || h != optionMenu.getWinWidth())
 		ofSetWindowShape(optionMenu.getWinWidth(), optionMenu.getWinHeight());
 #endif
-//	a += ofGetLastFrameTime() * 3.5f;
 }
 
 //--------------------------------------------------------------
@@ -50,8 +58,11 @@ void IdolScheme::draw() {
 	textOut.drawString(beatDiffString, 10, 60);
 	textOut.drawString(ofToString(ofGetFrameRate()), 10, 80);
 
+
 //	note.draw(-150, note.notey, -150, 0);
-	note.draw(0.5 * ofGetWidth(), note.notey, (ofGetWidth() / 2), (ofGetHeight() / 2));
+	note.moveByBeats(mainConductor.numBeatsSinceRefresh);
+	//note.draw(note.notex, note.notey, (ofGetWidth() / 2), (ofGetHeight() / 2));
+	//note.draw(0.5 * ofGetWidth(), note.notey, (ofGetWidth() / 2), (ofGetHeight() / 2));
 
 	if(optionMenuShow)
 		optionMenu.draw();
@@ -74,7 +85,6 @@ float IdolScheme::qSetWCoord(float coordinate) {
 ofPoint IdolScheme::qSetCoords(ofPoint coordinates) {
 	return ofPoint(coordinates.x * ofGetWidth(), coordinates.y * ofGetHeight());
 }
-
 
 ///////////////////////////////////////////////////////////////
    //////////////////      Callbacks      //////////////////

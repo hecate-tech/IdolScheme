@@ -8,7 +8,8 @@
 #endif //!IDOLSCHEME_H
 
 //========================================================================
-int main() {	
+
+int main() {
 #ifdef TARGET_WIN32
 	ofGLFWWindowSettings settings;
 	
@@ -22,13 +23,13 @@ int main() {
 	/// -------------------
 	ofCreateWindow(settings);
 #elif defined(TARGET_LINUX) // linux needs to be treated differently for now.
-
 	ofSetupOpenGL(800, 600, OF_WINDOW);
 	ofSetWindowTitle("Idol Scheme");
 #endif
 	/// other settings
 	/// --------------
-	ofSetVerticalSync(false);
+	
+	ofSetVerticalSync(true);
 
 	// this kicks off the running of my app
 	// can be OF_WINDOW or OF_FULLSCREEN

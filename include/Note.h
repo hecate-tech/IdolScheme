@@ -17,6 +17,8 @@
     #include "Conductor.h"
 #endif
 
+#include <cmath>
+
 /* @brief - NoteType
  *
  * defines the type of note this is
@@ -91,7 +93,16 @@ public:
 	GLint note_size = (ofGetWindowWidth() + ofGetWindowHeight()) * 0.08; // for width and the height.
 	GLint note_color[4] = { 255, 255, 255, 255 };
 	const GLchar *sprite_dir = "images/note.png";
+	double dX = shadowX - notex;
+	double dY = shadowY - notey;
 
+	double dRatio = dX / dY;
+
+	double Yangle = atan((dY/dX) + sqrt((pow(dY, 2)/pow(dX, 2)) + 1)) / 100.f;
+	double Xangle = Yangle * dRatio;
+	int halfHeight;
+	int halfWidth;
+	
 	GLfloat notex, notey, shadowX, shadowY; // coords
 	NoteType type; // The note type. Ex. Axis or Button.
 	NoteButton button; // the assigned button.
@@ -112,6 +123,7 @@ public:
 	void setup(ofPoint initCoords = ofPoint(0,0), ofPoint shadowCoords = ofPoint(0,0),
 		NoteType type_ = BUTTON, NoteButton button_ = BUTTON_EMPTY);
 
+	void calcNoteParams();
 	bool destroy();
 	void setSize(GLint newSize);
 	void setPosition(GLfloat x = 0, GLfloat y = 0, GLfloat xS = 0, GLfloat yS = 0);

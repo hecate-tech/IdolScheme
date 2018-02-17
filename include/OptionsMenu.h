@@ -1,5 +1,7 @@
 #pragma once
 
+//#include "IdolScheme.h"
+
 #ifndef OFMAIN_H
 	#define OFMAIN_H
 	#include "ofMain.h"
@@ -75,8 +77,9 @@ struct winModeChoice {
 struct winModeDropDown {
 	ofxGuiGroup panel;
 	vector<winModeChoice> choices = {
-		winModeChoice("Fullscreen", false, OF_FULLSCREEN),
-		winModeChoice("Windowed",   true,  OF_WINDOW)
+		winModeChoice("Fullscreen", ofGetWindowMode() == OF_FULLSCREEN ? true : false, OF_FULLSCREEN),
+		winModeChoice("Windowed",   ofGetWindowMode() == OF_WINDOW ? true : false,  OF_WINDOW),
+		winModeChoice("GameMode",   ofGetWindowMode() == OF_GAME_MODE ? true : false, OF_GAME_MODE)
 	};
 	bool folded = true;
 };

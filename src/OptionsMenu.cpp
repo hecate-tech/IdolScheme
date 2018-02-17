@@ -109,7 +109,35 @@ void OptionMenu::buttonCheck() {
 			
 			/// If the window modes are not equal to the toggle you pressed.
 			if (ofGetWindowMode() != windowMode.choices.at(j).windowMode)
-				ofGetWindowPtr()->setFullscreen(windowMode.choices.at(j).fullScrn());
+				switch(windowMode.choices.at(j).windowMode) {
+					case OF_WINDOW:
+						ofGetWindowPtr()->setFullscreen(false);
+						break;
+					case OF_FULLSCREEN:
+						ofGetWindowPtr()->setFullscreen(true);
+						break;
+					case OF_GAME_MODE:
+						//ofExit();
+						//ofSetAppPtr(new IdolScheme());
+						//::resetGameMode(OF_GAME_MODE);
+						//ofExit();
+						//ofSetupOpenGL(mode->width, mode->height, OF_GAME_MODE);
+						//ofGetWindowPtr()->setWindowShouldClose();
+						//ofGetWindowPtr()->close();
+						//ofWindowSettings settings;
+						//settings.height = 1080;
+						//settings.width = 1920;
+						//settings.windowMode = OF_GAME_MODE;
+						std::cout << "DEBUG GAME_MODE MODE" << std::endl;
+						//*ofGetWindowPtr() = *ofCreateWindow(settings);
+						//ofSetupOpenGL(1920, 1080, OF_WINDOW);
+						//ofGetWindowPtr()->setup(settings);
+						//ofSetupOpenGL(500, 200, OF_WINDOW);
+						//ofSetupOpenGL(1920,  1080, OF_GAME_MODE);
+						//ofGetWindowPtr()->setup(settings);
+						break;
+				}
+				//ofGetWindowPtr()->setFullscreen(windowMode.choices.at(j).fullScrn());
 			
 			for (unsigned int k = 0; k < windowMode.choices.size(); k++) {
 				/// deselecting the rest of the toggles in the dropdown menu.
