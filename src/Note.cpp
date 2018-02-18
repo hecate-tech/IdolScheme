@@ -99,8 +99,6 @@ void Note::draw(GLfloat nX, GLfloat nY, GLfloat sX, GLfloat sY) {
 
 //----------------------------------------------------------------------------------
 void Note::moveByBeats(GLfloat beats) {
-	//auto dist = (beats * ((GLfloat) ofGetHeight()));
-	
 	float Vy = beats * (GLfloat)halfHeight;
 	float Vx = beats * (GLfloat)halfWidth;
 	float V  = sqrt((Vx * Vx) + (Vy * Vy));
@@ -124,7 +122,6 @@ void Note::moveByBeats(GLfloat beats) {
 	
 	getptr()->draw(shadowX, shadowY);
 	noteSprite.draw(notex, notey);
-	//notey -= dist;
 }
 
 //----------------------------------------------------------------------------------
