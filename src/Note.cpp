@@ -104,8 +104,8 @@ void Note::moveByBeats(GLfloat beats) {
 	// This formula still does not work properly.
 	// It goes off beat if you position the note
 	// anywhere else outside or inside the viewport.
-	notex += Vx / 2;
-	notey += Vy / 2;
+	notex += Vx / 2.0f;
+	notey += Vy / 2.0f;
 	
 	getptr()->draw(shadowX, shadowY);
 	noteSprite.draw(notex, notey);

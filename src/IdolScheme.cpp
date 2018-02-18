@@ -16,13 +16,13 @@ void IdolScheme::setup() {
 	/// --------------------
 	beatMap currBeatMap = bmh.beatMapMenu();
 
-	mainConductor._bpm = 45;
-	mainConductor._offsetInMs = 0;
-	mainConductor._lengthInS = 10.;
+	mainConductor._bpm = currBeatMap.noteParams.at(0).bpm;
+	mainConductor._offsetInMs = currBeatMap.noteParams.at(0).offset;
+	mainConductor._lengthInS = currBeatMap.noteParams.at(0).length;
 
 	cout << "1.  200, -100" << endl;
 	cout << "2. -100,  700" << endl;
-	cout << "3.  600,  800" << endl << endl << "> ";
+	cout << "3.  600,  700" << endl << endl << "> ";
 	int choice;
 	cin >> choice;
 	if(choice == 1) {
@@ -30,7 +30,7 @@ void IdolScheme::setup() {
 	} else if(choice == 2) {
 		note.setup(ofPoint(-100, 700), ofPoint(400, 300), BUTTON, BUTTON_A);
 	} else {
-		note.setup(ofPoint(600, 700), ofPoint(600, 400), BUTTON, BUTTON_A);
+		note.setup(ofPoint(600, 700), ofPoint(200, 200), BUTTON, BUTTON_A);
 	}
 
 	mainConductor.startTimer();
