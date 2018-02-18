@@ -20,8 +20,21 @@ void IdolScheme::setup() {
 	mainConductor._offsetInMs = 0;
 	mainConductor._lengthInS = 10.;
 
+	cout << "1.  200, -100" << endl;
+	cout << "2. -100,  700" << endl;
+	cout << "3.  600,  800" << endl << endl << "> ";
+	int choice;
+	cin >> choice;
+	if(choice == 1) {
+		note.setup(ofPoint(200, -100), ofPoint(400, 300), BUTTON, BUTTON_A);
+	} else if(choice == 2) {
+		note.setup(ofPoint(-100, 700), ofPoint(400, 300), BUTTON, BUTTON_A);
+	} else {
+		note.setup(ofPoint(600, 700), ofPoint(600, 400), BUTTON, BUTTON_A);
+	}
+
 	mainConductor.startTimer();
-	note.setup(ofPoint(200, -100), ofPoint(400, 300), BUTTON, BUTTON_A);
+	
 	//note.setup(ofPoint(0, (ofGetHeight())),ofPoint(0, 0),BUTTON,BUTTON_A);
 	note.calcNoteParams();
 	// something is going on with the formula and it doesn't work properly

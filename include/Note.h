@@ -95,13 +95,6 @@ public:
 	const GLchar *sprite_dir = "images/note.png";
 	double dX = shadowX - notex;
 	double dY = shadowY - notey;
-
-	double dRatio = dX / dY;
-
-	double Yangle = atan((dY/dX) + sqrt((pow(dY, 2)/pow(dX, 2)) + 1)) / 100.f;
-	double Xangle = Yangle * dRatio;
-	int halfHeight;
-	int halfWidth;
 	
 	GLfloat notex, notey, shadowX, shadowY; // coords
 	NoteType type; // The note type. Ex. Axis or Button.

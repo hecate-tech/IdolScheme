@@ -99,26 +99,13 @@ void Note::draw(GLfloat nX, GLfloat nY, GLfloat sX, GLfloat sY) {
 
 //----------------------------------------------------------------------------------
 void Note::moveByBeats(GLfloat beats) {
-	float Vy = beats * (GLfloat)halfHeight;
-	float Vx = beats * (GLfloat)halfWidth;
-	float V  = sqrt((Vx * Vx) + (Vy * Vy));
-	// integrate conductor with note object.
-	// the note stutters.
-	float VxFinal = V * Xangle;
-	float VyFinal = V * Yangle;
+	float Vy = beats * (dY * 2.0f);
+	float Vx = beats * (dX * 2.0f);
 	// This formula still does not work properly.
 	// It goes off beat if you position the note
 	// anywhere else outside or inside the viewport.
-	if(dX < 0) {
-		notex -= VxFinal;
-	} else {
-		notex += VxFinal;
-	}
-	if(dY < 0) {
-		notey -= VyFinal;
-	} else {
-		notey += VyFinal;
-	}
+	notex += Vx / 2;
+	notey += Vy / 2;
 	
 	getptr()->draw(shadowX, shadowY);
 	noteSprite.draw(notex, notey);
@@ -128,13 +115,6 @@ void Note::moveByBeats(GLfloat beats) {
 void Note::calcNoteParams() {
 	dX = shadowX - notex;
 	dY = shadowY - notey;
-
-	dRatio = dX / dY;
-	Yangle = (atan((dY/dX) + sqrt(((pow(dY, 2))/pow(dX, 2)) + 1)) / 100) * 60;
-	Xangle = Yangle * dRatio;
-
-	halfHeight = ofGetHeight() / 2;
-	halfWidth  = ofGetWidth()  / 2;
 }
 
 //----------------------------------------------------------------------------------
