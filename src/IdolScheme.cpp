@@ -24,9 +24,8 @@ void IdolScheme::setup() {
 	note.setup(ofPoint(200, -100), ofPoint(400, 300), BUTTON, BUTTON_A);
 	//note.setup(ofPoint(0, (ofGetHeight())),ofPoint(0, 0),BUTTON,BUTTON_A);
 	note.calcNoteParams();
-	
-	//cout << ofToString(ofAngleDifferenceDegrees(note.notex, note.shadowX)) << endl;
-	//cout << ofToString(ofAngleDifferenceDegrees(note.notey, note.shadowY)) << endl;
+	// something is going on with the formula and it doesn't work properly
+	// unless the note is in its sepcial position.
 }
 
 

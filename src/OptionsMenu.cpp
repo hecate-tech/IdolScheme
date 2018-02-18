@@ -128,13 +128,17 @@ void OptionMenu::buttonCheck() {
 						//settings.height = 1080;
 						//settings.width = 1920;
 						//settings.windowMode = OF_GAME_MODE;
-						std::cout << "DEBUG GAME_MODE MODE" << std::endl;
+						//std::cout << "DEBUG GAME_MODE MODE" << std::endl;
+						
+						//ofCreateWindow(settings);
 						//*ofGetWindowPtr() = *ofCreateWindow(settings);
 						//ofSetupOpenGL(1920, 1080, OF_WINDOW);
 						//ofGetWindowPtr()->setup(settings);
 						//ofSetupOpenGL(500, 200, OF_WINDOW);
 						//ofSetupOpenGL(1920,  1080, OF_GAME_MODE);
 						//ofGetWindowPtr()->setup(settings);
+						break;
+					default:
 						break;
 				}
 				//ofGetWindowPtr()->setFullscreen(windowMode.choices.at(j).fullScrn());

@@ -78,8 +78,8 @@ struct winModeDropDown {
 	ofxGuiGroup panel;
 	vector<winModeChoice> choices = {
 		winModeChoice("Fullscreen", ofGetWindowMode() == OF_FULLSCREEN ? true : false, OF_FULLSCREEN),
-		winModeChoice("Windowed",   ofGetWindowMode() == OF_WINDOW ? true : false,  OF_WINDOW),
-		winModeChoice("GameMode",   ofGetWindowMode() == OF_GAME_MODE ? true : false, OF_GAME_MODE)
+		winModeChoice("Windowed",   ofGetWindowMode() == OF_WINDOW 	   ? true : false, OF_WINDOW),
+		winModeChoice("GameMode",   ofGetWindowMode() == OF_GAME_MODE  ? true : false, OF_GAME_MODE)
 	};
 	bool folded = true;
 };
