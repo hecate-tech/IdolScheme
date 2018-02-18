@@ -108,9 +108,19 @@ void Note::moveByBeats(GLfloat beats) {
 	// the note stutters.
 	float VxFinal = V * Xangle;
 	float VyFinal = V * Yangle;
-	
-	notex += VxFinal;
-	notey += VyFinal;
+	// This formula still does not work properly.
+	// It goes off beat if you position the note
+	// anywhere else outside or inside the viewport.
+	if(dX < 0) {
+		notex -= VxFinal;
+	} else {
+		notex += VxFinal;
+	}
+	if(dY < 0) {
+		notey -= VyFinal;
+	} else {
+		notey += VyFinal;
+	}
 	
 	getptr()->draw(shadowX, shadowY);
 	noteSprite.draw(notex, notey);
