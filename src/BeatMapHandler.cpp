@@ -20,12 +20,19 @@ BeatMapHandler::BeatMapHandler() {
 	for (beatMap &bm : beatMaps) {
 		cout << "BeatMap: " + bm.name << endl << endl;
 		for (unsigned int j = 0; j < bm.noteParams.size(); j++) {
-			cout << "Note: " + ofToString(j + 1) + " : line " + ofToString(bm.noteParams.at(j).lineNum) << endl;
-			cout << "bpm:  " + ofToString(bm.noteParams.at(j).bpm)    << endl;
-			cout << "off:  " + ofToString(bm.noteParams.at(j).offset) << endl;
-			cout << "len:  " + ofToString(bm.noteParams.at(j).length) << endl;
-			cout << "type: " + ofToString(bm.noteParams.at(j).type)   << endl;
-			cout << "btn:  " + ofToString(bm.noteParams.at(j).button) << endl << endl;
+			if(!bm.noteParams.at(j).rest)
+				cout << "Note: " + ofToString(j + 1) + " : line " + ofToString(bm.noteParams.at(j).lineNum) << endl;
+			else {
+				cout << "Rest: " + ofToString(j + 1) + " : line " + ofToString(bm.noteParams.at(j).lineNum) << endl;
+				cout << "len:  " + ofToString(bm.noteParams.at(j).restSize) << endl << endl;
+			}
+			if(!bm.noteParams.at(j).rest) {
+				cout << "bpm:  " + ofToString(bm.noteParams.at(j).bpm)    << endl;
+				cout << "off:  " + ofToString(bm.noteParams.at(j).offset) << endl;
+				cout << "len:  " + ofToString(bm.noteParams.at(j).length) << endl;
+				cout << "type: " + ofToString(bm.noteParams.at(j).type)   << endl;
+				cout << "btn:  " + ofToString(bm.noteParams.at(j).button) << endl << endl;
+			}
 		}
 	}
 	cout << "BeatMaps Loaded!" << endl << endl;
@@ -59,6 +66,7 @@ beatMap BeatMapHandler::setNoteParameters(string path) {
 	int defbpm = 30;		// default bpm set to all notes.
 	bool nameSet = false;   // check for if you're setting the isbm name.
 	bool bpmSet  = false;   // check for if you're setting the BPM.
+	bool restAct = false;   // check for if you're making a rest.
 	ifstream infile;		// the file that's being read.
 	size_t pos = 0;			// which section of text you're on.
 	string rawText;			// the raw text in each line.
@@ -112,6 +120,10 @@ beatMap BeatMapHandler::setNoteParameters(string path) {
 				}
 				else if (!rawText.substr(0, pos).compare(0, BPMKEY.size(), BPMKEY)) {
 					bpmSet = true;    // enable the bpm check
+				} 
+				else if (!rawText.substr(0, pos).compare(0, RESTKEY.size(), RESTKEY)) {
+					result.noteParams.push_back(noteInfo(lineNum));
+					restAct = true;
 				}
 
 				pb_Element(rawText.substr(0, pos));			// adds string to 'args'
@@ -120,7 +132,7 @@ beatMap BeatMapHandler::setNoteParameters(string path) {
 
 			/// pushes remaining string from `rawText`
 			/// --------------------------------------
-			pb_Element(rawText);
+			if(!restAct) pb_Element(rawText);
 
 			/// if changing the beatmap name
 			/// ----------------------------
@@ -142,6 +154,20 @@ beatMap BeatMapHandler::setNoteParameters(string path) {
 				defbpm = ofToInt(rawText);
 				bpmSet = false;
 			}
+			/// if the note is a rest
+			/// ---------------------
+			if(restAct) {
+				for(noteInfo &a : result.noteParams) {
+					if(a.lineNum == lineNum) {
+						a.rest = true; // tells the note that it's a rest.
+						a.restSize = ofToInt(rawText); // sets the length of the rest.
+					}
+				}
+				restAct = false;
+			}
+
+
+
 		}
 		/// next line
 		/// ---------
@@ -154,13 +180,13 @@ beatMap BeatMapHandler::setNoteParameters(string path) {
 
 //-------------------------------------------------------
 beatMap BeatMapHandler::beatMapMenu() {
-	int i;
+	unsigned int i;
 begin:
 
 #ifdef TARGET_WIN32
 	system("cls");
 #else // UNIX_SYSTEMS
-	system("clear");
+	//system("clear");
 #endif //!TARGET_WIN32
 
 	for (i = 0; i < beatMaps.size(); i++) {
@@ -170,7 +196,7 @@ begin:
 	cin  >> i;
 	if (i > beatMaps.size() || i < 1)
 		goto begin; // retry
-	for (int j = 0; j < beatMaps.size(); j++) {
+	for (unsigned int j = 0; j < beatMaps.size(); j++) {
 		if (i == (j+1)) {
 			cout << "You chose: " << beatMaps.at(j).name << endl;
 			return beatMaps.at(j);

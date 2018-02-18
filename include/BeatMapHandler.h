@@ -19,6 +19,9 @@ struct noteInfo {
 	double length; // length of song? (seconds)
 	float xS, yS;  // the X and Y position of the note shadow.
 	float angle;   // possible angle where the note comes from.
+	// if the note is a rest.
+	bool rest;
+	int restSize;
 
 	NoteType type;       // Note type (Axis or Button)
 	NoteButton button;   // Note's assigned button (A, B, X, Y)
@@ -67,7 +70,8 @@ private:
 	const string NOTEKEY   = "note";
 	const string NAMEKEY   = "beatname";
 	const string BPMKEY    = "bpm";
-
+	const string RESTKEY   = "rest";
+	
 	/// Misc Beat Map management methods
 	/// --------------------------------
 	vector<string> getBeatMapDirectories(const string &path);

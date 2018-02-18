@@ -10,8 +10,11 @@ beatname | My Amazing BeatMap!
 # The default BPM is set to 30.
 
 #obj | offset(ms) | length(s) | NoteType | Button
+#rest | length in beats
 
+rest    |   1
 note    |  100  |  0  | 0 | 2 | 0.5 | 0.5 | 0.74
+rest    |   2
 note    |   0   | 10  | 0 | 1 | 0.2 | 0.7 | 0.23
 note    |   9   | 237 | 0 | 1 | 0.8 | 0.1 | 0.5
 
