@@ -107,8 +107,6 @@ public:
 	NoteButton button; // the assigned button.
 	ofImage noteSprite;
 
-	GLfloat a = 0.f; // debugging variable
-
 	ChronoTimePoint renderStartTime;
 	/// Constructors/Desconstructor
 	/// ---------------------------
@@ -124,6 +122,7 @@ public:
 	void setup(ofPoint initCoords = ofPoint(0,0), ofPoint shadowCoords = ofPoint(0,0),
 		NoteType type_ = BUTTON, NoteButton button_ = BUTTON_EMPTY);
 
+	void updateConductorMembers();
 	void calcNoteParams();
 	void setBeatRest(int num, int bpm, int lengthInBeats_);
 	void setBeatNote(int num, int bpm, int off, int len, float angle, NoteType type, NoteButton btn);
@@ -132,7 +131,7 @@ public:
 	void setPosition(GLfloat x = 0, GLfloat y = 0, GLfloat xS = 0, GLfloat yS = 0);
 	void init();
 	void draw(GLfloat nX = 0, GLfloat nY = 0, GLfloat sX = 0, GLfloat sY = 0); // draws the note and shadow objects.
-	void moveByBeats(GLfloat beats);
+	void moveByBeats(GLfloat beat);
 	void update(); // to be ran in the update method of IdolScheme.cpp
 	void hit(); // For catching key presses.
 	void setColor(GLfloat r = 0, GLfloat g = 0, GLfloat b = 0, GLfloat a = 255);

@@ -14,28 +14,23 @@ void IdolScheme::setup() {
 
 	/// debug beatmap picker
 	/// --------------------
-	beatMap currBeatMap = bmh.beatMapMenu();
-
-	mainConductor._bpm = currBeatMap.noteParams.at(0).bpm;
-	mainConductor._offsetInMs = currBeatMap.noteParams.at(0).offset;
-	mainConductor._lengthInS = currBeatMap.noteParams.at(0).length;
-	//note.setup(ofPoint(200, -100), ofPoint(400, 300), BUTTON, BUTTON_A);
+	//beatMap currBeatMap = bmh.beatMapMenu();
 	
-	cout << "type the degree of the note as a decimal\n\n> ";
-	float choice;
+	cout << "type number of notes\n\n>";
 	cin >> choice;
 
-	note.setup(
-		ofPoint(
-			note.calcPointsFromAngle(choice).x,
-			note.calcPointsFromAngle(choice).y
-		),
-		ofPoint(ofGetWidth() / 2, ofGetHeight() / 2)
-	);
+	mainConductor._bpm = 45;
+	mainConductor._offsetInMs = 0;
+	mainConductor._lengthInS = choice;
+
+	// ITS GETTING OFF BEAT!!!!
+	for (int i = 1; i < choice; i++) {
+		notes.push_back(Note());
+		notes.at(i - 1).setBeatNote(i, 45, 0, choice, (0.25 * i), BUTTON, BUTTON_A);
+		notes.at(i - 1).calcNoteParams();
+	}
 
 	mainConductor.startTimer();
-	
-	//note.setup(ofPoint(0, (ofGetHeight())),ofPoint(0, 0),BUTTON,BUTTON_A);
 	note.calcNoteParams();
 	// something is going on with the formula and it doesn't work properly
 	// unless the note is in its sepcial position.
@@ -50,7 +45,9 @@ void IdolScheme::update() {
 	mainConductor.refreshMembers();
 	mainConductor.beatSinceRefresh = mainConductor.currBeat;
 	
-	//note.moveByBeats(mainConductor.numBeatsSinceRefresh);
+	for (Note &a : notes) {
+		a.updateConductorMembers();
+	}
 
 #ifdef TARGET_LINUX
 	int w = ofGetWidth();
@@ -62,19 +59,22 @@ void IdolScheme::update() {
 
 //--------------------------------------------------------------
 void IdolScheme::draw() {
-	string currBeatString = "Current beat: " + ofToString(mainConductor.currBeat) + "/" + ofToString(mainConductor.totalBeats);
+	string currBeatString = "Current beat: " + ofToString(mainConductor.currBeat, 2) + "/" + ofToString(mainConductor.totalBeats);
 	textOut.drawString(currBeatString, 10, 20);
-	string lengthString = "Current time: " + ofToString(((float) mainConductor.timeDiff.count()) / 1000) + "/" + ofToString(mainConductor._lengthInS);
+	string lengthString = "Current time: " + ofToString(((float) mainConductor.timeDiff.count()) / 1000, 2) + "/" + ofToString(mainConductor._lengthInS);
 	textOut.drawString(lengthString, 10, 40);
-	string beatDiffString = "Beats since last refresh: " + ofToString(mainConductor.numBeatsSinceRefresh);
+	string beatDiffString = "Beats since last refresh: " + ofToString(mainConductor.numBeatsSinceRefresh, 5);
 	textOut.drawString(beatDiffString, 10, 60);
 	textOut.drawString(ofToString(ofGetFrameRate()), 10, 80);
 
+	for (unsigned int i = 0; i < notes.size(); i++) {
+		if (notes.at(i).noteConductor.currBeat > (notes.at(i).number + 2)) {
+			notes.pop_front(); // removes the finished note.
+		} else if (notes.at(i).noteConductor.currBeat >= notes.at(i).number) {
+			notes.at(i).moveByBeats(notes.at(i).noteConductor.numBeatsSinceRefresh);
+		}
+	}
 
-//	note.draw(-150, note.notey, -150, 0);
-	note.moveByBeats(mainConductor.numBeatsSinceRefresh);
-	//note.draw(note.notex, note.notey, (ofGetWidth() / 2), (ofGetHeight() / 2));
-	//note.draw(0.5 * ofGetWidth(), note.notey, (ofGetWidth() / 2), (ofGetHeight() / 2));
 
 	if(optionMenuShow)
 		optionMenu.draw();

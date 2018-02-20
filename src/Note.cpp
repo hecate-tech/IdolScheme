@@ -78,10 +78,12 @@ void Note::setBeatNote(int num, int bpm, int off, int len, float angle, NoteType
 	noteConductor._bpm = bpm;
 	noteConductor._offsetInMs = off;
 	noteConductor._lengthInS = len;
-	type = type_;
-	button = btn;
 	noteConductor.startTimer();
-	init();
+	setup(
+		ofPoint(calcPointsFromAngle(angle).x, calcPointsFromAngle(angle).y),
+		ofPoint(ofGetWidth() / 2, ofGetHeight() / 2),
+		type_, btn
+	);
 }
 
 //----------------------------------------------------------------------------------
@@ -149,9 +151,6 @@ void Note::draw(GLfloat nX, GLfloat nY, GLfloat sX, GLfloat sY) {
 
 //----------------------------------------------------------------------------------
 void Note::moveByBeats(GLfloat beats) {
-	noteConductor.refreshMembers();
-	noteConductor.beatSinceRefresh = noteConductor.currBeat;
-
 	float Vy = beats * (dY * 2.0f);
 	float Vx = beats * (dX * 2.0f);
 	// the notes may need more conductors to keep
@@ -159,9 +158,15 @@ void Note::moveByBeats(GLfloat beats) {
 	// parameter.
 	notex += Vx / 2.0f; // you may ask why this works
 	notey += Vy / 2.0f; // and I can't answer that.
-	
+
 	getptr()->draw(shadowX, shadowY);
 	noteSprite.draw(notex, notey);
+}
+
+//----------------------------------------------------------------------------------
+void Note::updateConductorMembers() {
+	noteConductor.refreshMembers();
+	noteConductor.beatSinceRefresh = noteConductor.currBeat;
 }
 
 //----------------------------------------------------------------------------------
@@ -220,11 +225,11 @@ ofPoint Note::calcPointsFromAngle(float angle) {
 			y_ = ofGetHeight();
 		}
 		if(x_ < 0) {
-			y_ -= x_ + ofGetWidth();
+			y_ -= x_ * -1;
 			x_ = 0;
 		}
 		if(y_ < 0) {
-			x_ += y_ + ofGetHeight();
+			x_ += y_ * -1;
 			y_ = 0;
 		}
 	}

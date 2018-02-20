@@ -57,7 +57,8 @@ class IdolScheme : public ofBaseApp {
 		OptionMenu optionMenu;
 		Conductor mainConductor; // This will keep time.
 		Note note; // need a better solution than making each note.
-        std::vector<Note> notes;
+        deque<Note> notes;
+		int choice; // number of notes for debugging
 
 		float a = 0.f;
 		bool optionMenuShow = false;
