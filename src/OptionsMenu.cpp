@@ -62,7 +62,7 @@ OptionMenu::OptionMenu() {
 			resolutions.at(i).button.setName(resolutions.at(i).getName());
 		}
 	}
-
+	cout << endl; // this is just to separate the warnings
 	graphics.minimizeAll();
 	gui.minimizeAll();
 }

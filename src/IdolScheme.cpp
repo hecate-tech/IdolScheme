@@ -19,19 +19,19 @@ void IdolScheme::setup() {
 	mainConductor._bpm = currBeatMap.noteParams.at(0).bpm;
 	mainConductor._offsetInMs = currBeatMap.noteParams.at(0).offset;
 	mainConductor._lengthInS = currBeatMap.noteParams.at(0).length;
-
-	cout << "1.  200, -100" << endl;
-	cout << "2. -100,  700" << endl;
-	cout << "3.  600,  700" << endl << endl << "> ";
-	int choice;
+	//note.setup(ofPoint(200, -100), ofPoint(400, 300), BUTTON, BUTTON_A);
+	
+	cout << "type the degree of the note as a decimal\n\n> ";
+	float choice;
 	cin >> choice;
-	if(choice == 1) {
-		note.setup(ofPoint(200, -100), ofPoint(400, 300), BUTTON, BUTTON_A);
-	} else if(choice == 2) {
-		note.setup(ofPoint(-100, 700), ofPoint(400, 300), BUTTON, BUTTON_A);
-	} else {
-		note.setup(ofPoint(600, 700), ofPoint(200, 200), BUTTON, BUTTON_A);
-	}
+
+	note.setup(
+		ofPoint(
+			note.calcPointsFromAngle(choice).x,
+			note.calcPointsFromAngle(choice).y
+		),
+		ofPoint(ofGetWidth() / 2, ofGetHeight() / 2)
+	);
 
 	mainConductor.startTimer();
 	

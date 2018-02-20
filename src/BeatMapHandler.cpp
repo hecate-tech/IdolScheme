@@ -24,6 +24,7 @@ BeatMapHandler::BeatMapHandler() {
 				cout << "Note: " + ofToString(j + 1) + " : line " + ofToString(bm.noteParams.at(j).lineNum) << endl;
 			else {
 				cout << "Rest: " + ofToString(j + 1) + " : line " + ofToString(bm.noteParams.at(j).lineNum) << endl;
+				cout << "bpm:  " + ofToString(bm.noteParams.at(j).bpm) << endl;
 				cout << "len:  " + ofToString(bm.noteParams.at(j).restSize) << endl << endl;
 			}
 			if(!bm.noteParams.at(j).rest) {
@@ -160,6 +161,7 @@ beatMap BeatMapHandler::setNoteParameters(string path) {
 				for(noteInfo &a : result.noteParams) {
 					if(a.lineNum == lineNum) {
 						a.rest = true; // tells the note that it's a rest.
+						a.bpm = defbpm;
 						a.restSize = ofToInt(rawText); // sets the length of the rest.
 					}
 				}
