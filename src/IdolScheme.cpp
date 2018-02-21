@@ -44,10 +44,6 @@ void IdolScheme::setup() {
 void IdolScheme::update() {
 	mainConductor.refreshMembers();
 	mainConductor.beatSinceRefresh = mainConductor.currBeat;
-	
-	for (Note &a : notes) {
-		a.updateConductorMembers();
-	}
 
 #ifdef TARGET_LINUX
 	int w = ofGetWidth();
@@ -68,10 +64,10 @@ void IdolScheme::draw() {
 	textOut.drawString(ofToString(ofGetFrameRate()), 10, 80);
 
 	for (unsigned int i = 0; i < notes.size(); i++) {
-		if (notes.at(i).noteConductor.currBeat > (notes.at(i).number + 2)) {
+		if (mainConductor.currBeat > (notes.at(i).number + 2)) {
 			notes.pop_front(); // removes the finished note.
-		} else if (notes.at(i).noteConductor.currBeat >= notes.at(i).number) {
-			notes.at(i).moveByBeats(notes.at(i).noteConductor.numBeatsSinceRefresh);
+		} else if (mainConductor.currBeat >= notes.at(i).number) {
+			notes.at(i).moveByBeats(mainConductor.currBeat);
 		}
 	}
 

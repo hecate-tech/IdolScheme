@@ -35,38 +35,11 @@ Note::Note(ofPoint initCoords, ofPoint shadowCoords, NoteType type_)
 }
 
 //----------------------------------------------------------------------------------
-Note::Note(bool rest, int bpm, int num, int lengthInBeats_) {
-	restNote = rest;
-	number = num;
-	lengthInBeats = lengthInBeats_;
-	noteConductor._bpm = bpm;
-	noteConductor._offsetInMs = 0;
-	noteConductor._lengthInS = 2;
-	noteConductor.startTimer();
-}
-
-//----------------------------------------------------------------------------------
-Note::Note(bool rest, int num, int bpm, int off, int len, float angle, NoteType type, NoteButton btn) {
-	restNote = rest;
-	number = num;
-	noteAngle = angle;
-	noteConductor._bpm = bpm;
-	noteConductor._offsetInMs = 0;
-	noteConductor._lengthInS = len;
-	noteConductor.startTimer();
-	calcNoteParams();
-	init();
-}
-
-//----------------------------------------------------------------------------------
 void Note::setBeatRest(int num, int bpm, int lengthInBeats_) {
 	restNote = true;
 	number = num;
 	lengthInBeats = lengthInBeats_;
-	noteConductor._bpm = bpm;
-	noteConductor._offsetInMs = 0;
-	noteConductor._lengthInS = 2;
-	noteConductor.startTimer();
+	noteBPM = bpm;
 	init();
 }
 
@@ -75,10 +48,7 @@ void Note::setBeatNote(int num, int bpm, int off, int len, float angle, NoteType
 	restNote = false;
 	number = num;
 	noteAngle = angle;
-	noteConductor._bpm = bpm;
-	noteConductor._offsetInMs = off;
-	noteConductor._lengthInS = len;
-	noteConductor.startTimer();
+	noteBPM = bpm;
 	setup(
 		ofPoint(calcPointsFromAngle(angle).x, calcPointsFromAngle(angle).y),
 		ofPoint(ofGetWidth() / 2, ofGetHeight() / 2),
@@ -150,29 +120,20 @@ void Note::draw(GLfloat nX, GLfloat nY, GLfloat sX, GLfloat sY) {
 }
 
 //----------------------------------------------------------------------------------
-void Note::moveByBeats(GLfloat beats) {
-	float Vy = beats * (dY * 2.0f);
-	float Vx = beats * (dX * 2.0f);
-	// the notes may need more conductors to keep
-	// up with supplying the correct 'beats'
-	// parameter.
-	notex += Vx / 2.0f; // you may ask why this works
-	notey += Vy / 2.0f; // and I can't answer that.
+void Note::moveByBeats(GLfloat currBeat) {
+	notex = startPos.x + (currBeat - number) * distToShadow.x;
+	notey = startPos.y + (currBeat - number) * distToShadow.y;
 
 	getptr()->draw(shadowX, shadowY);
 	noteSprite.draw(notex, notey);
 }
 
 //----------------------------------------------------------------------------------
-void Note::updateConductorMembers() {
-	noteConductor.refreshMembers();
-	noteConductor.beatSinceRefresh = noteConductor.currBeat;
-}
-
-//----------------------------------------------------------------------------------
 void Note::calcNoteParams() {
-	dX = shadowX - notex;
-	dY = shadowY - notey;
+	startPos.x = notex;
+	startPos.y = notey;
+	distToShadow.x = shadowX - notex;
+	distToShadow.y = shadowY - notey;
 }
 
 //----------------------------------------------------------------------------------
