@@ -15,7 +15,7 @@ void IdolScheme::setup() {
 	/// debug beatmap picker
 	/// --------------------
 	beatMap currBeatMap = bmh.beatMapMenu();
-	
+	bmh.beatMaps.clear(); // clears the beatmap list
 
 	for (noteInfo &a : currBeatMap.noteParams) {
 		if (!a.rest) {
@@ -27,8 +27,8 @@ void IdolScheme::setup() {
 	}
 	
 	for (unsigned int i = 0; i < currBeatMap.noteParams.size(); i++) {
-		
-		notes.push_back(Note());
+		notes.push_back(Note()); // loads all notes at once.
+		//! TODO refactor this so we load 3 notes in advance and not all at once.
 		
 		if (currBeatMap.noteParams.at(i).rest) {
 			notes.at(i).setBeatRest(currBeatMap.noteParams.at(i));
@@ -38,11 +38,7 @@ void IdolScheme::setup() {
 			notes.at(i).calcNoteParams();
 		}
 	}
-
-	for (Note a : notes) {
-		cout << a.noteSettings.noteNum << endl;
-	}
-
+	
 	mainConductor.startTimer();
 	// something is going on with the formula and it doesn't work properly
 	// unless the note is in its sepcial position.
@@ -76,7 +72,8 @@ void IdolScheme::draw() {
 	textOut.drawString(ofToString(ofGetFrameRate()), 10, 80);
 
 	for (unsigned int i = 0; i < notes.size(); i++) {
-		if (mainConductor.currBeat > (notes.at(i).noteSettings.noteNum + 2)) {
+		if (mainConductor.currBeat > (notes.at(i).noteSettings.noteNum + 3)) {
+			notes.erase(notes.begin());
 			notes.pop_front(); // removes the finished note.
 		} else if (mainConductor.currBeat >= notes.at(i).noteSettings.noteNum
 			&& !notes.at(i).noteSettings.rest) {
