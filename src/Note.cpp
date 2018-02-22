@@ -1,5 +1,5 @@
 #include "../include/Note.h"
-
+#include <complex>
 ////////////////////////////////////////////////////////////////////////////////////////
        //////////////////      Constructors/Desconstructors      //////////////////
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -156,44 +156,54 @@ Shadow *Note::getptr() {
 //----------------------------------------------------------------------------------
 ofPoint Note::calcPointsFromAngle(float angle) {
 	ofPoint result;
-	int x_ = (ofGetWidth() * angle);
-	int y_ = 0;
+	float halfC = 3.14169f / 180.f;
+	double radAngle = angle * halfC;
+	float zMod, off = 0;
 
-	while(x_ > ofGetWidth() || x_ < 0 || y_ > ofGetHeight() || y_ < 0) {
-		if(x_ > ofGetWidth()) {
-			y_ += x_ - ofGetWidth();
-			x_ = ofGetWidth();
-		}
-		if(y_ > ofGetHeight()) {
-			x_ -= y_ - ofGetHeight();
-			y_ = ofGetHeight();
-		}
-		if(x_ < 0) {
-			y_ -= x_ * -1;
-			x_ = 0;
-		}
-		if(y_ < 0) {
-			x_ += y_ * -1;
-			y_ = 0;
-		}
-	}
 
-	if(y_ == 0) {
-		y_ -= note_size;
+	if (angle >= 60 && angle < 120) {
+		zMod = ofGetWidth() / 2;
+		off = 90 * halfC;
 	}
-	if(x_ == 0) {
-		x_ -= note_size;
+	else if (angle >= 300 && angle <= 360) {
+		zMod = ofGetHeight() / 2;
 	}
-	if(y_ == ofGetHeight()) {
-		y_ += note_size;
+	else if (angle < 60 || (angle >= 180 & angle < 240)) {
+		zMod = ofGetHeight() / 2;
 	}
-	if(x_ == ofGetWidth()) {
-		x_ += note_size;
+	else if (angle >= 120 && angle < 180) {
+		zMod = ofGetHeight() / 2;
+		off = 0;
+	}
+	else if (angle >= 240 && angle < 300) {
+		zMod = ofGetWidth() / 2;
+		off = 280 * halfC;
 	}
 
-	result.x = x_;
-	result.y = y_;
+	double z_ = zMod + note_size;
+	double x_ = tan(radAngle - off) * z_;
 
+	if (angle >= 60 && angle < 120) {
+		result.x = ofGetWidth() + note_size;
+		result.y = ((ofGetHeight() / 2) + x_);
+	}
+	else if (angle < 60) {
+		result.x = ((ofGetWidth() / 2) + x_);
+		result.y = -1 * note_size;
+	}
+	else if (angle >= 120 && angle < 240) {
+		result.x = ((ofGetWidth() / 2) + (-1 * x_));
+		result.y = ofGetHeight() + note_size;
+	}
+	else if (angle >= 240 && angle < 300) {
+		result.x = -1 * note_size;
+		result.y = ((ofGetHeight() / 2) + (-1 * x_));
+	}
+	else if (angle >= 300 && angle <= 360) {
+		result.x = ((ofGetWidth() / 2) + x_);
+		result.y = -1 * note_size;
+	}
+	
 	return result;
 }
 
