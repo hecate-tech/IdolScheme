@@ -31,7 +31,7 @@ void Note::setBeatNote(noteInfo settings) {
 	noteSettings = settings;
 
 	setup(
-		ofPoint(calcPointsFromAngle(noteSettings.angle).x, calcPointsFromAngle(noteSettings.angle).y),
+		ofPoint(calcPolarPoint(noteSettings.angle).x, calcPolarPoint(noteSettings.angle).y),
 		ofPoint(noteSettings.xS * ofGetWidth(), noteSettings.yS * ofGetHeight()),
 		noteSettings.type, noteSettings.button
 	);
@@ -154,54 +154,47 @@ Shadow *Note::getptr() {
 
 
 //----------------------------------------------------------------------------------
-ofPoint Note::calcPointsFromAngle(float angle) {
+ofPoint Note::calcPolarPoint(float angle) {
 	ofPoint result;
-	float halfC = 3.14169f / 180.f;
-	double radAngle = angle * halfC;
+	float halfC = 3.14169f / 180.f; // modifier to turn degrees to radians
 	float zMod, off = 0;
 
-
-	if (angle >= 60 && angle < 120) {
+	if ((angle >= 60 && angle < 120) // sides of screen
+		|| (angle >= 240 && angle < 300)) {
 		zMod = ofGetWidth() / 2;
-		off = 90 * halfC;
+		if(angle >= 60 && angle < 120)
+			off = 90 * halfC;
+		else if (angle >= 240)
+			off = 270 * halfC;
 	}
-	else if (angle >= 300 && angle <= 360) {
+	else if ((angle < 60) // top and bottom of screen
+		|| (angle >= 120 && angle <  240)
+		|| (angle >= 300 && angle <= 360)) {
 		zMod = ofGetHeight() / 2;
-	}
-	else if (angle < 60 || (angle >= 180 & angle < 240)) {
-		zMod = ofGetHeight() / 2;
-	}
-	else if (angle >= 120 && angle < 180) {
-		zMod = ofGetHeight() / 2;
-		off = 0;
-	}
-	else if (angle >= 240 && angle < 300) {
-		zMod = ofGetWidth() / 2;
-		off = 280 * halfC;
 	}
 
 	double z_ = zMod + note_size;
-	double x_ = tan(radAngle - off) * z_;
+	double x_ = tan((angle * halfC) - off) * z_;
 
-	if (angle >= 60 && angle < 120) {
+	if (angle >= 60 && angle < 120) { // sides of screen
 		result.x = ofGetWidth() + note_size;
 		result.y = ((ofGetHeight() / 2) + x_);
 	}
-	else if (angle < 60) {
-		result.x = ((ofGetWidth() / 2) + x_);
-		result.y = -1 * note_size;
-	}
-	else if (angle >= 120 && angle < 240) {
-		result.x = ((ofGetWidth() / 2) + (-1 * x_));
-		result.y = ofGetHeight() + note_size;
-	}
-	else if (angle >= 240 && angle < 300) {
+	else if (angle >= 240 && angle < 300) { // sides of screen
 		result.x = -1 * note_size;
 		result.y = ((ofGetHeight() / 2) + (-1 * x_));
 	}
-	else if (angle >= 300 && angle <= 360) {
-		result.x = ((ofGetWidth() / 2) + x_);
-		result.y = -1 * note_size;
+	else if ((angle < 60) // top and bottom of screen
+		|| (angle >= 120 && angle < 240)
+		|| (angle >= 300 && angle <= 360)) {
+		if (angle >= 120 && angle < 240) {
+			x_ = x_ * -1;
+			result.y = ofGetHeight() + note_size;
+		} else {
+			result.y = -1 * note_size;
+		}
+
+		result.x = (ofGetWidth() / 2) + x_;
 	}
 	
 	return result;

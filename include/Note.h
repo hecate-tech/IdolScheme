@@ -86,7 +86,7 @@ public:
 	void update(); // to be ran in the update method of IdolScheme.cpp
 	void hit(); // For catching key presses.
 	void setColor(GLfloat r = 0, GLfloat g = 0, GLfloat b = 0, GLfloat a = 255);
-	ofPoint calcPointsFromAngle(float angle);
+	ofPoint calcPolarPoint(float angle);
 	Shadow *getptr();
 private:
 	Shadow *shadow; // The note shadow. (This object shouldn't move)

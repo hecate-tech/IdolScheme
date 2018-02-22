@@ -81,6 +81,8 @@ void IdolScheme::draw() {
 		} else if (mainConductor.currBeat >= notes.at(i).noteSettings.noteNum
 			&& !notes.at(i).noteSettings.rest) {
 			notes.at(i).moveByBeats(mainConductor.currBeat);
+		} else {
+			break;
 		}
 	}
 
