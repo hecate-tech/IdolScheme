@@ -58,6 +58,7 @@ enum NoteButton {
 struct noteInfo {
 public:
 
+	int noteNum;
 	int lineNum;   // note's line number in its .isbm file.
 	int bpm;	   // note's bpm (only used if diff from last note's)
 	int offset;	   // note's offset (Milliseconds)
@@ -65,7 +66,7 @@ public:
 	float xS, yS;  // the X and Y position of the note shadow.
 	float angle;   // possible angle where the note comes from.
 				   // if the note is a rest.
-	bool rest;
+	bool rest = false;
 	int restSize = 1;
 
 	NoteType type;       // Note type (Axis or Button)
@@ -84,7 +85,7 @@ public:
 		vector<string>().swap(args); // releases memory from args
 	}
 
-	noteInfo& operator =(const noteInfo& a) {
+	noteInfo& operator= (const noteInfo &a) {
 		lineNum  = a.lineNum;
 		offset	 = a.offset;
 		length	 = a.length;
@@ -95,12 +96,23 @@ public:
 		angle	 = a.angle;
 		rest	 = a.rest;
 		restSize = a.restSize;
+		bpm		 = a.bpm;
+		noteNum  = a.noteNum;
 		
 		return *this;
 	}
 
 	noteInfo() {}
 	noteInfo(int lineNumber) { lineNum = lineNumber; }
+	noteInfo(int lineNumber, int bpm_, int off, int len, float angle_, NoteType type_, NoteButton btn) {
+		lineNum = lineNumber;
+		bpm = bpm_;
+		offset = off;
+		length = len;
+		angle = angle_;
+		type = type_;
+		button = btn;
+	}
 };
 
 #endif //!NOTEINFO_H

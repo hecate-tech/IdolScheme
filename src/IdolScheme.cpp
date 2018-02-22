@@ -14,24 +14,36 @@ void IdolScheme::setup() {
 
 	/// debug beatmap picker
 	/// --------------------
-	//beatMap currBeatMap = bmh.beatMapMenu();
+	beatMap currBeatMap = bmh.beatMapMenu();
 	
-	cout << "type number of notes\n\n>";
-	cin >> choice;
 
-	mainConductor._bpm = 45;
-	mainConductor._offsetInMs = 0;
-	mainConductor._lengthInS = choice;
-
-	// ITS GETTING OFF BEAT!!!!
-	for (int i = 1; i < choice; i++) {
+	for (noteInfo &a : currBeatMap.noteParams) {
+		if (!a.rest) {
+			mainConductor._bpm = a.bpm;
+			mainConductor._offsetInMs = a.offset;
+			mainConductor._lengthInS = a.length;
+			break;
+		}
+	}
+	
+	for (unsigned int i = 0; i < currBeatMap.noteParams.size(); i++) {
+		
 		notes.push_back(Note());
-		notes.at(i - 1).setBeatNote(i, 45, 0, choice, (0.25 * i), BUTTON, BUTTON_A);
-		notes.at(i - 1).calcNoteParams();
+		
+		if (currBeatMap.noteParams.at(i).rest) {
+			notes.at(i).setBeatRest(currBeatMap.noteParams.at(i));
+		}
+		else if (!currBeatMap.noteParams.at(i).rest) {
+			notes.at(i).setBeatNote(currBeatMap.noteParams.at(i));
+			notes.at(i).calcNoteParams();
+		}
+	}
+
+	for (Note a : notes) {
+		cout << a.noteSettings.noteNum << endl;
 	}
 
 	mainConductor.startTimer();
-	note.calcNoteParams();
 	// something is going on with the formula and it doesn't work properly
 	// unless the note is in its sepcial position.
 }
@@ -64,13 +76,13 @@ void IdolScheme::draw() {
 	textOut.drawString(ofToString(ofGetFrameRate()), 10, 80);
 
 	for (unsigned int i = 0; i < notes.size(); i++) {
-		if (mainConductor.currBeat > (notes.at(i).number + 2)) {
+		if (mainConductor.currBeat > (notes.at(i).noteSettings.noteNum + 2)) {
 			notes.pop_front(); // removes the finished note.
-		} else if (mainConductor.currBeat >= notes.at(i).number) {
+		} else if (mainConductor.currBeat >= notes.at(i).noteSettings.noteNum
+			&& !notes.at(i).noteSettings.rest) {
 			notes.at(i).moveByBeats(mainConductor.currBeat);
 		}
 	}
-
 
 	if(optionMenuShow)
 		optionMenu.draw();

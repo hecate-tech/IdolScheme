@@ -54,27 +54,19 @@ public:
 	/// -------------
 	noteInfo noteSettings;
 
-	bool restNote = false;
-	int number;
-	float noteAngle;
 	int lengthInBeats = BAD_LENGTH;
 	GLint note_size = (ofGetWindowWidth() + ofGetWindowHeight()) * 0.08; // for width and the height.
 	GLint note_color[4] = { 255, 255, 255, 255 };
 	const GLchar *sprite_dir = "images/note.png";
-	int noteBPM = 30;
 
 	ofVec2f startPos;
 	ofVec2f distToShadow;
 	GLfloat notex, notey, shadowX, shadowY; // positions
-	NoteType type; // The note type. Ex. Axis or Button.
-	NoteButton button; // the assigned button.
 	ofImage noteSprite;
 
 	/// Constructors/Desconstructor
 	/// ---------------------------
 	Note() {}
-	Note(GLfloat xInit, GLfloat yInit, GLfloat xShadow, GLfloat yShadow, NoteType type_, NoteButton button_);
-	Note(GLfloat xInit, GLfloat yInit, GLfloat xShadow, GLfloat yShadow, NoteType type_);
 	Note(ofPoint initCoords, ofPoint shadowCoords, NoteType type_, NoteButton button_);
 	Note(ofPoint initCoords, ofPoint shadowCoords, NoteType type_);
 	~Note();
@@ -83,8 +75,8 @@ public:
 		NoteType type_ = BUTTON, NoteButton button_ = BUTTON_EMPTY);
 
 	void calcNoteParams();
-	void setBeatRest(int num, int bpm, int lengthInBeats_);
-	void setBeatNote(int num, int bpm, int off, int len, float angle, NoteType type, NoteButton btn);
+	void setBeatRest(noteInfo settings);
+	void setBeatNote(noteInfo settings);
 	bool destroy();
 	void setSize(GLint newSize);
 	void setPosition(GLfloat x = 0, GLfloat y = 0, GLfloat xS = 0, GLfloat yS = 0);

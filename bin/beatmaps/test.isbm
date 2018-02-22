@@ -14,9 +14,9 @@ beatname | My Amazing BeatMap!
 
 bpm | 10
 
-rest    |   1
+# rest    |   1
 note    |  100  |  0  | 0 | 2 | 0.5 | 0.5 | 0.74
-rest    |   2
+# rest    |   2
 note    |   0   | 10  | 0 | 1 | 0.2 | 0.7 | 0.23
 note    |   9   | 237 | 0 | 1 | 0.8 | 0.1 | 0.5
 

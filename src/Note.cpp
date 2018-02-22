@@ -4,55 +4,36 @@
        //////////////////      Constructors/Desconstructors      //////////////////
 ////////////////////////////////////////////////////////////////////////////////////////
 
-Note::Note(GLfloat xInit, GLfloat yInit, GLfloat xShadow, GLfloat yShadow, NoteType type_, NoteButton button_)
-	: notex(xInit), notey(yInit), shadowX(xShadow), shadowY(yShadow), type(type_), button(button_) {
-	
-	noteSprite.load(sprite_dir);
-	init();
-}
-
-//----------------------------------------------------------------------------------
-Note::Note(GLfloat xInit, GLfloat yInit, GLfloat xShadow, GLfloat yShadow, NoteType type_) 
-	: notex(xInit), notey(yInit), shadowX(xShadow), shadowY(yShadow), type(type_), button(BUTTON_EMPTY) {
-
-	noteSprite.load(sprite_dir);
-}
-
-//----------------------------------------------------------------------------------
 Note::Note(ofPoint initCoords, ofPoint shadowCoords, NoteType type_, NoteButton button_) 
-	: notex(initCoords[0]), notey(initCoords[1]), shadowX(shadowCoords[0]), shadowY(shadowCoords[1]), type(type_), button(button_) {
-
+	: notex(initCoords[0]), notey(initCoords[1]), shadowX(shadowCoords[0]), shadowY(shadowCoords[1]) {
+	noteSettings.type = type_;
+	noteSettings.button = button_;
 	noteSprite.load(sprite_dir);
 	init();
 }
 
 //----------------------------------------------------------------------------------
 Note::Note(ofPoint initCoords, ofPoint shadowCoords, NoteType type_) 
-	: notex(initCoords[0]), notey(initCoords[1]), shadowX(shadowCoords[0]), shadowY(shadowCoords[1]), type(type_), button(BUTTON_EMPTY) {
-
+	: notex(initCoords[0]), notey(initCoords[1]), shadowX(shadowCoords[0]), shadowY(shadowCoords[1]) {
+	noteSettings.type = type_;
 	noteSprite.load(sprite_dir);
 	init();
 }
 
 //----------------------------------------------------------------------------------
-void Note::setBeatRest(int num, int bpm, int lengthInBeats_) {
-	restNote = true;
-	number = num;
-	lengthInBeats = lengthInBeats_;
-	noteBPM = bpm;
+void Note::setBeatRest(noteInfo settings) {
+	noteSettings = settings;
 	init();
 }
 
 //----------------------------------------------------------------------------------
-void Note::setBeatNote(int num, int bpm, int off, int len, float angle, NoteType type_, NoteButton btn) {
-	restNote = false;
-	number = num;
-	noteAngle = angle;
-	noteBPM = bpm;
+void Note::setBeatNote(noteInfo settings) {
+	noteSettings = settings;
+
 	setup(
-		ofPoint(calcPointsFromAngle(angle).x, calcPointsFromAngle(angle).y),
-		ofPoint(ofGetWidth() / 2, ofGetHeight() / 2),
-		type_, btn
+		ofPoint(calcPointsFromAngle(noteSettings.angle).x, calcPointsFromAngle(noteSettings.angle).y),
+		ofPoint(noteSettings.xS * ofGetWidth(), noteSettings.yS * ofGetHeight()),
+		noteSettings.type, noteSettings.button
 	);
 }
 
@@ -62,8 +43,8 @@ void Note::setup(ofPoint initCoords, ofPoint shadowCoords, NoteType type_, NoteB
 
 	noteSprite.load(sprite_dir);
 
-	type = type_;
-	button = button_;
+	noteSettings.type = type_;
+	noteSettings.button = button_;
 	init();
 }
 
@@ -121,8 +102,10 @@ void Note::draw(GLfloat nX, GLfloat nY, GLfloat sX, GLfloat sY) {
 
 //----------------------------------------------------------------------------------
 void Note::moveByBeats(GLfloat currBeat) {
-	notex = startPos.x + (currBeat - number) * distToShadow.x;
-	notey = startPos.y + (currBeat - number) * distToShadow.y;
+	float time = currBeat - noteSettings.noteNum;
+	
+	notex = startPos.x + time * distToShadow.x;
+	notey = startPos.y + time * distToShadow.y;
 
 	getptr()->draw(shadowX, shadowY);
 	noteSprite.draw(notex, notey);

@@ -24,10 +24,12 @@ BeatMapHandler::BeatMapHandler() {
 				cout << "Note: " + ofToString(j + 1) + " : line " + ofToString(bm.noteParams.at(j).lineNum) << endl;
 			else {
 				cout << "Rest: " + ofToString(j + 1) + " : line " + ofToString(bm.noteParams.at(j).lineNum) << endl;
+				cout << "num:  " + ofToString(bm.noteParams.at(j).noteNum) << endl;
 				cout << "bpm:  " + ofToString(bm.noteParams.at(j).bpm) << endl;
 				cout << "len:  " + ofToString(bm.noteParams.at(j).restSize) << endl << endl;
 			}
 			if(!bm.noteParams.at(j).rest) {
+				cout << "num:  " + ofToString(bm.noteParams.at(j).noteNum) << endl;
 				cout << "bpm:  " + ofToString(bm.noteParams.at(j).bpm)    << endl;
 				cout << "off:  " + ofToString(bm.noteParams.at(j).offset) << endl;
 				cout << "len:  " + ofToString(bm.noteParams.at(j).length) << endl;
@@ -81,12 +83,13 @@ beatMap BeatMapHandler::setNoteParameters(string path) {
 	/// -----------------------------------------
 	auto pb_Element = [&](string str) {
 		if (!result.noteParams.empty()) {			// if there are notes available
-			for (noteInfo &a : result.noteParams) { // for every note available
-				if (a.lineNum == lineNum) {			// if current line is equal to note's line number.
-					a.args.push_back(str);
-					if (a.args.size() > 7) {		// if enough arguments to make a note.
-						a.bpm = defbpm;
-						a.convert();
+			for (unsigned int j = 0; j < result.noteParams.size(); j++) { // for every note available
+				if (result.noteParams.at(j).lineNum == lineNum) {			// if current line is equal to note's line number.
+					result.noteParams.at(j).noteNum = j + 1;
+					result.noteParams.at(j).args.push_back(str);
+					if (result.noteParams.at(j).args.size() > 7) {		// if enough arguments to make a note.
+						result.noteParams.at(j).bpm = defbpm;
+						result.noteParams.at(j).convert();
 					}
 				}
 			}
@@ -186,7 +189,7 @@ beatMap BeatMapHandler::beatMapMenu() {
 begin:
 
 #ifdef TARGET_WIN32
-	system("cls");
+	//system("cls");
 #else // UNIX_SYSTEMS
 	//system("clear");
 #endif //!TARGET_WIN32
