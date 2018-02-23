@@ -122,10 +122,10 @@ beatMap BeatMapHandler::setNoteParameters(string path) {
 				else if (!rawText.substr(0, pos).compare(0, NAMEKEY.size(), NAMEKEY)) { // if there's "beatname"
 					nameSet = true; // enable the name check
 				}
-				else if (!rawText.substr(0, pos).compare(0, BPMKEY.size(), BPMKEY)) {
+				else if (!rawText.substr(0, pos).compare(0, BPMKEY.size(), BPMKEY)) { // if there's "bpm"
 					bpmSet = true;    // enable the bpm check
 				} 
-				else if (!rawText.substr(0, pos).compare(0, RESTKEY.size(), RESTKEY)) {
+				else if (!rawText.substr(0, pos).compare(0, RESTKEY.size(), RESTKEY)) { // if there's "rest"
 					result.noteParams.push_back(noteInfo(lineNum));
 					restAct = true;
 				}
@@ -189,9 +189,9 @@ beatMap BeatMapHandler::beatMapMenu() {
 begin:
 
 #ifdef TARGET_WIN32
-	//system("cls");
+	system("cls");
 #else // UNIX_SYSTEMS
-	//system("clear");
+	system("clear");
 #endif //!TARGET_WIN32
 
 	for (i = 0; i < beatMaps.size(); i++) {
