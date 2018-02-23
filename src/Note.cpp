@@ -29,9 +29,9 @@ void Note::setBeatRest(noteInfo settings) {
 //----------------------------------------------------------------------------------
 void Note::setBeatNote(noteInfo settings) {
 	noteSettings = settings;
-
+	ofPoint setupParam = calcPolarPoint(noteSettings.angle);
 	setup(
-		ofPoint(calcPolarPoint(noteSettings.angle).x, calcPolarPoint(noteSettings.angle).y),
+		ofPoint(setupParam.x, setupParam.y),
 		ofPoint(noteSettings.xS * ofGetWidth(), noteSettings.yS * ofGetHeight()),
 		noteSettings.type, noteSettings.button
 	);
@@ -42,7 +42,7 @@ void Note::setup(ofPoint initCoords, ofPoint shadowCoords, NoteType type_, NoteB
 	setPosition(initCoords[0], initCoords[1], shadowCoords[0], shadowCoords[1]);
 
 	noteSprite.load(sprite_dir);
-
+	
 	noteSettings.type = type_;
 	noteSettings.button = button_;
 	init();
@@ -55,6 +55,11 @@ Note::~Note() {
 
 //----------------------------------------------------------------------------------
 bool Note::destroy() {
+	sprite_dir = NULL;
+	shadow = NULL;
+	delete sprite_dir;
+	delete shadow;
+
 	return false;
 }
 
@@ -77,11 +82,6 @@ void Note::init() {
    //////////////////      Functions      //////////////////
 ///////////////////////////////////////////////////////////////
 
-void Note::update() {
-
-}
-
-//----------------------------------------------------------------------------------
 void Note::hit() {
 	/// This is when the user pressed the assigned note button.
 	/// -------------------------------------------------------
@@ -92,10 +92,10 @@ void Note::draw(GLfloat nX, GLfloat nY, GLfloat sX, GLfloat sY) {
 	/// checking if the x and y parameters are present.
 	/// -----------------------------------------------
 	if (nX != BAD_COORDINATE && nY != BAD_COORDINATE && sX != BAD_COORDINATE && sY != BAD_COORDINATE) {
-		getptr()->draw(sX, sY);
+		getShadow()->draw(sX, sY);
 		noteSprite.draw(nX, nY);
 	} else {
-		getptr()->draw(shadowX, shadowY);
+		getShadow()->draw(shadowX, shadowY);
 		noteSprite.draw(notex, notey);
 	}
 }
@@ -107,8 +107,10 @@ void Note::moveByBeats(GLfloat currBeat) {
 	notex = startPos.x + time * distToShadow.x;
 	notey = startPos.y + time * distToShadow.y;
 
-	getptr()->draw(shadowX, shadowY);
-	noteSprite.draw(notex, notey);
+	/// draw the notes after calculating the positions
+	ofSetColor(note_color);
+	draw(notex, notey, shadowX, shadowY);
+	ofSetColor(255, 255, 255, 255); // sets color to normal
 }
 
 //----------------------------------------------------------------------------------
@@ -121,7 +123,15 @@ void Note::calcNoteParams() {
 
 //----------------------------------------------------------------------------------
 void Note::setColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a) {
-	/// TODO
+	note_color.r = r;
+	note_color.g = g;
+	note_color.b = b;
+	note_color.a = a;
+}
+
+//----------------------------------------------------------------------------------
+ofColor Note::getColor() {
+	return note_color;
 }
 
 //----------------------------------------------------------------------------------
@@ -143,12 +153,12 @@ void Note::setSize(GLint newSize) {
 	
 	/// shadow resizing
 	/// ---------------
-	getptr()->shadowSprite.load(getptr()->shadow_dir); // reloads image
-	getptr()->shadowSprite.resize(note_size, note_size);
+	getShadow()->shadowSprite.load(getShadow()->shadow_dir); // reloads image
+	getShadow()->shadowSprite.resize(note_size, note_size);
 }
 
 //----------------------------------------------------------------------------------
-Shadow *Note::getptr() {
+Shadow *Note::getShadow() {
 	return shadow; // returns the shadow object attached to the note.
 }
 
@@ -159,13 +169,16 @@ ofPoint Note::calcPolarPoint(float angle) {
 	float halfC = 3.14169f / 180.f; // modifier to turn degrees to radians
 	float zMod, off = 0;
 
+	// lambda for setting the coordinates of the result ofPoint
+	auto setRes = [&](float offset, float offset2, int val, int val2) {
+		result.x = offset + val;
+		result.y = offset2 + val2;
+	};
+
 	if ((angle >= 60 && angle < 120) // sides of screen
 		|| (angle >= 240 && angle < 300)) {
 		zMod = ofGetWidth() / 2;
-		if(angle >= 60 && angle < 120)
-			off = 90 * halfC;
-		else if (angle >= 240)
-			off = 270 * halfC;
+		off = 90 * halfC * (angle >= 240 ? 3 : 1);
 	}
 	else if ((angle < 60) // top and bottom of screen
 		|| (angle >= 120 && angle <  240)
@@ -173,28 +186,21 @@ ofPoint Note::calcPolarPoint(float angle) {
 		zMod = ofGetHeight() / 2;
 	}
 
-	double z_ = zMod + note_size;
-	double x_ = tan((angle * halfC) - off) * z_;
+	double m_ = zMod + note_size; // magnitude
+	double x_ = tan((angle * halfC) - off) * m_; // offset from projected ray
 
-	if (angle >= 60 && angle < 120) { // sides of screen
-		result.x = ofGetWidth() + note_size;
-		result.y = ((ofGetHeight() / 2) + x_);
-	}
-	else if (angle >= 240 && angle < 300) { // sides of screen
-		result.x = -1 * note_size;
-		result.y = ((ofGetHeight() / 2) + (-1 * x_));
+	if ((angle >= 60 && angle < 120) // sides of screen
+		|| (angle >= 240 && angle < 300)) {
+		setRes((angle >= 240 ? (-1 * (note_size * 2)) : ofGetWidth()),
+			(ofGetHeight() / 2), note_size,
+			(angle >= 240 ? (-1 * x_) : x_));
 	}
 	else if ((angle < 60) // top and bottom of screen
-		|| (angle >= 120 && angle < 240)
+		|| (angle >= 120 && angle <  240)
 		|| (angle >= 300 && angle <= 360)) {
-		if (angle >= 120 && angle < 240) {
-			x_ = x_ * -1;
-			result.y = ofGetHeight() + note_size;
-		} else {
-			result.y = -1 * note_size;
-		}
-
-		result.x = (ofGetWidth() / 2) + x_;
+		setRes((ofGetWidth() / 2),
+			(angle >= 120 && angle < 240 ? ofGetHeight() : (-1 * (note_size * 2))),
+			(angle >= 120 && angle < 240 ? (-1 * x_) : x_), note_size);
 	}
 	
 	return result;

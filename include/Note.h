@@ -34,6 +34,12 @@ public:
 	const char *shadow_dir = "images/shadow.png";
 
 	Shadow() {}
+	~Shadow() {
+		shadow_dir = NULL;
+		sprite_dir = NULL;
+		delete shadow_dir;
+		delete sprite_dir;
+	}
 	void resize(GLint width, GLint height);
 	void load();
 	void draw(GLfloat x, GLfloat y);
@@ -55,14 +61,14 @@ public:
 	noteInfo noteSettings;
 
 	int lengthInBeats = BAD_LENGTH;
-	GLint note_size = (ofGetWindowWidth() + ofGetWindowHeight()) * 0.08; // for width and the height.
-	GLint note_color[4] = { 255, 255, 255, 255 };
-	const GLchar *sprite_dir = "images/note.png";
+	GLint note_size = (ofGetWindowWidth() + ofGetWindowHeight()) * 0.06; // for width and the height.
+	ofColor note_color = ofColor(255, 255, 255, 255);
+	const GLchar *sprite_dir = "images/note.png"; // directory to note image.
+	ofImage noteSprite; // object for sprite.
 
 	ofVec2f startPos;
 	ofVec2f distToShadow;
-	GLfloat notex, notey, shadowX, shadowY; // positions
-	ofImage noteSprite;
+	GLfloat notex, notey, shadowX, shadowY; // current positions
 
 	/// Constructors/Desconstructor
 	/// ---------------------------
@@ -71,23 +77,24 @@ public:
 	Note(ofPoint initCoords, ofPoint shadowCoords, NoteType type_);
 	~Note();
 
+	/// Functions
+	/// ---------
 	void setup(ofPoint initCoords = ofPoint(0,0), ofPoint shadowCoords = ofPoint(0,0),
 		NoteType type_ = BUTTON, NoteButton button_ = BUTTON_EMPTY);
-
 	void calcNoteParams();
 	void setBeatRest(noteInfo settings);
 	void setBeatNote(noteInfo settings);
-	bool destroy();
 	void setSize(GLint newSize);
 	void setPosition(GLfloat x = 0, GLfloat y = 0, GLfloat xS = 0, GLfloat yS = 0);
 	void init();
 	void draw(GLfloat nX = 0, GLfloat nY = 0, GLfloat sX = 0, GLfloat sY = 0); // draws the note and shadow objects.
 	void moveByBeats(GLfloat currBeat);
-	void update(); // to be ran in the update method of IdolScheme.cpp
 	void hit(); // For catching key presses.
-	void setColor(GLfloat r = 0, GLfloat g = 0, GLfloat b = 0, GLfloat a = 255);
+	void setColor(GLfloat r = 0, GLfloat g = 0, GLfloat b = 0, GLfloat a = 255); // not used ATM
+	bool destroy();
+	ofColor getColor();
 	ofPoint calcPolarPoint(float angle);
-	Shadow *getptr();
+	Shadow *getShadow();
 private:
 	Shadow *shadow; // The note shadow. (This object shouldn't move)
 };
