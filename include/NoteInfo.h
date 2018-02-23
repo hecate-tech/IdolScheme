@@ -7,8 +7,6 @@
 	#include "Note.h"
 #endif //!NOTE_H
 
-#define BAD_LENGTH -934025
-
 
 /* @brief - NoteType
 *
