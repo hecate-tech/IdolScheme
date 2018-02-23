@@ -3,9 +3,18 @@
 #ifndef BEATMAPHANDLER_H
 #define BEATMAPHANDLER_H
 
-#include "ofMain.h"
-#include "Note.h"
-#include "NoteInfo.h"
+#ifndef OFMAIN_H
+	#define OFMAIN_H
+	#include "ofMain.h"
+#endif //!OFMAIN_H
+
+#ifndef NOTE_H
+	#include "Note.h"
+#endif //!NOTE_H
+
+#ifndef NOTEINFO_H
+	#include "NoteInfo.h"
+#endif //!NOTEINFO_H
 
 
 /* @brief - beatMap

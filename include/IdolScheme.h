@@ -5,7 +5,6 @@
 	#include "ofMain.h"
 #endif //!OFMAIN_H
 
-
 #ifndef NOTE_H
 	#include "Note.h"
 #endif //NOTE_H
@@ -59,8 +58,6 @@ class IdolScheme : public ofBaseApp {
 		Note note; // need a better solution than making each note.
         deque<Note> notes;
 		int choice; // number of notes for debugging
-
-		float a = 0.f;
 		bool optionMenuShow = false;
 
 		/// initialization
@@ -74,8 +71,8 @@ class IdolScheme : public ofBaseApp {
 
 		/// misc. functions
 		/// ---------------
-		float qSetHCoord(float coordinate);
-		float qSetWCoord(float coordinate);
+		float yCoord(float coordinate);
+		float xCoord(float coordinate);
 		ofPoint qSetCoords(ofPoint coordinates);
 
 		/// callbacks

@@ -3,7 +3,9 @@
 #ifndef NOTEINFO_H
 #define NOTEINFO_H
 
-#include "Note.h"
+#ifndef NOTE_H
+	#include "Note.h"
+#endif //!NOTE_H
 
 #define BAD_LENGTH -934025
 
@@ -104,15 +106,6 @@ public:
 
 	noteInfo() {}
 	noteInfo(int lineNumber) { lineNum = lineNumber; }
-	noteInfo(int lineNumber, int bpm_, int off, int len, float angle_, NoteType type_, NoteButton btn) {
-		lineNum = lineNumber;
-		bpm = bpm_;
-		offset = off;
-		length = len;
-		angle = angle_;
-		type = type_;
-		button = btn;
-	}
 };
 
 #endif //!NOTEINFO_H

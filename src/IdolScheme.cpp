@@ -15,7 +15,7 @@ void IdolScheme::setup() {
 	/// debug beatmap picker
 	/// --------------------
 	beatMap currBeatMap = bmh.beatMapMenu();
-	bmh.beatMaps.clear(); // clears the beatmap list
+	vector<beatMap>().swap(bmh.beatMaps); // clears bmh
 
 	for (noteInfo &a : currBeatMap.noteParams) {
 		if (!a.rest) {
@@ -63,25 +63,25 @@ void IdolScheme::update() {
 
 //--------------------------------------------------------------
 void IdolScheme::draw() {
-	string currBeatString = "Current beat: " + ofToString(mainConductor.currBeat, 2) + "/" + ofToString(mainConductor.totalBeats);
-	textOut.drawString(currBeatString, 10, 20);
-	string lengthString = "Current time: " + ofToString(((float) mainConductor.timeDiff.count()) / 1000, 2) + "/" + ofToString(mainConductor._lengthInS);
-	textOut.drawString(lengthString, 10, 40);
-	string beatDiffString = "Beats since last refresh: " + ofToString(mainConductor.numBeatsSinceRefresh, 5);
-	textOut.drawString(beatDiffString, 10, 60);
-	textOut.drawString(ofToString(ofGetFrameRate()), 10, 80);
+	textOut.drawString("Current beat: " + ofToString(mainConductor.currBeat, 2) + "/" + ofToString(mainConductor.totalBeats), 10, 20);
+	textOut.drawString("Current time: " + ofToString(((float) mainConductor.timeDiff.count()) / 1000, 2) + "/" + ofToString(mainConductor._lengthInS), 10, 40);
+	textOut.drawString("Beats since last refresh: " + ofToString(mainConductor.numBeatsSinceRefresh, 5), 10, 60);
+	textOut.drawString("FPS: " + ofToString(ofGetFrameRate()), 10, 80);
 
-	for (unsigned int i = 0; i < notes.size(); i++) {
-		if (mainConductor.currBeat > (notes.at(i).noteSettings.noteNum + 3)) {
-			notes.erase(notes.begin());
-			notes.pop_front(); // removes the finished note.
-		} else if (mainConductor.currBeat >= notes.at(i).noteSettings.noteNum
-			&& !notes.at(i).noteSettings.rest) {
-			notes.at(i).moveByBeats(mainConductor.currBeat);
-		} else {
-			break;
+	if (notes.size() != 0) {
+		for (unsigned int i = 0; i < notes.size(); i++) {
+			if (mainConductor.currBeat >(notes.at(i).noteSettings.noteNum + 3)) {
+				notes.erase(notes.begin()); // erases finished note
+			}
+			else if (mainConductor.currBeat >= notes.at(i).noteSettings.noteNum && !notes.at(i).noteSettings.rest) {
+				notes.at(i).moveByBeats(mainConductor.currBeat); // draws the note
+			}
+			else { // if the note isn't active yet
+				break;
+			}
 		}
 	}
+	
 
 	if(optionMenuShow)
 		optionMenu.draw();
@@ -91,12 +91,12 @@ void IdolScheme::draw() {
    ///////////////      Misc. Functions      ///////////////
 ///////////////////////////////////////////////////////////////
 
-float IdolScheme::qSetHCoord(float coordinate) {
+float IdolScheme::yCoord(float coordinate) {
 	return coordinate * ofGetHeight();
 }
 
 //--------------------------------------------------------------
-float IdolScheme::qSetWCoord(float coordinate) {
+float IdolScheme::xCoord(float coordinate) {
 	return coordinate * ofGetWidth();
 }
 
