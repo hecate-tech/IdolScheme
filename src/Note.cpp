@@ -168,7 +168,7 @@ ofPoint Note::calcPolarPoint(float angle) {
 	ofPoint result;
 	float halfC = 3.14169f / 180.f; // modifier to turn degrees to radians
 	float zMod, off = 0;
-
+	using namespace placeholders;
 	// lambdas for setting the coordinates of the result ofPoint
 	auto setRes = [&](float offset, float offset2, int val, int val2) {
 		result.x = offset + val;
@@ -183,14 +183,13 @@ ofPoint Note::calcPolarPoint(float angle) {
 		else { zMod = ofGetHeight() / 2; off = 0; }
 		return tan((angle * halfC) - off) * (zMod + note_size);
 	};
-	int i = sdChk(angle);
-	if (i <= 2) {
-		setRes((i == 2 ? (-1 * (note_size * 2)) : ofGetWidth()), ofGetHeight() / 2,
-			note_size, (i == 2 ? (-1 * comp()) : comp()));
-	} else if (i > 2) {
-		setRes(ofGetWidth() / 2, i == 3 ? ofGetHeight() : (-1 * (note_size * 2)),
-			i == 3 ? (-1 * comp()) : comp(), note_size);
-	}
+	auto sdSet = bind(setRes, _1, ofGetHeight()/2, note_size, _2);
+	auto nmSet = bind(setRes, ofGetWidth()/2, _1, _2, note_size);
+
+	if(sdChk(angle) == 2) 	   sdSet((-1*(note_size * 2)), (-1*(comp())));
+	else if(sdChk(angle) == 1) sdSet(ofGetWidth(), comp());
+	else if(sdChk(angle) == 3) nmSet(ofGetHeight(), (-1*(comp())));
+	else 					   nmSet((-1*(note_size * 2)), comp());
 	
 	return result;
 }
