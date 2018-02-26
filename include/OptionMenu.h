@@ -12,6 +12,10 @@
 	#include "ofxGui.h"
 #endif // !OFXGUI_H
 
+#ifndef MENUITEMS_H
+	#include "MenuItems.h"
+#endif //!MENUITEMS_H
+
 #ifndef OPTIONSMENU_H
 #define OPTIONSMENU_H
 
@@ -36,52 +40,35 @@ struct resButton {
 	WindowAspect ratio;
 	int w, h;
 	string getName() { return (ofToString(w) + "x" + ofToString(h)); };
-	string getRatioName() { 
-		return (ratio == ASPECT_4_3 ? "4:3"
-			: ratio == ASPECT_16_9  ? "16:9"
-			: ratio == ASPECT_16_10 ? "16:10"
-			: "21:9");
+	string getRatioName() {
+		return (ratio == ASPECT_4_3   ? "4:3"
+			:	ratio == ASPECT_16_9  ? "16:9"
+			:	ratio == ASPECT_16_10 ? "16:10"
+			:	/*wowowowowowowowowow*/ "21:9");
 	}
-	resButton() {}
-	resButton(int w_, int h_, WindowAspect ratio_) {
-		w = w_;
-		h = h_;
-		ratio = ratio_;
-	};
+	resButton(int w_, int h_, WindowAspect r_) : w(w_), h(h_), ratio(r_) {}
 };
 
-/* @brief - resChoice
- * resChoice is used as a component of a 'dropDown'
- * menu. It mainly serves as an extended ofxToggle
- * because it serves extra purposes like keeping track
- * of what its last state was and stores extra information
- * about screen sizes.
- */
-struct winModeChoice {
-	ofxToggle toggle;
-	string name;
-	bool chosen = false;
-	bool prevState = false, currState = false;
-	bool fullScrn() { return windowMode == OF_WINDOW ? false : true; }
+struct winChoice : idolChoice {
+	
 	ofWindowMode windowMode;
-	winModeChoice(string name_, bool chosen_ = false, ofWindowMode mode = OF_WINDOW) 
-		: name(name_), chosen(chosen_), windowMode(mode) {}
+	bool fullScrn() { return windowMode == OF_WINDOW ? false : true; }
+	winChoice(string name_, bool chosen_ = false, ofWindowMode mode = OF_WINDOW) {
+		name = name_;
+		chosen = chosen_;
+		windowMode = mode;
+	}
 };
 
-/* @brief - dropDown
- * dropDown is the structure of the choices
- * that are inside of a dropDown menu. This dropDown
- * by default holds choices for windowed and fullscreen
- * window modes.
- */
-struct winModeDropDown {
-	ofxGuiGroup panel;
-	vector<winModeChoice> choices = {
-		winModeChoice("Fullscreen", ofGetWindowMode() == OF_FULLSCREEN ? true : false, OF_FULLSCREEN),
-		winModeChoice("Windowed",   ofGetWindowMode() == OF_WINDOW 	   ? true : false, OF_WINDOW),
-		winModeChoice("GameMode",   ofGetWindowMode() == OF_GAME_MODE  ? true : false, OF_GAME_MODE)
-	};
-	bool folded = true;
+struct winDropDown : idolDropDown {
+	choice_vec<winChoice> choices;
+	winDropDown() {
+		choices = {
+			winChoice("Fullscreen", ofGetWindowMode() == OF_FULLSCREEN ? true : false, OF_FULLSCREEN),
+			winChoice("Windowed", ofGetWindowMode() == OF_WINDOW ? true : false, OF_WINDOW),
+			winChoice("GameMode", ofGetWindowMode() == OF_GAME_MODE ? true : false, OF_GAME_MODE)
+		};
+	}
 };
 
 struct controlsGroup {
@@ -115,7 +102,7 @@ private:
 	ofxPanel gui;
 	ofxGuiGroup graphics;
 	ofxGuiGroup controls;
-	winModeDropDown windowMode;
+	winDropDown windowMode;
 
 	void buttonCheck();
 	string currentWindowResolution;

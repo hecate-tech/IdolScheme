@@ -14,32 +14,24 @@
 #endif
 
 #ifndef OPTIONSMENU_H
-	#include "OptionsMenu.h"
+	#include "OptionMenu.h"
 #endif //!OPTIONSMENU_H
 
 #ifndef BEATMAPREADER_H
 	#include "BeatMapHandler.h"
 #endif //!BEATMAPREADER_H
 
+#ifndef MENUHANDLER_H
+	#include "MenuHandler.h"
+#endif //!MENUHANDLER_H
+
+#ifndef GAMESTATES_H
+	#include "GameStates.h"
+#endif //GAMESTATES_H
+
+
 #ifndef IDOLSCHEME_H
 #define IDOLSCHEME_H
-
-
-/* @brief - GameState
- * an easily accessible state that the
- * game is currently in. This enum is
- * accessible by the entire class and
- * used to track where the game is.
- */
-enum GameState {
-	GAME_ACTIVE,
-	GAME_PAUSE,
-	GAME_LOSE,
-	GAME_WIN,
-	GAME_MENU,
-	GAME_LOAD,
-	GAME_ERROR,
-};
 
 /* @brief - IdolScheme
  * The IdolScheme class holds the entirety
@@ -59,6 +51,8 @@ class IdolScheme : public ofBaseApp {
         deque<Note> notes;
 		int choice; // number of notes for debugging
 		bool optionMenuShow = false;
+		
+		friend class MenuHandler;
 
 		/// initialization
 		/// --------------
@@ -74,7 +68,6 @@ class IdolScheme : public ofBaseApp {
 		float yCoord(float coordinate);
 		float xCoord(float coordinate);
 		ofPoint qSetCoords(ofPoint coordinates);
-
 		/// callbacks
 		/// ---------
 		void keyPressed(int key);

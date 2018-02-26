@@ -174,7 +174,6 @@ ofPoint Note::calcPolarPoint(float angle) {
 		result.x = offset + val;
 		result.y = offset2 + val2;
 	};
-
 	if ((angle >= 60 && angle < 120) // sides of screen
 		|| (angle >= 240 && angle < 300)) {
 		zMod = ofGetWidth() / 2;
@@ -188,12 +187,11 @@ ofPoint Note::calcPolarPoint(float angle) {
 
 	double m_ = zMod + note_size; // magnitude
 	double x_ = tan((angle * halfC) - off) * m_; // offset from projected ray
-
+	
 	if ((angle >= 60 && angle < 120) // sides of screen
 		|| (angle >= 240 && angle < 300)) {
 		setRes((angle >= 240 ? (-1 * (note_size * 2)) : ofGetWidth()),
-			(ofGetHeight() / 2), note_size,
-			(angle >= 240 ? (-1 * x_) : x_));
+			(ofGetHeight() / 2), note_size, (angle >= 240 ? (-1 * x_) : x_));
 	}
 	else if ((angle < 60) // top and bottom of screen
 		|| (angle >= 120 && angle <  240)

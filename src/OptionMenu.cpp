@@ -1,4 +1,4 @@
-#include "../include/OptionsMenu.h"
+#include "../include/OptionMenu.h"
 
 ///////////////////////////////////////////////////////////////
     /////////////////      Constructor      ///////////////
@@ -24,7 +24,6 @@ OptionMenu::OptionMenu() {
 	graphics.add(windowMode.panel.setup("Window Mode"));
 	windowMode.panel.setName("Window Mode");
 	windowMode.panel.setHeaderBackgroundColor(ofColor::orange);
-
 	/// Adding the dropdown menu contents
 	for (unsigned int k = 0; k < windowMode.choices.size(); k++) {
 		windowMode.panel.add(windowMode.choices.at(k).toggle.setup(windowMode.choices.at(k).name, windowMode.choices.at(k).chosen));
