@@ -169,36 +169,27 @@ ofPoint Note::calcPolarPoint(float angle) {
 	float halfC = 3.14169f / 180.f; // modifier to turn degrees to radians
 	float zMod, off = 0;
 
-	// lambda for setting the coordinates of the result ofPoint
+	// lambdas for setting the coordinates of the result ofPoint
 	auto setRes = [&](float offset, float offset2, int val, int val2) {
 		result.x = offset + val;
 		result.y = offset2 + val2;
 	};
-	if ((angle >= 60 && angle < 120) // sides of screen
-		|| (angle >= 240 && angle < 300)) {
-		zMod = ofGetWidth() / 2;
-		off = 90 * halfC * (angle >= 240 ? 3 : 1);
-	}
-	else if ((angle < 60) // top and bottom of screen
-		|| (angle >= 120 && angle <  240)
-		|| (angle >= 300 && angle <= 360)) {
-		zMod = ofGetHeight() / 2;
-	}
-
-	double m_ = zMod + note_size; // magnitude
-	double x_ = tan((angle * halfC) - off) * m_; // offset from projected ray
-	
-	if ((angle >= 60 && angle < 120) // sides of screen
-		|| (angle >= 240 && angle < 300)) {
-		setRes((angle >= 240 ? (-1 * (note_size * 2)) : ofGetWidth()),
-			(ofGetHeight() / 2), note_size, (angle >= 240 ? (-1 * x_) : x_));
-	}
-	else if ((angle < 60) // top and bottom of screen
-		|| (angle >= 120 && angle <  240)
-		|| (angle >= 300 && angle <= 360)) {
-		setRes((ofGetWidth() / 2),
-			(angle >= 120 && angle < 240 ? ofGetHeight() : (-1 * (note_size * 2))),
-			(angle >= 120 && angle < 240 ? (-1 * x_) : x_), note_size);
+	auto sdChk = [](float a) {
+		return ((a >= 60 && a < 120) ? 1 : (a >= 240 && a < 300) ? 2 : (a >= 120 && a < 240) ? 3 : 4);
+	};
+	auto comp = [&]() {
+		int i = sdChk(angle);
+		if ( i <= 2) { zMod = ofGetWidth() / 2; off = 90 * halfC * (i == 2 ? 3 : 1); }
+		else { zMod = ofGetHeight() / 2; off = 0; }
+		return tan((angle * halfC) - off) * (zMod + note_size);
+	};
+	int i = sdChk(angle);
+	if (i <= 2) {
+		setRes((i == 2 ? (-1 * (note_size * 2)) : ofGetWidth()), ofGetHeight() / 2,
+			note_size, (i == 2 ? (-1 * comp()) : comp()));
+	} else if (i > 2) {
+		setRes(ofGetWidth() / 2, i == 3 ? ofGetHeight() : (-1 * (note_size * 2)),
+			i == 3 ? (-1 * comp()) : comp(), note_size);
 	}
 	
 	return result;
