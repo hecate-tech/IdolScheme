@@ -14,8 +14,8 @@ void IdolScheme::setup() {
 
 	/// debug beatmap picker
 	/// --------------------
-	beatMap currBeatMap = bmh.beatMapMenu();
-	vector<beatMap>().swap(bmh.beatMaps); // clears bmh
+	beatMap currBeatMap = bmHandler.beatMapMenu();
+	vector<beatMap>().swap(bmHandler.beatMaps); // clears bmh
 
 	for (noteInfo &a : currBeatMap.noteParams) {
 		if (!a.rest) {
@@ -72,19 +72,15 @@ void IdolScheme::draw() {
 		for (unsigned int i = 0; i < notes.size(); i++) {
 			if (mainConductor.currBeat >(notes.at(i).noteSettings.noteNum + 3)) {
 				notes.erase(notes.begin()); // erases finished note
-			}
-			else if (mainConductor.currBeat >= notes.at(i).noteSettings.noteNum && !notes.at(i).noteSettings.rest) {
+			} else if (mainConductor.currBeat >= notes.at(i).noteSettings.noteNum && !notes.at(i).noteSettings.rest) {
 				notes.at(i).moveByBeats(mainConductor.currBeat); // draws the note
-			}
-			else { // if the note isn't active yet
+			} else { // if the note isn't active yet
 				break;
 			}
 		}
 	}
 	
-
-	if(optionMenuShow)
-		optionMenu.draw();
+	menuHandler.draw(); // menu handler
 }
 
 ///////////////////////////////////////////////////////////////
@@ -112,7 +108,7 @@ ofPoint IdolScheme::qSetCoords(ofPoint coordinates) {
 void IdolScheme::keyPressed(int key) {
 	switch (key) {
 		case 'o':
-			optionMenuShow = !optionMenuShow;
+			menuHandler.updateState(GAME_OPTIONSMENU);
 			break;
 	}
 }

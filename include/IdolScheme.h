@@ -13,10 +13,6 @@
 	#include "Conductor.h"
 #endif
 
-#ifndef OPTIONSMENU_H
-	#include "OptionMenu.h"
-#endif //!OPTIONSMENU_H
-
 #ifndef BEATMAPREADER_H
 	#include "BeatMapHandler.h"
 #endif //!BEATMAPREADER_H
@@ -44,15 +40,12 @@ class IdolScheme : public ofBaseApp {
 		GameState IdolScheme_State; // describes what the game is doing.
 		ofTrueTypeFont textOut;
 
-		BeatMapHandler bmh;
-		OptionMenu optionMenu;
+		/// Game Objects
+		/// ------------
+		BeatMapHandler bmHandler;
+		MenuHandler menuHandler;
 		Conductor mainConductor; // This will keep time.
-		Note note; // need a better solution than making each note.
         deque<Note> notes;
-		int choice; // number of notes for debugging
-		bool optionMenuShow = false;
-		
-		friend class MenuHandler;
 
 		/// initialization
 		/// --------------
@@ -68,6 +61,7 @@ class IdolScheme : public ofBaseApp {
 		float yCoord(float coordinate);
 		float xCoord(float coordinate);
 		ofPoint qSetCoords(ofPoint coordinates);
+
 		/// callbacks
 		/// ---------
 		void keyPressed(int key);

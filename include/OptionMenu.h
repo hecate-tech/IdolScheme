@@ -16,6 +16,10 @@
 	#include "MenuItems.h"
 #endif //!MENUITEMS_H
 
+#ifndef MENU_H
+	#include "Menu.h"
+#endif //!MENU_H
+
 #ifndef OPTIONSMENU_H
 #define OPTIONSMENU_H
 
@@ -85,9 +89,9 @@ struct controlsGroup {
  * and you can call it in another class. The
  * 'IdolScheme' class contains it already.
  */
-class OptionMenu {
+class OptionMenu : public Menu {
 public:
-	void draw();
+	void draw() override;
 	void setAspectRatio(WindowAspect ratio = ASPECT_4_3);
 	void setResolution(string resolution = "800x600");
 	WindowAspect getAspectRatio();
