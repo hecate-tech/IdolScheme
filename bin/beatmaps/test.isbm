@@ -5,9 +5,9 @@
 ##########################################################
 
 #######  BEATMAP NAME  #######
-beatname | My Amazing BeatMap!
-#			 ^
-#			 |
+beatname | Testing BeatMap
+#			^
+#			|
 #              I didn't space this out
 #	 but the interpreter spaces out words
 #	   on every capital letter there is.
