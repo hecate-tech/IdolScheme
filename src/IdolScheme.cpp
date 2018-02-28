@@ -52,13 +52,6 @@ void IdolScheme::setup() {
 void IdolScheme::update() {
 	mainConductor.refreshMembers();
 	mainConductor.beatSinceRefresh = mainConductor.currBeat;
-
-#ifdef TARGET_LINUX
-	int w = ofGetWidth();
-	int h = ofGetHeight();
-	if(w != optionMenu.getWinHeight() || h != optionMenu.getWinWidth())
-		ofSetWindowShape(optionMenu.getWinWidth(), optionMenu.getWinHeight());
-#endif
 }
 
 //--------------------------------------------------------------

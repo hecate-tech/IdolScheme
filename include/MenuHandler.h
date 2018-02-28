@@ -19,7 +19,10 @@ struct menuSettings {
 	bool show = false;
 	GameState menuState;
 	menuSettings() {}
-	menuSettings(bool s, GameState state) : menuState(state), show(s) {}
+	menuSettings(bool s, GameState state) {
+		menuState = state;
+		show = s;
+	}
 };
 
 class MenuHandler {

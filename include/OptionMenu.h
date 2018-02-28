@@ -50,7 +50,11 @@ struct resButton {
 			:	ratio == ASPECT_16_10 ? "16:10"
 			:	/*wowowowowowowowowow*/ "21:9");
 	}
-	resButton(int w_, int h_, WindowAspect r_) : w(w_), h(h_), ratio(r_) {}
+	resButton(int w_, int h_, WindowAspect r_) {
+		w 	  = w_;
+		h 	  = h_;
+		ratio = r_;
+	}
 };
 
 struct winChoice : idolChoice {
