@@ -182,7 +182,7 @@ namespace ISGUI {
 	 * buttons and other idolScheme
 	 * objects.
 	 */
-	class idolGuiGroup : public Menu { // notes don't listen
+	class idolGuiGroup : public Menu {
 	public:
 		idolGuiGroup() {}
 
