@@ -27,14 +27,15 @@ struct menuSettings {
 
 class MenuHandler {
 private:
-	map<int, pair<Menu*, menuSettings>> menu_map;
-	// maps become faster than vectors once there are around 5-30 elements.
+	vector<pair<Menu*, menuSettings>> menu_vec;
 public:
 	void draw();
 	void updateState(GameState state);
+	void add(Menu *menu, bool showing, GameState state) {
+		menu_vec.push_back(make_pair(menu, menuSettings(showing, state)));
+	}
 	MenuHandler() {
-		menu_map.emplace(0, make_pair((Menu*)new OptionMenu(),
-			menuSettings(false, GAME_OPTIONSMENU)));
+		menu_vec.push_back(make_pair((Menu*)new OptionMenu(), menuSettings(false, GAME_OPTIONSMENU)));
 	}
 };
 

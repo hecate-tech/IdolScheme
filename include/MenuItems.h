@@ -13,6 +13,10 @@
 	#include "ofxGui.h"
 #endif // !OFXGUI_H
 
+#ifndef MENU_H
+	#include "Menu.h"
+#endif
+
 /* @brief - idolChoice
  * a component of idolDropDown.
  * used as a button inside of it.
@@ -120,6 +124,10 @@ namespace ISGUI {
 			hoverDirectory = hoverdir;
 		}
 
+		ofPoint getPosition() {
+			return imagePos;
+		}
+
 	protected:
 		ofImage buttonImage;
 		ofPoint imagePos;
@@ -174,36 +182,36 @@ namespace ISGUI {
 	 * buttons and other idolScheme
 	 * objects.
 	 */
-	class idolGuiGroup { // notes don't listen
+	class idolGuiGroup : public Menu { // notes don't listen
 	public:
 		idolGuiGroup() {}
 
-		void draw() {
+		void draw() override {
 			for (unsigned int i = 0; i < buttons.size(); i++) {
-				buttons.at(i).draw();
+				buttons.at(i)->draw();
 			}
 		}
-		void add(idolButton btn) {
+		void add(idolButton* btn) {
 			buttons.push_back(btn);
 		}
-		void add(vector<idolButton> btns) {
-			for (idolButton a : btns)
+		void add(vector<idolButton*> btns) {
+			for (idolButton* a : btns)
 				add(a);
 		}
 		void clear() {
 			buttons.clear();
 			buttons.shrink_to_fit();
 		}
-		vector<idolButton> getButtons() {
+		vector<idolButton*> getButtons() {
 			return buttons;
 		}
-		idolButton &getButton(int index) {
+		idolButton *getButton(int index) {
 			if (index > buttons.size())
-				return idolButton();
+				return new idolButton();
 			return buttons.at(index);
 		}
 	private:
-		vector<idolButton> buttons;
+		vector<idolButton*> buttons;
 	};
 }
 

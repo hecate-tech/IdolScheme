@@ -48,12 +48,11 @@ class IdolScheme : public ofBaseApp {
 		Conductor mainConductor; // This will keep time.
         deque<Note> notes;
 		
-		ISGUI::idolButton myButton;
-		vector<ISGUI::idolButton> mainMenuBtns = {
-			myButton,
-			ISGUI::idolButton("images/note.png", "images/shadow.png", ofPoint(200, 100), 80, 80),
-			ISGUI::idolButton("images/note.png", "images/shadow.png", ofPoint(100, 200), 80, 80),
-			ISGUI::idolButton("images/note.png", "images/shadow.png", ofPoint(100, 300), 80, 80),
+		vector<ISGUI::idolButton*> mainMenuBtns = {
+			new ISGUI::idolButton("images/btn0.png", "images/btn0hov.png", ofPoint(100, 175), 100, 50),
+			new ISGUI::idolButton("images/btn1.png", "images/btn1hov.png", ofPoint(100, 250), 100, 50),
+			new ISGUI::idolButton("images/btn2.png", "images/btn2hov.png", ofPoint(100, 320), 100, 50),
+			new ISGUI::idolButton("images/btn3.png", "images/btn3hov.png", ofPoint(100, 395), 100, 50)
 		};
 		ISGUI::idolGuiGroup gui;
 

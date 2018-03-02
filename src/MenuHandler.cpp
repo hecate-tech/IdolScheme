@@ -2,18 +2,18 @@
 
 //-----------------------------
 void MenuHandler::draw() {
-	for (unsigned int i = 0; i < menu_map.size(); i++) {
-		if (menu_map[i].second.show) {
-			menu_map[i].first->draw();
+	for (unsigned int i = 0; i < menu_vec.size(); i++) {
+		if (menu_vec.at(i).second.show) {
+			menu_vec.at(i).first->draw();
 		}
 	}
 }
 
 //-----------------------------
 void MenuHandler::updateState(GameState state) {
-	for (unsigned int i = 0; i < menu_map.size(); i++) {
-		if (menu_map[i].second.menuState == state) {
-			menu_map[i].second.show = !menu_map[i].second.show;
+	for (unsigned int i = 0; i < menu_vec.size(); i++) {
+		if (menu_vec.at(i).second.menuState == state) {
+			menu_vec.at(i).second.show = !menu_vec.at(i).second.show;
 			break;
 		}
 	}

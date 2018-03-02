@@ -12,7 +12,8 @@ void IdolScheme::setup() {
 	textOut.load("verdana.ttf", 20, true, false);
 	textOut.setLetterSpacing(1.037);
 	
-	myButton.set("images/note.png", "images/shadow.png", ofPoint(100, 100), 80, 80);
+	gui.add(mainMenuBtns);
+	menuHandler.add((Menu*)&gui, false, GAME_MAINMENU);
 
 	/// debug beatmap picker
 	/// --------------------
@@ -40,7 +41,6 @@ void IdolScheme::setup() {
 			notes.at(i).calcNoteParams();
 		}
 	}
-	
 	mainConductor.startTimer();
 	// something is going on with the formula and it doesn't work properly
 	// unless the note is in its sepcial position.
@@ -52,6 +52,11 @@ void IdolScheme::setup() {
 ///////////////////////////////////////////////////////////////
 
 void IdolScheme::update() {
+	for (unsigned int i = 0; i < gui.getButtons().size(); i++)
+		if (gui.getButton(i)->mouseDown())
+			cout << "Pressed Button " + ofToString(i) << endl;
+		
+
 	mainConductor.refreshMembers();
 	mainConductor.beatSinceRefresh = mainConductor.currBeat;
 }
@@ -74,7 +79,7 @@ void IdolScheme::draw() {
 			}
 		}
 	}
-
+	//gui.draw();
 	menuHandler.draw(); // menu handler
 }
 
@@ -104,6 +109,9 @@ void IdolScheme::keyPressed(int key) {
 	switch (key) {
 		case 'o':
 			menuHandler.updateState(GAME_OPTIONSMENU);
+			break;
+		case 'm':
+			menuHandler.updateState(GAME_MAINMENU);
 			break;
 	}
 }
