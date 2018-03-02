@@ -194,7 +194,7 @@ begin:
 #else // UNIX_SYSTEMS
 	system("clear");
 #endif //!TARGET_WIN32
-
+	
 	for (i = 0; i < beatMaps.size(); i++) {
 		cout << ofToString(i + 1) << ": " << beatMaps.at(i).name << endl;
 	}

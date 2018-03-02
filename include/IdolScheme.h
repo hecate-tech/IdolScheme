@@ -25,6 +25,7 @@
 	#include "GameStates.h"
 #endif //GAMESTATES_H
 
+#include "MenuItems.h"
 
 #ifndef IDOLSCHEME_H
 #define IDOLSCHEME_H
@@ -39,13 +40,22 @@ class IdolScheme : public ofBaseApp {
 	public:
 		GameState IdolScheme_State; // describes what the game is doing.
 		ofTrueTypeFont textOut;
-
+		
 		/// Game Objects
 		/// ------------
 		BeatMapHandler bmHandler;
 		MenuHandler menuHandler;
 		Conductor mainConductor; // This will keep time.
         deque<Note> notes;
+		
+		ISGUI::idolButton myButton;
+		vector<ISGUI::idolButton> mainMenuBtns = {
+			myButton,
+			ISGUI::idolButton("images/note.png", "images/shadow.png", ofPoint(200, 100), 80, 80),
+			ISGUI::idolButton("images/note.png", "images/shadow.png", ofPoint(100, 200), 80, 80),
+			ISGUI::idolButton("images/note.png", "images/shadow.png", ofPoint(100, 300), 80, 80),
+		};
+		ISGUI::idolGuiGroup gui;
 
 		/// initialization
 		/// --------------

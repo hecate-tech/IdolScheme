@@ -15,11 +15,11 @@
 #ifndef CONDUCTOR_H
 #define CONDUCTOR_H
     #include "Conductor.h"
-#endif
+#endif //!CONDUCTOR_H
 
 #ifndef NOTEINFO_H
 	#include "NoteInfo.h"
-#endif
+#endif //!NOTEINFO_H
 
 
 /* @brief - Shadow
@@ -29,6 +29,8 @@
  * (Amazing brief)
  */
 class Shadow {
+protected:
+	const GLchar *sprite_dir = "images/shadow.png";
 public:
 	ofImage shadowSprite;
 	const char *shadow_dir = "images/shadow.png";
@@ -43,8 +45,6 @@ public:
 	void resize(GLint width, GLint height);
 	void load();
 	void draw(GLfloat x, GLfloat y);
-private:
-	const GLchar *sprite_dir = "images/shadow.png";
 };
 
 /* @brief - Note
@@ -55,11 +55,7 @@ private:
  * note color, and the note image.
  */
 class Note {
-public:
-	/// Note settings
-	/// -------------
-	noteInfo noteSettings;
-
+protected:
 	int lengthInBeats = BAD_LENGTH;
 	GLint note_size = (ofGetWindowWidth() + ofGetWindowHeight()) * 0.06; // for width and the height.
 	ofColor note_color = ofColor(255, 255, 255, 255);
@@ -69,6 +65,11 @@ public:
 	ofVec2f startPos;
 	ofVec2f distToShadow;
 	GLfloat notex, notey, shadowX, shadowY; // current positions
+	Shadow *shadow; // The note shadow. (This object shouldn't move)
+public:
+	/// Note settings
+	/// -------------
+	noteInfo noteSettings;
 
 	/// Constructors/Desconstructor
 	/// ---------------------------
@@ -95,9 +96,6 @@ public:
 	ofColor getColor();
 	ofPoint calcPolarPoint(float angle);
 	Shadow *getShadow();
-private:
-	Shadow *shadow; // The note shadow. (This object shouldn't move)
 };
-
 
 #endif //!NOTE_H

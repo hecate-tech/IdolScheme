@@ -11,6 +11,8 @@ void IdolScheme::setup() {
 	ofTrueTypeFont::setGlobalDpi(60);
 	textOut.load("verdana.ttf", 20, true, false);
 	textOut.setLetterSpacing(1.037);
+	
+	myButton.set("images/note.png", "images/shadow.png", ofPoint(100, 100), 80, 80);
 
 	/// debug beatmap picker
 	/// --------------------
@@ -72,7 +74,7 @@ void IdolScheme::draw() {
 			}
 		}
 	}
-	
+
 	menuHandler.draw(); // menu handler
 }
 
