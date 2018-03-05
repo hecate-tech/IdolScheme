@@ -24,7 +24,7 @@ void IdolScheme::setup() {
 		if (!a.rest) {
 			mainConductor._bpm = a.bpm;
 			mainConductor._offsetInMs = a.offset;
-			mainConductor._lengthInS = a.length;
+			//mainConductor._lengthInS = a.length;
 			break;
 		}
 	}

@@ -32,7 +32,7 @@ BeatMapHandler::BeatMapHandler() {
 				cout << "num:  " + ofToString(bm.noteParams.at(j).noteNum) << endl;
 				cout << "bpm:  " + ofToString(bm.noteParams.at(j).bpm)    << endl;
 				cout << "off:  " + ofToString(bm.noteParams.at(j).offset) << endl;
-				cout << "len:  " + ofToString(bm.noteParams.at(j).length) << endl;
+				cout << "len:  " + ofToString(bm.noteParams.at(j).frac) << endl;
 				cout << "type: " + ofToString(bm.noteParams.at(j).type)   << endl;
 				cout << "btn:  " + ofToString(bm.noteParams.at(j).button) << endl << endl;
 			}
@@ -86,11 +86,12 @@ beatMap BeatMapHandler::setNoteParameters(string path) {
 		if (!result.noteParams.empty()) {			// if there are notes available
 			for (unsigned int j = 0; j < result.noteParams.size(); j++) { // for every note available
 				if (result.noteParams.at(j).lineNum == lineNum) {			// if current line is equal to note's line number.
-					result.noteParams.at(j).noteNum = j + 1;
+					result.noteParams.at(j).noteNum = j;
 					result.noteParams.at(j).args.push_back(str);
 					if (result.noteParams.at(j).args.size() > 7) {		// if enough arguments to make a note.
 						result.noteParams.at(j).bpm = defbpm;
-						result.noteParams.at(j).convert();
+						//cout << "Note: " + ofToString(j) << ": " + ofToString(result.noteParams.at(j == 0 ? j : j - 1).noteNum) << endl;
+						result.noteParams.at(j).convert(result.noteParams.at(j == 0 ? j : j - 1).noteNum);
 					}
 				}
 			}
@@ -171,8 +172,34 @@ beatMap BeatMapHandler::setNoteParameters(string path) {
 				}
 				restAct = false;
 			}
-
-
+			/*for (noteInfo &a : result.noteParams) {
+				if (a.lineNum == lineNum) {
+					if (a.args.size() == 1) {
+						a.frac = 1.0f / ofToFloat(a.args.at(1));
+						
+					}
+				}
+			}*/
+			
+			if(result.noteParams.size() == 1)
+			for (unsigned int i = 1; i < result.noteParams.size(); i++) {
+				if (result.noteParams.at(i).lineNum == lineNum) {
+					result.noteParams.at(i).frac = 1.0f / ofToFloat(result.noteParams.at(i).args.at(1));
+					result.noteParams.at(i).noteNum = result.noteParams.at(i).frac;
+				}
+			}
+			/*
+			for (unsigned int i = 0; i < result.noteParams.size(); i++) {
+				if (result.noteParams.at(i).lineNum == lineNum) {
+					if (result.noteParams.at(i).args.size() == 1) {
+						result.noteParams.at(i).frac = 1.0f / ofToFloat(result.noteParams.at(i).args.at(1));
+						if (i == 0)
+							result.noteParams.at(i).noteNum = result.noteParams.at(i).frac;
+					}
+					if(i > 0)
+						result.noteParams.at(i).noteNum = result.noteParams.at(i - 1).noteNum + result.noteParams.at(i).frac;
+				}
+			}*/
 
 		}
 		/// next line
@@ -190,7 +217,7 @@ beatMap BeatMapHandler::beatMapMenu() {
 begin:
 
 #ifdef TARGET_WIN32
-	system("cls");
+	//system("cls");
 #else // UNIX_SYSTEMS
 	system("clear");
 #endif //!TARGET_WIN32
