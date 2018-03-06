@@ -8,6 +8,10 @@
 	#include "../ofMain.h"
 #endif //!OFMAIN_H
 
+#ifndef SCOREKEEPER_H
+	#include "ScoreKeeper.h"
+#endif
+
 #ifndef ERRORCODES_H
 	#include "ErrorCodes.h"
 #endif //!ERRORCODES_H
@@ -71,6 +75,11 @@ public:
 	/// -------------
 	noteInfo noteSettings;
 
+	/// Pointers
+	/// --------
+	ScoreKeeper *scoreKeeper;
+	Conductor *conductor;
+	
 	/// Constructors/Desconstructor
 	/// ---------------------------
 	Note() {}
@@ -90,7 +99,8 @@ public:
 	void init();
 	void draw(GLfloat nX = 0, GLfloat nY = 0, GLfloat sX = 0, GLfloat sY = 0); // draws the note and shadow objects.
 	void moveByBeats(GLfloat currBeat);
-	void hit(); // For catching key presses.
+	void hit(NoteButton buttonPressed); // For catching key presses.
+	void updateScoreKeeper();
 	void setColor(GLfloat r = 0, GLfloat g = 0, GLfloat b = 0, GLfloat a = 255); // not used ATM
 	bool destroy();
 	ofColor getColor();

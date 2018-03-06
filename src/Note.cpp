@@ -82,9 +82,42 @@ void Note::init() {
    //////////////////      Functions      //////////////////
 ///////////////////////////////////////////////////////////////
 
-void Note::hit() {
+void Note::hit(NoteButton buttonPressed) {
 	/// This is when the user pressed the assigned note button.
 	/// -------------------------------------------------------
+    if (buttonPressed != noteSettings.button) {
+        scoreKeeper->wrongCount += 1;
+        return;
+    }
+
+    updateScoreKeeper();
+}
+
+void Note::updateScoreKeeper() {
+    	auto accuracy = assessAccuracy(conductor->currBeat, noteSettings.noteNum); 
+	switch(accuracy) {
+		case WONDERFUL:
+		    scoreKeeper->wonderfulCount += 1;
+		    scoreKeeper->score += 1000;
+		    break;
+		case GOOD:
+		    scoreKeeper->goodCount += 1;
+		    scoreKeeper->score += 500;
+		    break;
+		case MEDIOCRE:
+		    scoreKeeper->mediocreCount += 1;
+		    scoreKeeper->score += 100;
+		    break;
+		case BAD:
+		    scoreKeeper->badCount += 1;
+		    scoreKeeper->score += 50;
+		    break;
+		case GARBAGE:
+		    scoreKeeper->garbageCount += 1;
+		    break;
+		default:
+		    break;
+	}
 }
 
 //----------------------------------------------------------------------------------

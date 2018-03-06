@@ -65,6 +65,7 @@ public:
 	float xS, yS;  // the X and Y position of the note shadow.
 	float angle;   // possible angle where the note comes from.
 				   // if the note is a rest.
+	float targetBeat; //This is the beat the note should be hit on
 	bool rest = false;
 	int restSize = 1;
 

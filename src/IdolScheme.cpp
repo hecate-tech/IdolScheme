@@ -39,6 +39,8 @@ void IdolScheme::setup() {
 		else if (!currBeatMap.noteParams.at(i).rest) {
 			notes.at(i).setBeatNote(currBeatMap.noteParams.at(i));
 			notes.at(i).calcNoteParams();
+			notes.at(i).scoreKeeper = &scoreKeeper;
+			notes.at(i).conductor = &mainConductor;
 		}
 	}
 	mainConductor.startTimer();
@@ -64,16 +66,24 @@ void IdolScheme::update() {
 //--------------------------------------------------------------
 void IdolScheme::draw() {
 	textOut.drawString("Current beat: " + ofToString(mainConductor.currBeat, 2) + "/" + ofToString(mainConductor.totalBeats), 10, 20);
-	textOut.drawString("Current time: " + ofToString(((float) mainConductor.timeDiff.count()) / 1000, 2) + "/" + ofToString(mainConductor._lengthInS), 10, 40);
-	textOut.drawString("Beats since last refresh: " + ofToString(mainConductor.numBeatsSinceRefresh, 5), 10, 60);
-	textOut.drawString("FPS: " + ofToString(ofGetFrameRate()), 10, 80);
-
+	textOut.drawString("Active Note TBEAT: " + (activeNote ? ofToString(activeNote->noteSettings.noteNum) : "None"), 10, 40);
+	textOut.drawString("Current time: " + ofToString(((float) mainConductor.timeDiff.count()) / 1000, 2) + "/" + ofToString(mainConductor._lengthInS), 10, 60);
+	textOut.drawString("Beats since last refresh: " + ofToString(mainConductor.numBeatsSinceRefresh, 5), 10, 80);
+	textOut.drawString("FPS: " + ofToString(ofGetFrameRate()), 10, 100);
+	textOut.drawString("Score: " + ofToString(scoreKeeper.score), 400, 20);
+	textOut.drawString("WONDERFUL: " + ofToString(scoreKeeper.wonderfulCount), 400, 40);
+	textOut.drawString("GOOD: " + ofToString(scoreKeeper.goodCount), 400, 60);
+	textOut.drawString("MEDICORE: " + ofToString(scoreKeeper.mediocreCount), 400, 80);
+	textOut.drawString("BAD: " + ofToString(scoreKeeper.badCount), 400, 100);
+	textOut.drawString("GARBAGE: " + ofToString(scoreKeeper.garbageCount), 400, 120);
+	textOut.drawString("WRONG: " + ofToString(scoreKeeper.wrongCount), 400, 140);
 	if (notes.size() != 0) {
 		for (unsigned int i = 0; i < notes.size(); i++) {
 			if (mainConductor.currBeat >(notes.at(i).noteSettings.noteNum + 3)) {
 				notes.erase(notes.begin()); // erases finished note
 			} else if (mainConductor.currBeat >= notes.at(i).noteSettings.noteNum && !notes.at(i).noteSettings.rest) {
 				notes.at(i).moveByBeats(mainConductor.currBeat); // draws the note
+				activeNote = &(notes.at(i));
 			} else { // if the note isn't active yet
 				break;
 			}
@@ -113,6 +123,9 @@ void IdolScheme::keyPressed(int key) {
 			break;
 		case 'm':
 			menuHandler.updateState(GAME_MAINMENU);
+			break;
+		default:
+			activeNote->hit(BUTTON_A);	
 			break;
 	}
 }

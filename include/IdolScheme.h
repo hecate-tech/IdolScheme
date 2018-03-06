@@ -5,6 +5,10 @@
 	#include "ofMain.h"
 #endif //!OFMAIN_H
 
+#ifndef SCOREKEEPER_H
+	#include "ScoreKeeper.h"
+#endif
+
 #ifndef NOTE_H
 	#include "Note.h"
 #endif //NOTE_H
@@ -46,7 +50,10 @@ class IdolScheme : public ofBaseApp {
 		BeatMapHandler bmHandler;
 		MenuHandler menuHandler;
 		Conductor mainConductor; // This will keep time.
-        deque<Note> notes;
+        	deque<Note> notes;
+		ScoreKeeper scoreKeeper;
+		Note *activeNote;
+
 		ISGUI::idolVecButton newVecBtn = ISGUI::idolVecButton(ofVec2f(200, 300), ofVec2f(200, 100), "My Button", ofColor(255, 0, 0, 255), ofColor(200, 0, 0, 255));
 		vector<ISGUI::idolButton*> mainMenuBtns = {
 			new ISGUI::idolButton("images/btn0.png", "images/btn0hov.png", ofPoint(100, 175), 100, 50),
