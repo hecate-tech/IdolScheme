@@ -47,7 +47,6 @@ public:
 	idolDropDown() {}
 };
 
-
 namespace ISGUI {
 	/* @brief - idolSchemeButton
 	* this is a new type of button that
@@ -57,77 +56,21 @@ namespace ISGUI {
 	*/
 	class idolButton {
 	public:
-		idolButton() {
-			ofAddListener(ofEvents().mousePressed, this, &idolButton::mouseDownEvent);
-			ofAddListener(ofEvents().mouseMoved, this, &idolButton::mouseMoveEvent);
-			ofAddListener(ofEvents().mouseReleased, this, &idolButton::mouseUpEvent);
-			buttonImage.setAnchorPercent(.5, .5);
-		}
-		idolButton(string normdir, string hoverdir, ofPoint pos, float w, float h) {
-			ofAddListener(ofEvents().mousePressed, this, &idolButton::mouseDownEvent);
-			ofAddListener(ofEvents().mouseMoved, this, &idolButton::mouseMoveEvent);
-			ofAddListener(ofEvents().mouseReleased, this, &idolButton::mouseUpEvent);
-			set(normdir, hoverdir, pos, w, h);
-			buttonImage.setAnchorPercent(.5, .5);
-		}
-		~idolButton() {
-			ofRemoveListener(ofEvents().mousePressed, this, &idolButton::mouseDownEvent);
-			ofRemoveListener(ofEvents().mouseMoved, this, &idolButton::mouseMoveEvent);
-			ofRemoveListener(ofEvents().mouseReleased, this, &idolButton::mouseUpEvent);
-		}
+		idolButton();
+		idolButton(string normdir, string hoverdir, ofPoint pos, float w, float h);
+		~idolButton();
 
-		void setBounds(const ofPoint xy, float width, float height) {
-			bound.set(xy, width, height);
-			width = width;
-			height = height;
-		}
+		void draw();
+		void setImagePosition(ofPoint pos);
+		void setImagePosition(float x_, float y_);
+		void setImageDirectory(const string directory);
+		void setBounds(const ofPoint xy, float width, float height);
+		void set(string normdir, string hoverdir, ofPoint pos, float w, float h);
+		
+		bool mouseDown();
 
-		void setImageDirectory(const string directory) {
-			buttonImage.load(directory);
-			buttonImage.resize(width, height);
-			imageDirectory = directory;
-		}
-
-		void setImagePosition(ofPoint pos) {
-			imagePos = pos;
-			bound.setPosition(ofPoint(pos.x - (width / 2), pos.y - (height / 2)));
-		}
-
-		void setImagePosition(float x_, float y_) {
-			setImagePosition(ofPoint(x_, y_));
-		}
-
-		string getImageDirectory() {
-			return imageDirectory;
-		}
-
-		void draw() {
-			buttonImage.draw(imagePos.x, imagePos.y);
-		}
-
-		bool mouseDown() {
-			if (pressed) {
-				pressed = false;
-				return true;
-			}
-			return false;
-		}
-
-		void set(string normdir, string hoverdir, ofPoint pos, float w, float h) {
-			buttonImage.load(normdir);
-			buttonImage.resize(w, h);
-			width = w;
-			height = h;
-			imagePos = pos;
-			bound.set(ofPoint(pos.x - (w / 2), pos.y - (h / 2)), w, h);
-			normalDirectory = normdir;
-			hoverDirectory = hoverdir;
-		}
-
-		ofPoint getPosition() {
-			return imagePos;
-		}
-
+		ofPoint getPosition();
+		string getImageDirectory();
 	protected:
 		ofImage buttonImage;
 		ofPoint imagePos;
@@ -142,39 +85,12 @@ namespace ISGUI {
 	private:
 		string imageDirectory; // active directory for image
 
-		void mouseDownEvent(ofMouseEventArgs &mouse) {
-			if (mouse.button == OF_MOUSE_BUTTON_1) {
-				if (isInBounds(mouse.x, mouse.y)) {
-					pressed = true;
-				}
-			}
-		}
-		void mouseMoveEvent(ofMouseEventArgs &mouse) {
-			if (isInBounds(mouse.x, mouse.y)) {
-				if (!hovering) {
-					hovering = true;
-					setImageDirectory(hoverDirectory);
-				}
-			} else {
-				if (hovering) {
-					hovering = false;
-					setImageDirectory(normalDirectory);
-				}
-			}
-		}
-		void mouseUpEvent(ofMouseEventArgs &mouse) {
-			if (pressed) pressed = false;
-		}
-		bool isInBounds(float x, float y) {
-			if (x <= bound.getRight()
-				&& x >= bound.getLeft()
-				&& y <= bound.getBottom()
-				&& y >= bound.getTop()) {
-				return true;
-			}
-			return false;
-		}
+		void mouseDownEvent(ofMouseEventArgs &mouse);
+		void mouseMoveEvent(ofMouseEventArgs &mouse);
+		void mouseUpEvent(ofMouseEventArgs &mouse);
+		bool isInBounds(float x, float y);
 	};
+
 
 	/* @brief - idolGuiGroup
 	 * the ofxGuiGroup of ISGui
@@ -212,6 +128,55 @@ namespace ISGUI {
 		}
 	private:
 		vector<idolButton*> buttons;
+	};
+
+	
+	class idolVecButton {
+	public:
+		idolVecButton();
+		idolVecButton(ofVec2f pos, ofVec2f size, string btnText, ofColor nColor = ofColor(255, 255, 255, 255), ofColor hColor = ofColor(0, 0, 0, 255));
+		~idolVecButton();
+
+		void draw();
+		void setFontSize(int size);
+		void setText(string newText);
+		void setTextPos(ofVec2f pos);
+		void setBoundPos(ofVec2f pos);
+		void setButtonPos(ofVec2f pos);
+		void setBoundSize(ofVec2f size);
+		void setFontKerning(double kern);
+		void setFontFile(string fontDir);
+		void setTextColor(ofColor color);
+		void setNormColor(ofColor color);
+		void setHoverColor(ofColor color);
+		void set(ofVec2f pos, ofVec2f size, string btnText, ofColor nColor, ofColor hColor);
+
+		int getFontSize();
+		bool getMouseDown();
+		double getFontKerning();
+		string getText();
+		string getFontFile();
+	protected:
+		double kerning = 1.037;
+		int fontSize = 20;
+		bool hovering = false;
+		bool pressed  = false;
+
+		string text = "";
+		ofColor normColor;
+		ofColor hoverColor;
+		ofRectangle bounds;
+		ofTrueTypeFont label;
+		ofVec2f textPosition;
+		ofColor textColor = ofColor(255, 255, 255, 255);
+		string fontFile = "verdana.ttf";
+	private:
+		ofColor currColor;
+
+		void onMouseMove(ofMouseEventArgs &mouse);
+		void onMouseDown(ofMouseEventArgs &mouse);
+		void onMouseUp(ofMouseEventArgs &mouse);
+		bool isInBounds(float x, float y);
 	};
 }
 

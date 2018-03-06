@@ -79,6 +79,7 @@ void IdolScheme::draw() {
 			}
 		}
 	}
+	newVecBtn.draw();
 	//gui.draw();
 	menuHandler.draw(); // menu handler
 }

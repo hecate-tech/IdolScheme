@@ -47,7 +47,7 @@ class IdolScheme : public ofBaseApp {
 		MenuHandler menuHandler;
 		Conductor mainConductor; // This will keep time.
         deque<Note> notes;
-		
+		ISGUI::idolVecButton newVecBtn = ISGUI::idolVecButton(ofVec2f(200, 300), ofVec2f(200, 100), "My Button", ofColor(255, 0, 0, 255), ofColor(200, 0, 0, 255));
 		vector<ISGUI::idolButton*> mainMenuBtns = {
 			new ISGUI::idolButton("images/btn0.png", "images/btn0hov.png", ofPoint(100, 175), 100, 50),
 			new ISGUI::idolButton("images/btn1.png", "images/btn1hov.png", ofPoint(100, 250), 100, 50),
