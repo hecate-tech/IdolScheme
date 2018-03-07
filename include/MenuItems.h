@@ -121,7 +121,7 @@ namespace ISGUI {
 		vector<idolButton*> getButtons() {
 			return buttons;
 		}
-		idolButton *getButton(int index) {
+		idolButton *getButton(unsigned int index) {
 			if (index > buttons.size())
 				return new idolButton();
 			return buttons.at(index);

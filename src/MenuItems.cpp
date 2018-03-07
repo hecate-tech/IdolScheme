@@ -171,6 +171,7 @@ void ISGUI::idolVecButton::draw() {
 
 	ofSetColor(textColor);
 	label.drawString(text, textPosition.x, textPosition.y);
+	
 	ofSetColor(255, 255, 255, 255); // resets color to white
 }
 
@@ -179,16 +180,16 @@ void ISGUI::idolVecButton::draw() {
 /////////////////////////////////////////////////////////////////
 
 void ISGUI::idolVecButton::set(ofVec2f pos, ofVec2f size, string btnText, ofColor nColor, ofColor hColor) {
-	setButtonPos(pos);
-	setBoundSize(size);
-	setText(btnText);
-	setNormColor(nColor);
-	setHoverColor(hColor);
-	currColor = nColor;
-
 	ofTrueTypeFont::setGlobalDpi(60);
 	label.load("verdana.ttf", 40, true, false);
 	label.setLetterSpacing(1.037);
+
+	setBoundSize(size);
+	setText(btnText);
+	setButtonPos(pos);
+	setNormColor(nColor);
+	setHoverColor(hColor);
+	currColor = nColor;
 }
 
 void ISGUI::idolVecButton::setFontSize(int size) {
@@ -200,9 +201,11 @@ void ISGUI::idolVecButton::setText(string newText) {
 }
 
 void ISGUI::idolVecButton::setTextPos(ofVec2f pos) {
-	//textPosition.x = pos.x - (bounds.getWidth() / 2);
-	//textPosition.y = pos.y - (bounds.getHeight() / 2);
-	textPosition = pos; // note centered text
+	double percHeight = label.stringHeight(text) * 0.15625;
+	double percWidth = percHeight * 0.7;
+
+	textPosition.x = (bounds.getCenter().x - (label.stringWidth(text) / 2.f) - percWidth);
+	textPosition.y = (bounds.getCenter().y + (label.stringHeight(text) / 2.f) - percHeight);
 }
 
 void ISGUI::idolVecButton::setBoundPos(ofVec2f pos) {
