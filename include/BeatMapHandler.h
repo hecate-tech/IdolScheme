@@ -11,9 +11,11 @@
 namespace fs = filesystem;
 
 class BeatMapHandler {
+private:
+	static void get_all(const fs::path &root, const string &ext, vector<fs::path> &ret);
+	static void get_notevals(const int &bmnum, ofXml map, vector<string> &ret);
 public:
-	void get_all(const fs::path &root, const string &ext, vector<fs::path> &ret);
-	void readBeatMaps();
+	static void readBeatMaps();
 };
 
 #endif //!BEATMAPHANDLER_H

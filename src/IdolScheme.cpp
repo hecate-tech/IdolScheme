@@ -15,37 +15,7 @@ void IdolScheme::setup() {
 	gui.add(mainMenuBtns);
 	menuHandler.add((Menu*)&gui, false, GAME_MAINMENU);
 
-	/// debug beatmap picker
-	/// --------------------
-	//beatMap currBeatMap = bmHandler.beatMapMenu();
-	//vector<beatMap>().swap(bmHandler.beatMaps); // clears bmh
-
-	/*for (noteInfo &a : currBeatMap.noteParams) {
-		if (!a.rest) {
-			mainConductor._bpm = a.bpm;
-			mainConductor._offsetInMs = a.offset;
-			//mainConductor._lengthInS = a.length;
-			break;
-		}
-	}
-	
-	for (unsigned int i = 0; i < currBeatMap.noteParams.size(); i++) {
-		notes.push_back(Note()); // loads all notes at once.
-		//! TODO refactor this so we load 3 notes in advance and not all at once.
-		
-		if (currBeatMap.noteParams.at(i).rest) {
-			notes.at(i).setBeatRest(currBeatMap.noteParams.at(i));
-		}
-		else if (!currBeatMap.noteParams.at(i).rest) {
-			notes.at(i).setBeatNote(currBeatMap.noteParams.at(i));
-			notes.at(i).calcNoteParams();
-			notes.at(i).scoreKeeper = &scoreKeeper;
-			notes.at(i).conductor = &mainConductor;
-		}
-	}*/
-
-	BeatMapHandler bmh;
-	bmh.readBeatMaps();
+	BeatMapHandler::readBeatMaps();
 
 	mainConductor.startTimer();
 	// something is going on with the formula and it doesn't work properly
@@ -82,20 +52,6 @@ void IdolScheme::draw() {
 	textOut.drawString("GARBAGE: " + ofToString(scoreKeeper.garbageCount), 400, 120);
 	textOut.drawString("WRONG: " + ofToString(scoreKeeper.wrongCount), 400, 140);
 	
-	/*if (notes.size() != 0) {
-		for (unsigned int i = 0; i < notes.size(); i++) {
-			if (mainConductor.currBeat >(notes.at(i).noteSettings.noteNum + 3)) {
-				notes.erase(notes.begin()); // erases finished note
-			} else if (mainConductor.currBeat >= notes.at(i).noteSettings.noteNum && !notes.at(i).noteSettings.rest) {
-				notes.at(i).moveByBeats(mainConductor.currBeat); // draws the note
-				activeNote = &(notes.at(i));
-			} else { // if the note isn't active yet
-				break;
-			}
-		}
-	}*/
-	//newVecBtn.draw();
-	//gui.draw();
 	menuHandler.draw(); // menu handler
 }
 

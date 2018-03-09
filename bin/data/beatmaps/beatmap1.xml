@@ -1,9 +1,79 @@
 <map>
-  <beatmap id="0">
-    <bpm>100</bpm>
-  </beatmap>
+  <name>My BeatMap</name>
   
+  <beatmap id="0">
+    <rating>3</rating>
+
+    <section id="0">
+      <bpm>70</bpm>
+      <offset>8</offset>
+
+      <note id="0">
+        <sx>0.25</sx>
+        <sy>0.2</sy>
+        <startbeat>1</startbeat>
+        <hitbeat>2</hitbeat>
+        <type>
+          <Button>square</Button>
+        </type>
+      </note>
+      <note id="1">
+        <sx>0.22</sx>
+        <sy>0.15</sy>
+        <startbeat>2</startbeat>
+        <hitbeat>2.5</hitbeat>
+        <type>
+          <Button>circle</Button>
+        </type>
+      </note>
+      <note id="2">
+        <sx>0.5</sx>
+        <sy>0.5</sy>
+        <startbeat>2</startbeat>
+        <hitbeat>3</hitbeat>
+        <type>
+          <Button>x</Button>
+        </type>
+      </note>
+
+    </section>
+  
+  </beatmap>
+
   <beatmap id="1">
-    <bpm>70</bpm>
+    <rating>1</rating>
+
+    <section id="0">
+      <bpm>45</bpm>
+      <offset>0</offset>
+
+      <note id="0">
+        <sx>0.5</sx>
+        <sy>0.7</sy>
+        <startbeat>1</startbeat>
+        <hitbeat>1.5</hitbeat>
+        <type>full-circle</type>
+      </note>
+      <note id="1">
+        <sx>0.3</sx>
+        <sy>0.7</sy>
+        <startbeat>1.5</startbeat>
+        <hitbeat>2.5</hitbeat>
+        <type>
+          <Button>triangle</Button>
+        </type>
+      </note>
+      <note id="2">
+        <sx>0.8</sx>
+        <sy>0.2</sy>
+        <startbeat>2.5</startbeat>
+        <hitbeat>3</hitbeat>
+        <type>
+          <Button>square</Button>
+        </type>
+      </note>
+
+    </section>
+  
   </beatmap>
 </map>
