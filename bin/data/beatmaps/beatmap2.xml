@@ -1,0 +1,13 @@
+<map>
+  <beatmap id="0">
+    <bpm>60</bpm>
+  </beatmap>
+  
+  <beatmap id="1">
+    <bpm>45</bpm>
+  </beatmap>
+  
+  <beatmap id="2">
+    <bpm>20</bpm>
+  </beatmap>
+</map>

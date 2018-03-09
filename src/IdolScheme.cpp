@@ -17,10 +17,10 @@ void IdolScheme::setup() {
 
 	/// debug beatmap picker
 	/// --------------------
-	beatMap currBeatMap = bmHandler.beatMapMenu();
-	vector<beatMap>().swap(bmHandler.beatMaps); // clears bmh
+	//beatMap currBeatMap = bmHandler.beatMapMenu();
+	//vector<beatMap>().swap(bmHandler.beatMaps); // clears bmh
 
-	for (noteInfo &a : currBeatMap.noteParams) {
+	/*for (noteInfo &a : currBeatMap.noteParams) {
 		if (!a.rest) {
 			mainConductor._bpm = a.bpm;
 			mainConductor._offsetInMs = a.offset;
@@ -42,7 +42,11 @@ void IdolScheme::setup() {
 			notes.at(i).scoreKeeper = &scoreKeeper;
 			notes.at(i).conductor = &mainConductor;
 		}
-	}
+	}*/
+
+	BeatMapHandler bmh;
+	bmh.readBeatMaps();
+
 	mainConductor.startTimer();
 	// something is going on with the formula and it doesn't work properly
 	// unless the note is in its sepcial position.
@@ -77,7 +81,8 @@ void IdolScheme::draw() {
 	textOut.drawString("BAD: " + ofToString(scoreKeeper.badCount), 400, 100);
 	textOut.drawString("GARBAGE: " + ofToString(scoreKeeper.garbageCount), 400, 120);
 	textOut.drawString("WRONG: " + ofToString(scoreKeeper.wrongCount), 400, 140);
-	if (notes.size() != 0) {
+	
+	/*if (notes.size() != 0) {
 		for (unsigned int i = 0; i < notes.size(); i++) {
 			if (mainConductor.currBeat >(notes.at(i).noteSettings.noteNum + 3)) {
 				notes.erase(notes.begin()); // erases finished note
@@ -88,8 +93,8 @@ void IdolScheme::draw() {
 				break;
 			}
 		}
-	}
-	newVecBtn.draw();
+	}*/
+	//newVecBtn.draw();
 	//gui.draw();
 	menuHandler.draw(); // menu handler
 }
@@ -125,7 +130,7 @@ void IdolScheme::keyPressed(int key) {
 			menuHandler.updateState(GAME_MAINMENU);
 			break;
 		default:
-			activeNote->hit(BUTTON_A);	
+			//activeNote->hit(BUTTON_A);	
 			break;
 	}
 }

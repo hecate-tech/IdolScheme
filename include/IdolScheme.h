@@ -47,10 +47,10 @@ class IdolScheme : public ofBaseApp {
 		
 		/// Game Objects
 		/// ------------
-		BeatMapHandler bmHandler;
+		//BeatMapHandler bmHandler;
 		MenuHandler menuHandler;
 		Conductor mainConductor; // This will keep time.
-        	deque<Note> notes;
+        deque<Note> notes;
 		ScoreKeeper scoreKeeper;
 		Note *activeNote;
 
