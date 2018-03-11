@@ -12,6 +12,7 @@ namespace fs = filesystem;
 
 class BeatMapHandler {
 private:
+	static int get_tagnum(const string &tag, ofXml &map);
 	static void get_all(const fs::path &root, const string &ext, vector<fs::path> &ret);
 	static void get_notevals(const int &bmnum, ofXml map, vector<string> &ret);
 public:

@@ -19,42 +19,49 @@ void BeatMapHandler::get_all(const fs::path &root, const string &ext, vector<fs:
 	}
 }
 
+int BeatMapHandler::get_tagnum(const string &tag, ofXml &map) {
+	int res = 0;
+	std::size_t f;
+	
+	for (int i = 0; i < map.getNumChildren(); i++) {
+		map.setToChild(i);
+		f = map.getName().find(tag);
+		if (f != string::npos) res++;
+		map.setToParent(1);
+	}
+	return res;
+}
+
 void BeatMapHandler::get_notevals(const int &bmnum, ofXml map, vector<string> &ret) {
 	map.setToChild(bmnum);
+	std::size_t f = map.getName().find("note");
+	int sectionNum = BeatMapHandler::get_tagnum("section", map);
 
-	auto find_tag = [&](const string tag) {
-		vector<int> res;
-		std::size_t ff;
-		for(int i = 0; i < map.getNumChildren(); i++) {
-			map.setToChild(i);
-			ff = map.getName().find(tag);
-			if(ff != string::npos) {
-				res.push_back(i);
+	for (int i = 0; i < sectionNum; i++) {
+		map.setTo("section[" + ofToString(i) + "]");
+		cout << "    - " + map.getName() + "[" + ofToString(i) + "]" << endl;
+		int noteNum = BeatMapHandler::get_tagnum("note", map);
+
+		for (int j = 0; j < noteNum; j++) {
+			map.setTo("note[" + ofToString(j) + "]");
+			cout << "        - " + map.getName() << endl;
+			for (int k = 0; k < map.getNumChildren(); k++) {
+				map.setToChild(k);
+
+				if (map.getNumChildren() == 0) {
+					cout << "            - " + map.getName() + ": " + map.getValue() << endl;
+				}
+				else {
+					map.setToChild(0);
+					cout << "            - " + map.getName() + ": " + map.getValue() << endl;
+					map.setToParent(1);
+				}
+				map.setToParent(1);
 			}
 			map.setToParent(1);
 		}
-		return res;
-	};
-
-	std::size_t f = map.getName().find("note");
-	vector<int> sectionNums = find_tag("section");
-	
-	for(int a : sectionNums) {
-		cout << "section[" + ofToString(a) + "]" << endl;
-	}
-
-	/*for(int i = 0; f == string::npos && i < map.getNumChildren(); f = map.getName().find("note"), i++) {
-		map.setToChild(i);
-		cout << endl << "note[" + ofToString(i) + "]" << endl;
-
-		for(int j = 0; j < map.getNumChildren(); j++) {
-			map.setToChild(j);
-			cout << map.getName() + ": " << map.getValue() << endl;
-			map.setToParent(1);
-		}
-
 		map.setToParent(1);
-	}*/
+	}
 }
 
 void BeatMapHandler::readBeatMaps() {
@@ -63,7 +70,7 @@ void BeatMapHandler::readBeatMaps() {
 
 	// Reads all beatmaps and stores them into 'paths'
 	get_all(ofToDataPath("beatmaps"), ".xml", paths);
-	
+
 	for (unsigned int i = 0; i < paths.size(); i++) {
 		ofFile file;
 		
@@ -76,6 +83,14 @@ void BeatMapHandler::readBeatMaps() {
 		ofXml map;
 		map.loadFromBuffer(buffer.getText());
 		map.setTo("map"); // sets to root tag
+
+		
+		std::size_t f = map.getName().find("note");
+		int sectionNum = BeatMapHandler::get_tagnum("section", map);
+		//vector<int> sectionNums = find_tag("section");
+
+		
+
 
 		// for every <beatmap> tag
 		for(int j = 0; j < map.getNumChildren(); j++) {
