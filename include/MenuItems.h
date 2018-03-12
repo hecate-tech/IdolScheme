@@ -60,7 +60,7 @@ namespace ISGUI {
 		idolButton(string normdir, string hoverdir, ofPoint pos, float w, float h);
 		~idolButton();
 
-		void draw();
+		virtual void draw();
 		void setImagePosition(ofPoint pos);
 		void setImagePosition(float x_, float y_);
 		void setImageDirectory(const string directory);
@@ -131,13 +131,13 @@ namespace ISGUI {
 	};
 
 	
-	class idolVecButton {
+	class idolVecButton : public idolButton {
 	public:
 		idolVecButton();
 		idolVecButton(ofVec2f pos, ofVec2f size, string btnText, ofColor nColor = ofColor(255, 255, 255, 255), ofColor hColor = ofColor(0, 0, 0, 255));
 		~idolVecButton();
 
-		void draw();
+		void draw() override;
 		void setFontSize(int size);
 		void setText(string newText);
 		void setTextPos(ofVec2f pos);

@@ -59,7 +59,8 @@ class IdolScheme : public ofBaseApp {
 			new ISGUI::idolButton("images/btn0.png", "images/btn0hov.png", ofPoint(100, 175), 100, 50),
 			new ISGUI::idolButton("images/btn1.png", "images/btn1hov.png", ofPoint(100, 250), 100, 50),
 			new ISGUI::idolButton("images/btn2.png", "images/btn2hov.png", ofPoint(100, 320), 100, 50),
-			new ISGUI::idolButton("images/btn3.png", "images/btn3hov.png", ofPoint(100, 395), 100, 50)
+			new ISGUI::idolButton("images/btn3.png", "images/btn3hov.png", ofPoint(100, 395), 100, 50),
+			(ISGUI::idolButton*) &newVecBtn
 		};
 		ISGUI::idolGuiGroup gui;
 
