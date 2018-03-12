@@ -40,7 +40,8 @@ int BeatMapHandler::get_tagnum(const string &tag, ofXml &doc) {
 	return res;
 }
 
-void BeatMapHandler::get_notevals(ofXml doc, note_info &ret) {
+note_info BeatMapHandler::get_notevals(ofXml doc) {
+	note_info ret;
 	int sectionNum = BeatMapHandler::get_tagnum("section", doc);
 
 	for (int i = 0; i < sectionNum; i++) {
@@ -72,6 +73,7 @@ void BeatMapHandler::get_notevals(ofXml doc, note_info &ret) {
 
 		doc.setToParent(1);
 	}
+	return ret;
 }
 
 vector<ofXml> BeatMapHandler::get_xml(vector<fs::path> paths_) {
@@ -96,10 +98,9 @@ void BeatMapHandler::readBeatMaps() {
 	vector<ofXml> xmlDocs = BeatMapHandler::get_xml(paths);
 
 	for (ofXml &doc : xmlDocs) {
-		int sectionNum = BeatMapHandler::get_tagnum("section", doc);
-		note_info noteInfo;
-		BeatMapHandler::get_notevals(doc, noteInfo);
-		map<int, string> bpmMap = BeatMapHandler::get_sectionbpm(doc);
+		int sectionNum     = BeatMapHandler::get_tagnum("section", doc);
+		note_info noteInfo = BeatMapHandler::get_notevals(doc);
+		bpm_map bpmMap     = BeatMapHandler::get_sectionbpm(doc);
 
 		// for every <section> tag
 		for (int j = 0; j < noteInfo.size(); j++) {
