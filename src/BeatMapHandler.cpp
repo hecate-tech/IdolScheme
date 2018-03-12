@@ -26,40 +26,43 @@ int BeatMapHandler::get_tagnum(const string &tag, ofXml &map) {
 	for (int i = 0; i < map.getNumChildren(); i++) {
 		map.setToChild(i);
 		f = map.getName().find(tag);
-		if (f != string::npos) res++;
+		if (f != string::npos) res++; // if the desired tag is found within the parameters.
 		map.setToParent(1);
 	}
 	return res;
 }
 
-void BeatMapHandler::get_notevals(const int &bmnum, ofXml map, vector<string> &ret) {
-	map.setToChild(bmnum);
+void BeatMapHandler::get_notevals(ofXml map, note_info &ret) {
 	std::size_t f = map.getName().find("note");
 	int sectionNum = BeatMapHandler::get_tagnum("section", map);
 
 	for (int i = 0; i < sectionNum; i++) {
 		map.setTo("section[" + ofToString(i) + "]");
-		cout << "    - " + map.getName() + "[" + ofToString(i) + "]" << endl;
 		int noteNum = BeatMapHandler::get_tagnum("note", map);
 
 		for (int j = 0; j < noteNum; j++) {
 			map.setTo("note[" + ofToString(j) + "]");
-			cout << "        - " + map.getName() << endl;
+			
 			for (int k = 0; k < map.getNumChildren(); k++) {
 				map.setToChild(k);
-
+				
 				if (map.getNumChildren() == 0) {
-					cout << "            - " + map.getName() + ": " + map.getValue() << endl;
+					ret[i][j][k].first = map.getName();
+					ret[i][j][k].second = map.getValue();
 				}
 				else {
 					map.setToChild(0);
-					cout << "            - " + map.getName() + ": " + map.getValue() << endl;
+					ret[i][j][k].first = map.getName();
+					ret[i][j][k].second = map.getValue();
 					map.setToParent(1);
 				}
+
 				map.setToParent(1);
 			}
+
 			map.setToParent(1);
 		}
+
 		map.setToParent(1);
 	}
 }
@@ -71,7 +74,10 @@ void BeatMapHandler::readBeatMaps() {
 	// Reads all beatmaps and stores them into 'paths'
 	get_all(ofToDataPath("beatmaps"), ".xml", paths);
 
+	// for every beatmap file.
 	for (unsigned int i = 0; i < paths.size(); i++) {
+		/// reading file
+		/// ------------
 		ofFile file;
 		
 		file.open(paths.at(i));
@@ -79,61 +85,25 @@ void BeatMapHandler::readBeatMaps() {
 		cout << paths.at(i).generic_string() << endl;
 
 		ofBuffer buffer = file.readToBuffer();
-		
 		ofXml map;
 		map.loadFromBuffer(buffer.getText());
 		map.setTo("map"); // sets to root tag
 
-		
-		std::size_t f = map.getName().find("note");
 		int sectionNum = BeatMapHandler::get_tagnum("section", map);
-		//vector<int> sectionNums = find_tag("section");
+		note_info myNoteInfo;
+		BeatMapHandler::get_notevals(map, myNoteInfo);
 
-		
-
-
-		// for every <beatmap> tag
-		for(int j = 0; j < map.getNumChildren(); j++) {
-			map.setToChild(j); // goes inward one lvl
-
-			// if the child is a beatmap
-			std::size_t f = map.getName().find("beatmap");
-			if(f != string::npos) {
-				cout << "Beatmap[" + ofToString(j) + "]" << map.getNumChildren() << endl;
-				vector<string> vals;
-				BeatMapHandler::get_notevals(j, map, vals);
-
-				/*for(int k = 0; k < map.getNumChildren(); k++) {
-					map.setToChild(k); // goes inward one lvl
-					
-					if(map.getNumChildren() == 0)
-						cout << "Bm[" + ofToString(j) + "]:  " << map.getName() + "[" +  ofToString(k) + "] = " + map.getValue() << endl;
-					
-					for(int l = 0; l < map.getNumChildren(); l++) {
-						map.setToChild(l); // goes inward one lvl
-
-						std::size_t fn = map.getName().find("note");
-						if(fn != string::npos) {
-							for(int n = 0; n < map.getNumChildren(); n++) {
-								map.setToChild(n);
-								cout << map.getName() + "[" + ofToString(n) + "]:  " << map.getValue() << endl;
-								map.setToParent(1);
-							}
-						} else {
-							cout << "Bm[" + ofToString(j) + "]:     ";
-							cout << map.getName() + "[" + ofToString(l) + "] = ";
-							cout << map.getValue() <<  endl;
-						}
-						
-						map.setToParent(1); // goes backward one lvl
-					}
-
-					map.setToParent(1); // goes backward one lvl
-				}*/
+		// for every <section> tag
+		for (int j = 0; j < myNoteInfo.size(); j++) {
+			cout << "section[" + std::to_string(j) + "]" << endl;
+			// for every <note> tag
+			for (int k = 0; k < myNoteInfo.at(j).size(); k++) {
+				cout << "  note[" + std::to_string(k) + "]" << endl;
+				// for every property within the <note>
+				for (int l = 0; l < myNoteInfo.at(j).at(k).size(); l++) {
+					cout << "    " + myNoteInfo[j][k][l].first + ": " + myNoteInfo[j][k][l].second << endl;
+				}
 			}
-
-			map.setToParent(1); // goes backward one lvl
 		}
-		//cout << map.getName() << endl;
 	}
 }

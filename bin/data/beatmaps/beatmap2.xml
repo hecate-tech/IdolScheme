@@ -1,75 +1,71 @@
 <map>
-  <name>My BeatMap</name>
-  
-  <beatmap id="0">
-    <rating>3</rating>
+  <name>My Second Beatmap!</name>
+  <rating>4</rating>
 
-    <section id="0">
-      <bpm>70</bpm>
-      <offset>8</offset>
+  <section id="0">
+    <bpm>70</bpm>
+    <offset>8</offset>
 
-      <note id="0">
-        <sx>0.25</sx>
-        <sy>0.2</sy>
-        <startbeat>1</startbeat>
-        <hitbeat>2</hitbeat>
-        <type>
-          <Button>circle</Button>
-        </type>
-      </note>
-      <note id="1">
-        <sx>0.22</sx>
-        <sy>0.15</sy>
-        <startbeat>2</startbeat>
-        <hitbeat>2.5</hitbeat>
-        <type>
-          <Button>circle</Button>
-        </type>
-      </note>
-      <note id="2">
-        <sx>0.5</sx>
-        <sy>0.5</sy>
-        <startbeat>2</startbeat>
-        <hitbeat>3</hitbeat>
-        <type>
-          <Button>x</Button>
-        </type>
-      </note>
+    <note id="0">
+      <sx>0.25</sx>
+      <sy>0.2</sy>
+      <startbeat>1</startbeat>
+      <hitbeat>2</hitbeat>
+      <type>
+        <Button>square</Button>
+      </type>
+    </note>
+    <note id="1">
+      <sx>0.22</sx>
+      <sy>0.15</sy>
+      <startbeat>2</startbeat>
+      <hitbeat>2.5</hitbeat>
+      <type>
+        <Button>circle</Button>
+      </type>
+    </note>
+    <note id="2">
+      <sx>0.5</sx>
+      <sy>0.5</sy>
+      <startbeat>2</startbeat>
+      <hitbeat>3</hitbeat>
+      <type>
+        <Button>x</Button>
+      </type>
+    </note>
+  </section>
 
-    </section>
+  <section id="1">
+    <bpm>45</bpm>
+    <offset>0</offset>
 
-    <section id="1">
-      <bpm>80</bpm>
-      <offset>8</offset>
+    <note id="0">
+      <sx>0.25</sx>
+      <sy>0.2</sy>
+      <startbeat>1</startbeat>
+      <hitbeat>2</hitbeat>
+      <type>
+        <Button>square</Button>
+      </type>
+    </note>
+    <note id="1">
+      <sx>0.22</sx>
+      <sy>0.15</sy>
+      <startbeat>2</startbeat>
+      <hitbeat>2.5</hitbeat>
+      <type>
+        <Button>circle</Button>
+      </type>
+    </note>
+    <note id="2">
+      <sx>0.5</sx>
+      <sy>0.5</sy>
+      <startbeat>2</startbeat>
+      <hitbeat>3</hitbeat>
+      <type>
+        <Button>x</Button>
+      </type>
+    </note>
+  </section>
 
-      <note id="0">
-        <sx>0.25</sx>
-        <sy>0.2</sy>
-        <startbeat>1</startbeat>
-        <hitbeat>2</hitbeat>
-        <type>
-          <Button>circle</Button>
-        </type>
-      </note>
-      <note id="1">
-        <sx>0.22</sx>
-        <sy>0.15</sy>
-        <startbeat>2</startbeat>
-        <hitbeat>2.5</hitbeat>
-        <type>
-          <Button>circle</Button>
-        </type>
-      </note>
-      <note id="2">
-        <sx>0.5</sx>
-        <sy>0.5</sy>
-        <startbeat>2</startbeat>
-        <hitbeat>3</hitbeat>
-        <type>
-          <Button>x</Button>
-        </type>
-      </note>
-
-    </section>
-  </beatmap>
 </map>

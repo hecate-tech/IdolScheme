@@ -9,13 +9,15 @@
 #endif //OFMAIN_H
 
 namespace fs = filesystem;
+using note_info = map<int, map<int, map<int, pair<string, string>>>>;
 
 class BeatMapHandler {
 private:
+	static void get_notevals(ofXml map, note_info &ret);
 	static int get_tagnum(const string &tag, ofXml &map);
 	static void get_all(const fs::path &root, const string &ext, vector<fs::path> &ret);
-	static void get_notevals(const int &bmnum, ofXml map, vector<string> &ret);
 public:
+	static vector<note_info> noteInformation;
 	static void readBeatMaps();
 };
 
