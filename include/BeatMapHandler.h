@@ -6,17 +6,20 @@
 #include "ofXml.h"
 
 namespace fs = ::filesystem;
+/* note_info = [section][note][data] (first = data name) (second = data) */
 using note_info = map<int, map<int, map<int, pair<string, string>>>>;
-using bpm_map   = map<int, string>;
+using val_map   = map<int, int>;
 
 class BeatMapHandler {
 private:
-	static vector<ofXml> get_xml(vector<fs::path> paths_);
-	static int get_tagnum(const string &tag, ofXml &doc);
-	static void get_all(const fs::path &root, const string &ext, vector<fs::path> &ret);
+	static vector<ofXml> getXml(vector<fs::path> paths_);
+	static val_map getSectionVals(ofXml &doc, string value);
+	static note_info getNoteVals(ofXml doc);
+	static string getMapName(ofXml &doc);
+	static int getMapRating(ofXml &doc);
+	static int getNumOfTags(ofXml &doc, const string &tag);
+	static void get_paths(const fs::path &root, const string &ext, vector<fs::path> &ret);
 public:
-	static bpm_map get_sectionbpm(ofXml &doc);
-	static note_info get_notevals(ofXml doc);
 	static void readBeatMaps();
 };
 
