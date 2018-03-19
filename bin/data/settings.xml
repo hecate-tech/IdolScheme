@@ -1,3 +1,16 @@
 <group>
 	<group/>
+<Options>
+		<Graphics>
+			<Window_Mode>
+				<Fullscreen>0</Fullscreen>
+				<Windowed>1</Windowed>
+				<GameMode>0</GameMode>
+			</Window_Mode>
+			<4:3/>
+			<16:9/>
+			<16:10/>
+		</Graphics>
+		<Controls/>
+	</Options>
 </group>

@@ -14,8 +14,18 @@ void IdolScheme::setup() {
 	
 	gui.add(mainMenuBtns);
 	menuHandler.add((Menu*)&gui, false, GAME_MAINMENU);
+	
+	vector<string> bmNames = BeatMapHandler::getMapNames();
+	
+	// debug menu select
+	for (string &a : bmNames)
+		cout << a << endl;
+	
+	ofXml bm = BeatMapHandler::getMap(bmNames.at(0));
+	cout << BeatMapHandler::getMapName(bm) << endl;
 
-	BeatMapHandler::readBeatMaps();
+
+	//BeatMapHandler::readBeatMaps();
 
 	mainConductor.startTimer();
 	// something is going on with the formula and it doesn't work properly
@@ -51,8 +61,8 @@ void IdolScheme::draw() {
 	textOut.drawString("BAD: " + ofToString(scoreKeeper.badCount), 400, 100);
 	textOut.drawString("GARBAGE: " + ofToString(scoreKeeper.garbageCount), 400, 120);
 	textOut.drawString("WRONG: " + ofToString(scoreKeeper.wrongCount), 400, 140);
-	
-	menuHandler.draw(); // menu handler
+
+	menuHandler.draw();
 }
 
 ///////////////////////////////////////////////////////////////

@@ -44,6 +44,8 @@ class IdolScheme : public ofBaseApp {
 	public:
 		GameState IdolScheme_State; // describes what the game is doing.
 		ofTrueTypeFont textOut;
+
+		ofImage myImage;
 		
 		/// Game Objects
 		/// ------------
