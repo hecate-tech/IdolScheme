@@ -31,7 +31,7 @@ ISGUI::idolButton::~idolButton() {
    /////////////////      Main Functions      ///////////////
 ////////////////////////////////////////////////////////////////
 
-bool ISGUI::idolButton::mouseDown() {
+bool ISGUI::idolButton::getMouseDown() {
 	if (pressed) {
 		pressed = false;
 		return true;

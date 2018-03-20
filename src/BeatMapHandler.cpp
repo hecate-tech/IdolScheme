@@ -137,7 +137,7 @@ ofXml BeatMapHandler::getMap(const string & mapName) {
 //--------------------------------------------------------------------------------------
 val_map BeatMapHandler::getSectionVals(ofXml &doc, string value) {
 	val_map res;
-	for (unsigned int i = 0; i < BeatMapHandler::getNumOfTags(doc, "section"); i++)
+	for (int i = 0; i < BeatMapHandler::getNumOfTags(doc, "section"); i++)
 		res[i] = ofToInt(doc.getValue("section[" + std::to_string(i) + "]/" + value));
 	
 	return res;

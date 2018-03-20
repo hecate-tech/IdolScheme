@@ -39,9 +39,8 @@ void IdolScheme::setup() {
 
 void IdolScheme::update() {
 	for (unsigned int i = 0; i < gui.getButtons().size(); i++)
-		if (gui.getButton(i)->mouseDown())
+		if (gui.getButton(i)->getMouseDown())
 			cout << "Pressed Button " + ofToString(i) << endl;
-		
 
 	mainConductor.refreshMembers();
 	mainConductor.beatSinceRefresh = mainConductor.currBeat;
