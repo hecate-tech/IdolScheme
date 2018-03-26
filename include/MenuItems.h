@@ -67,7 +67,7 @@ namespace ISGUI {
 		void setBounds(const ofPoint xy, float width, float height);
 		void set(string normdir, string hoverdir, ofPoint pos, float w, float h);
 		
-		virtual bool getMouseDown();
+		virtual bool mouseDown();
 
 		ofPoint getPosition();
 		string getImageDirectory();
@@ -152,7 +152,7 @@ namespace ISGUI {
 		void set(ofVec2f pos, ofVec2f size, string btnText, ofColor nColor, ofColor hColor);
 
 		int getFontSize();
-		bool getMouseDown() override;
+		bool mouseDown() override;
 		double getFontKerning();
 		string getText();
 		string getFontFile();

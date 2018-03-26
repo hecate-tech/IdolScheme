@@ -31,7 +31,7 @@ ISGUI::idolButton::~idolButton() {
    /////////////////      Main Functions      ///////////////
 ////////////////////////////////////////////////////////////////
 
-bool ISGUI::idolButton::getMouseDown() {
+bool ISGUI::idolButton::mouseDown() {
 	if (pressed) {
 		pressed = false;
 		return true;
@@ -245,7 +245,7 @@ int ISGUI::idolVecButton::getFontSize() {
 	return fontSize;
 }
 
-bool ISGUI::idolVecButton::getMouseDown() {
+bool ISGUI::idolVecButton::mouseDown() {
 	if (pressed) {
 		pressed = false;
 		return true;

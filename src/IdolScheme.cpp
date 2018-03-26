@@ -8,28 +8,23 @@ void IdolScheme::setup() {
 	ofBackground(45, 45, 190, 255);
 	IdolScheme_State = GAME_ACTIVE;
 
+	/*--------------------debugging out--------------------*/
 	ofTrueTypeFont::setGlobalDpi(60);
 	textOut.load("verdana.ttf", 20, true, false);
 	textOut.setLetterSpacing(1.037);
-	
+
+	/*-----------------menu handle loading-----------------*/
 	gui.add(mainMenuBtns);
 	menuHandler.add((Menu*)&gui, false, GAME_MAINMENU);
-	
+
+	/*-------------------beatmap loading-------------------*/
 	vector<string> bmNames = BeatMapHandler::getMapNames();
-	
-	// debug menu select
+
 	for (string &a : bmNames)
-		cout << a << endl;
-	
-	ofXml bm = BeatMapHandler::getMap(bmNames.at(0));
-	cout << BeatMapHandler::getMapName(bm) << endl;
+		cout << a << endl; // writing out all available beatmaps.
 
-
-	//BeatMapHandler::readBeatMaps();
-
+	/*-----------------------conductor---------------------*/
 	mainConductor.startTimer();
-	// something is going on with the formula and it doesn't work properly
-	// unless the note is in its sepcial position.
 }
 
 
@@ -39,7 +34,7 @@ void IdolScheme::setup() {
 
 void IdolScheme::update() {
 	for (unsigned int i = 0; i < gui.getButtons().size(); i++)
-		if (gui.getButton(i)->getMouseDown())
+		if (gui.getButton(i)->mouseDown())
 			cout << "Pressed Button " + ofToString(i) << endl;
 
 	mainConductor.refreshMembers();
