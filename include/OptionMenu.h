@@ -65,9 +65,9 @@ struct WinChoice : IdolChoice {
 	}
 };
 
-struct winDropDown : IdolDropDown {
+struct WinDropDown : IdolDropDown {
 	choice_vec<WinChoice> choices;
-	winDropDown() {
+	WinDropDown() {
 		choices = {
 			WinChoice("Fullscreen", ofGetWindowMode() == OF_FULLSCREEN ? true : false, OF_FULLSCREEN),
 			WinChoice("Windowed", ofGetWindowMode() == OF_WINDOW ? true : false, OF_WINDOW),
@@ -108,7 +108,7 @@ private:
 	ofxPanel gui;
 	ofxGuiGroup graphics;
 	ofxGuiGroup controls;
-	winDropDown windowMode;
+	WinDropDown windowMode;
 
 	void buttonCheck();
 	string currentWindowResolution;
