@@ -4,34 +4,34 @@
    //////////////////      Constructors/Desconstructors      //////////////////
 //////////////////////////////////////////////////////////////////////////////////
 
-ISGUI::idolButton::idolButton() {
-	ofAddListener(ofEvents().mousePressed, this, &idolButton::mouseDownEvent);
-	ofAddListener(ofEvents().mouseMoved, this, &idolButton::mouseMoveEvent);
-	ofAddListener(ofEvents().mouseReleased, this, &idolButton::mouseUpEvent);
+ISGUI::IdolButton::IdolButton() {
+	ofAddListener(ofEvents().mousePressed, this, &IdolButton::mouseDownEvent);
+	ofAddListener(ofEvents().mouseMoved, this, &IdolButton::mouseMoveEvent);
+	ofAddListener(ofEvents().mouseReleased, this, &IdolButton::mouseUpEvent);
 	buttonImage.setAnchorPercent(.5, .5);
 }
 
 //-------------------------------------------------------------------------------------------
-ISGUI::idolButton::idolButton(string normdir, string hoverdir, ofPoint pos, float w, float h) {
-	ofAddListener(ofEvents().mousePressed, this, &idolButton::mouseDownEvent);
-	ofAddListener(ofEvents().mouseMoved, this, &idolButton::mouseMoveEvent);
-	ofAddListener(ofEvents().mouseReleased, this, &idolButton::mouseUpEvent);
-	set(normdir, hoverdir, pos, w, h);
+ISGUI::IdolButton::IdolButton(string normdir, string hoverdir, ofPoint pos, float w, float h) {
+	ofAddListener(ofEvents().mousePressed, this, &IdolButton::mouseDownEvent);
+	ofAddListener(ofEvents().mouseMoved, this, &IdolButton::mouseMoveEvent);
+	ofAddListener(ofEvents().mouseReleased, this, &IdolButton::mouseUpEvent);
+	set(std::move(normdir), std::move(hoverdir), pos, w, h);
 	buttonImage.setAnchorPercent(.5, .5);
 }
 
 //-------------------------------------------------------------------------------------------
-ISGUI::idolButton::~idolButton() {
-	ofRemoveListener(ofEvents().mousePressed, this, &idolButton::mouseDownEvent);
-	ofRemoveListener(ofEvents().mouseMoved, this, &idolButton::mouseMoveEvent);
-	ofRemoveListener(ofEvents().mouseReleased, this, &idolButton::mouseUpEvent);
+ISGUI::IdolButton::~IdolButton() {
+	ofRemoveListener(ofEvents().mousePressed, this, &IdolButton::mouseDownEvent);
+	ofRemoveListener(ofEvents().mouseMoved, this, &IdolButton::mouseMoveEvent);
+	ofRemoveListener(ofEvents().mouseReleased, this, &IdolButton::mouseUpEvent);
 }
 
 ////////////////////////////////////////////////////////////////
    /////////////////      Main Functions      ///////////////
 ////////////////////////////////////////////////////////////////
 
-bool ISGUI::idolButton::mouseDown() {
+bool ISGUI::IdolButton::mouseDown() {
 	if (pressed) {
 		pressed = false;
 		return true;
@@ -39,10 +39,8 @@ bool ISGUI::idolButton::mouseDown() {
 	return false;
 }
 
-
-
 //-------------------------------------------------------------------------------------------
-void ISGUI::idolButton::draw() {
+void ISGUI::IdolButton::draw() {
 	buttonImage.draw(imagePos.x, imagePos.y);
 }
 
@@ -50,32 +48,32 @@ void ISGUI::idolButton::draw() {
    /////////////////      Getters/Setters      ///////////////
 /////////////////////////////////////////////////////////////////
 
-void ISGUI::idolButton::setBounds(const ofPoint xy, float width, float height) {
+void ISGUI::IdolButton::setBounds(const ofPoint xy, float width, float height) {
 	bound.set(xy, width, height);
 	width = width;
 	height = height;
 }
 
 //-------------------------------------------------------------------------------------------
-void ISGUI::idolButton::setImageDirectory(const string directory) {
+void ISGUI::IdolButton::setImageDirectory(const string& directory) {
 	buttonImage.load(directory);
 	buttonImage.resize(width, height);
 	imageDirectory = directory;
 }
 
 //-------------------------------------------------------------------------------------------
-void ISGUI::idolButton::setImagePosition(ofPoint pos) {
+void ISGUI::IdolButton::setImagePosition(ofPoint pos) {
 	imagePos = pos;
 	bound.setPosition(ofPoint(pos.x - (width / 2), pos.y - (height / 2)));
 }
 
 //-------------------------------------------------------------------------------------------
-void ISGUI::idolButton::setImagePosition(float x_, float y_) {
+void ISGUI::IdolButton::setImagePosition(float x_, float y_) {
 	setImagePosition(ofPoint(x_, y_));
 }
 
 //-------------------------------------------------------------------------------------------
-void ISGUI::idolButton::set(string normdir, string hoverdir, ofPoint pos, float w, float h) {
+void ISGUI::IdolButton::set(string normdir, const string &hoverdir, ofPoint pos, float w, float h) {
 	buttonImage.load(normdir);
 	buttonImage.resize(w, h);
 	width = w;
@@ -87,12 +85,12 @@ void ISGUI::idolButton::set(string normdir, string hoverdir, ofPoint pos, float 
 }
 
 //-------------------------------------------------------------------------------------------
-ofPoint ISGUI::idolButton::getPosition() {
+ofPoint ISGUI::IdolButton::getPosition() const {
 	return imagePos;
 }
 
 //-------------------------------------------------------------------------------------------
-string ISGUI::idolButton::getImageDirectory() {
+string ISGUI::IdolButton::getImageDirectory() const {
 	return imageDirectory;
 }
 
@@ -100,7 +98,7 @@ string ISGUI::idolButton::getImageDirectory() {
    /////////////////      Private Functions      ///////////////
 ///////////////////////////////////////////////////////////////////
 
-void ISGUI::idolButton::mouseDownEvent(ofMouseEventArgs &mouse) {
+void ISGUI::IdolButton::mouseDownEvent(ofMouseEventArgs &mouse) {
 	if (mouse.button == OF_MOUSE_BUTTON_1) {
 		if (isInBounds(mouse.x, mouse.y)) {
 			pressed = true;
@@ -108,7 +106,8 @@ void ISGUI::idolButton::mouseDownEvent(ofMouseEventArgs &mouse) {
 	}
 }
 
-void ISGUI::idolButton::mouseMoveEvent(ofMouseEventArgs &mouse) {
+//-------------------------------------------------------------------------------------------
+void ISGUI::IdolButton::mouseMoveEvent(ofMouseEventArgs &mouse) {
 	if (isInBounds(mouse.x, mouse.y)) {
 		if (!hovering) {
 			hovering = true;
@@ -123,18 +122,14 @@ void ISGUI::idolButton::mouseMoveEvent(ofMouseEventArgs &mouse) {
 	}
 }
 
-void ISGUI::idolButton::mouseUpEvent(ofMouseEventArgs &mouse) {
+//-------------------------------------------------------------------------------------------
+void ISGUI::IdolButton::mouseUpEvent(ofMouseEventArgs &mouse) {
 	if (pressed) pressed = false;
 }
 
-bool ISGUI::idolButton::isInBounds(float x, float y) {
-	if (x <= bound.getRight()
-		&& x >= bound.getLeft()
-		&& y <= bound.getBottom()
-		&& y >= bound.getTop()) {
-		return true;
-	}
-	return false;
+//-------------------------------------------------------------------------------------------
+bool ISGUI::IdolButton::isInBounds(float x, float y) {
+	return x <= bound.getRight() && x >= bound.getLeft() && y <= bound.getBottom() && y >= bound.getTop();
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -145,27 +140,29 @@ bool ISGUI::idolButton::isInBounds(float x, float y) {
 
 ///////////////////////////-idolVecButton-///////////////////////////
 
-ISGUI::idolVecButton::idolVecButton() {
-	ofAddListener(ofEvents().mouseMoved, this, &idolVecButton::onMouseMove);
-	ofAddListener(ofEvents().mousePressed, this, &idolVecButton::onMouseDown);
-	ofAddListener(ofEvents().mouseReleased, this, &idolVecButton::onMouseUp);
+ISGUI::IdolVecButton::IdolVecButton() {
+	ofAddListener(ofEvents().mouseMoved, this, &IdolVecButton::onMouseMove);
+	ofAddListener(ofEvents().mousePressed, this, &IdolVecButton::onMouseDown);
+	ofAddListener(ofEvents().mouseReleased, this, &IdolVecButton::onMouseUp);
 }
 
-ISGUI::idolVecButton::idolVecButton(ofVec2f pos, ofVec2f size, string btnText, ofColor nColor, ofColor hColor) {
-	ofAddListener(ofEvents().mouseMoved, this, &idolVecButton::onMouseMove);
-	ofAddListener(ofEvents().mousePressed, this, &idolVecButton::onMouseDown);
-	ofAddListener(ofEvents().mouseReleased, this, &idolVecButton::onMouseUp);
-	set(pos, size, btnText, nColor, hColor);
+//-------------------------------------------------------------------------------------------
+ISGUI::IdolVecButton::IdolVecButton(const ofVec2f pos, const ofVec2f size, string btnText, const ofColor nColor, const ofColor hColor) {
+	ofAddListener(ofEvents().mouseMoved, this, &IdolVecButton::onMouseMove);
+	ofAddListener(ofEvents().mousePressed, this, &IdolVecButton::onMouseDown);
+	ofAddListener(ofEvents().mouseReleased, this, &IdolVecButton::onMouseUp);
+	set(pos, size, std::move(btnText), nColor, hColor);
 }
 
-ISGUI::idolVecButton::~idolVecButton() {
-	ofRemoveListener(ofEvents().mouseMoved, this, &idolVecButton::onMouseMove);
-	ofRemoveListener(ofEvents().mousePressed, this, &idolVecButton::onMouseDown);
-	ofRemoveListener(ofEvents().mouseReleased, this, &idolVecButton::onMouseUp);
+//-------------------------------------------------------------------------------------------
+ISGUI::IdolVecButton::~IdolVecButton() {
+	ofRemoveListener(ofEvents().mouseMoved, this, &IdolVecButton::onMouseMove);
+	ofRemoveListener(ofEvents().mousePressed, this, &IdolVecButton::onMouseDown);
+	ofRemoveListener(ofEvents().mouseReleased, this, &IdolVecButton::onMouseUp);
 }
 
-
-void ISGUI::idolVecButton::draw() {
+//-------------------------------------------------------------------------------------------
+void ISGUI::IdolVecButton::draw() {
 	ofSetColor(currColor);
 	ofDrawRectangle(bounds);
 
@@ -179,7 +176,7 @@ void ISGUI::idolVecButton::draw() {
    /////////////////      Getters/Setters      ///////////////
 /////////////////////////////////////////////////////////////////
 
-void ISGUI::idolVecButton::set(ofVec2f pos, ofVec2f size, string btnText, ofColor nColor, ofColor hColor) {
+void ISGUI::IdolVecButton::set(ofVec2f pos, ofVec2f size, string btnText, ofColor nColor, ofColor hColor) {
 	ofTrueTypeFont::setGlobalDpi(60);
 	label.load("verdana.ttf", 40, true, false);
 	label.setLetterSpacing(1.037);
@@ -192,60 +189,73 @@ void ISGUI::idolVecButton::set(ofVec2f pos, ofVec2f size, string btnText, ofColo
 	currColor = nColor;
 }
 
-void ISGUI::idolVecButton::setFontSize(int size) {
+//-------------------------------------------------------------------------------------------
+void ISGUI::IdolVecButton::setFontSize(const int size) {
 	fontSize = size;
 }
 
-void ISGUI::idolVecButton::setText(string newText) {
-	text = newText;
+//-------------------------------------------------------------------------------------------
+void ISGUI::IdolVecButton::setText(string newText) {
+	text = std::move(newText);
 }
 
-void ISGUI::idolVecButton::setTextPos(ofVec2f pos) {
-	double percHeight = label.stringHeight(text) * 0.15625;
-	double percWidth = percHeight * 0.7;
+//-------------------------------------------------------------------------------------------
+void ISGUI::IdolVecButton::setTextPos(ofVec2f pos) {
+	const double percHeight = label.stringHeight(text) * 0.15625;
+	const double percWidth = percHeight * 0.7;
 
 	textPosition.x = (bounds.getCenter().x - (label.stringWidth(text) / 2.f) - percWidth);
 	textPosition.y = (bounds.getCenter().y + (label.stringHeight(text) / 2.f) - percHeight);
 }
 
-void ISGUI::idolVecButton::setBoundPos(ofVec2f pos) {
+//-------------------------------------------------------------------------------------------
+void ISGUI::IdolVecButton::setBoundPos(const ofVec2f pos) {
 	bounds.setPosition(pos);
 }
 
-void ISGUI::idolVecButton::setButtonPos(ofVec2f pos) {
+//-------------------------------------------------------------------------------------------
+void ISGUI::IdolVecButton::setButtonPos(const ofVec2f pos) {
 	setBoundPos(pos);
 	setTextPos(pos); // not centered text
 }
 
-void ISGUI::idolVecButton::setBoundSize(ofVec2f size) {
+//-------------------------------------------------------------------------------------------
+void ISGUI::IdolVecButton::setBoundSize(const ofVec2f size) {
 	bounds.setSize(size.x, size.y);
 }
 
-void ISGUI::idolVecButton::setFontKerning(double kern) {
+//-------------------------------------------------------------------------------------------
+void ISGUI::IdolVecButton::setFontKerning(const double kern) {
 	kerning = kern;
 }
 
-void ISGUI::idolVecButton::setFontFile(string fontDir) {
-	fontFile = fontDir;
+//-------------------------------------------------------------------------------------------
+void ISGUI::IdolVecButton::setFontFile(string fontDir) {
+	fontFile = std::move(fontDir);
 }
 
-void ISGUI::idolVecButton::setTextColor(ofColor color) {
+//-------------------------------------------------------------------------------------------
+void ISGUI::IdolVecButton::setTextColor(const ofColor color) {
 	textColor = color;
 }
 
-void ISGUI::idolVecButton::setNormColor(ofColor color) {
+//-------------------------------------------------------------------------------------------
+void ISGUI::IdolVecButton::setNormColor(const ofColor color) {
 	normColor = color;
 }
 
-void ISGUI::idolVecButton::setHoverColor(ofColor color) {
+//-------------------------------------------------------------------------------------------
+void ISGUI::IdolVecButton::setHoverColor(const ofColor color) {
 	hoverColor = color;
 }
 
-int ISGUI::idolVecButton::getFontSize() {
+//-------------------------------------------------------------------------------------------
+int ISGUI::IdolVecButton::getFontSize() const {
 	return fontSize;
 }
 
-bool ISGUI::idolVecButton::mouseDown() {
+//-------------------------------------------------------------------------------------------
+bool ISGUI::IdolVecButton::mouseDown() {
 	if (pressed) {
 		pressed = false;
 		return true;
@@ -253,15 +263,18 @@ bool ISGUI::idolVecButton::mouseDown() {
 	return false;
 }
 
-double ISGUI::idolVecButton::getFontKerning() {
+//-------------------------------------------------------------------------------------------
+double ISGUI::IdolVecButton::getFontKerning() const {
 	return kerning;
 }
 
-string ISGUI::idolVecButton::getText() {
+//-------------------------------------------------------------------------------------------
+string ISGUI::IdolVecButton::getText() const {
 	return text;
 }
 
-string ISGUI::idolVecButton::getFontFile() {
+//-------------------------------------------------------------------------------------------
+string ISGUI::IdolVecButton::getFontFile() const {
 	return fontFile;
 }
 
@@ -269,7 +282,7 @@ string ISGUI::idolVecButton::getFontFile() {
   /////////////////      Private Functions      ///////////////
 ///////////////////////////////////////////////////////////////////
 
-void ISGUI::idolVecButton::onMouseMove(ofMouseEventArgs &mouse) {
+void ISGUI::IdolVecButton::onMouseMove(ofMouseEventArgs &mouse) {
 	if (isInBounds(mouse.x, mouse.y)) {
 		if (!hovering) {
 			hovering = true;
@@ -284,7 +297,8 @@ void ISGUI::idolVecButton::onMouseMove(ofMouseEventArgs &mouse) {
 	}
 }
 
-void ISGUI::idolVecButton::onMouseDown(ofMouseEventArgs &mouse) {
+//-------------------------------------------------------------------------------------------
+void ISGUI::IdolVecButton::onMouseDown(ofMouseEventArgs &mouse) {
 	if (mouse.button == OF_MOUSE_BUTTON_1) {
 		if (isInBounds(mouse.x, mouse.y)) {
 			pressed = true;
@@ -292,16 +306,12 @@ void ISGUI::idolVecButton::onMouseDown(ofMouseEventArgs &mouse) {
 	}
 }
 
-void ISGUI::idolVecButton::onMouseUp(ofMouseEventArgs &mouse) {
+//-------------------------------------------------------------------------------------------
+void ISGUI::IdolVecButton::onMouseUp(ofMouseEventArgs &mouse) {
 	if (pressed) pressed = false;
 }
 
-bool ISGUI::idolVecButton::isInBounds(float x, float y) {
-	if (   x <= bounds.getRight()
-		&& x >= bounds.getLeft()
-		&& y <= bounds.getBottom()
-		&& y >= bounds.getTop()) {
-		return true;
-	}
-	return false;
+//-------------------------------------------------------------------------------------------
+bool ISGUI::IdolVecButton::isInBounds(const float x, const float y) const {
+	return x <= bounds.getRight() && x >= bounds.getLeft() && y <= bounds.getBottom() && y >= bounds.getTop();
 }

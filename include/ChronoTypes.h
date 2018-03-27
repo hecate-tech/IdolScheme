@@ -1,3 +1,5 @@
+#pragma once
+
 typedef std::chrono::high_resolution_clock HiResClock;
 typedef std::chrono::milliseconds ChronoMs;
 typedef std::chrono::seconds ChronoS;

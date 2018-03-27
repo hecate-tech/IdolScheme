@@ -5,8 +5,13 @@
 
 class Menu {
 public:
-	virtual void draw()=0; // pure virtual method
-	Menu() {}
+	virtual ~Menu();
+	virtual void draw(); // pure virtual method
+	Menu();
 };
+
+inline Menu::~Menu() = default;
+inline void Menu::draw() {}
+inline Menu::Menu() = default;
 
 #endif //!MENU_H

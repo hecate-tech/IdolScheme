@@ -1,3 +1,5 @@
+#pragma once
+
 #ifdef _WIN32
 	#ifndef _IOSTREAM_
 		#include <iostream>
@@ -35,30 +37,30 @@ class Conductor {
 public:
 	ChronoTimePoint startTime;
 	ChronoTimePoint currTime;
-	ChronoMs timeDiff;
-	int _bpm;
-	int _offsetInMs;
-	double _lengthInS;
-	double totalBeats;
-	double offsetBeats;
-	double currBeat;
-	double beatSinceRefresh;
-	float numBeatsSinceRefresh;
+	ChronoMs timeDiff{};
+	int _bpm{};
+	int _offsetInMs{};
+	double _lengthInS{};
+	double totalBeats{};
+	double offsetBeats{};
+	double currBeat{};
+	double beatSinceRefresh{};
+	float numBeatsSinceRefresh{};
 
-	float calcTotalBeats(double lengthInS, int bpm) {
-		return (lengthInS / 60) * bpm;
+	static float calcTotalBeats(const double lengthInS, const int bpm) {
+		return float((lengthInS / 60) * bpm);
 	}
 
-	Conductor() {}
+	Conductor() = default;
 
-	Conductor(int bpm, double lengthInS, int offsetInMs) {
+	Conductor(const int bpm, const double lengthInS, const int offsetInMs) {
 		_bpm = bpm;
 		_lengthInS = lengthInS;
 		_offsetInMs = offsetInMs;
 	}
 
-	float calcCurrentBeat();
-	float calcBeatsInMs(int bpm);
+	static float calcBeatsInMs(int bpm);
+	float calcCurrentBeat() const;
 	void startTimer();
 	void refreshMembers();
 };

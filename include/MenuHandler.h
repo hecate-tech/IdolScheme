@@ -15,27 +15,25 @@
 #ifndef MENUHANDLER_H
 #define MENUHANDLER_H
 
-struct menuSettings {
+struct MenuSettings {
 	bool show = false;
 	GameState menuState;
-	menuSettings() {}
-	menuSettings(bool s, GameState state) {
-		menuState = state;
-		show = s;
-	}
+
+	MenuSettings() : menuState() {}
+	MenuSettings(const bool s, const GameState state) : show(s), menuState(state) {}
 };
 
 class MenuHandler {
-private:
-	vector<pair<Menu*, menuSettings>> menu_vec;
+	vector<pair<Menu*, MenuSettings>> menu_vec;
 public:
 	void draw();
 	void updateState(GameState state);
-	void add(Menu *menu, bool showing, GameState state) {
-		menu_vec.push_back(make_pair(menu, menuSettings(showing, state)));
+	
+	void add(Menu *menu, const bool showing, const GameState state) {
+		menu_vec.emplace_back(menu, MenuSettings(showing, state));
 	}
 	MenuHandler() {
-		menu_vec.push_back(make_pair((Menu*)new OptionMenu(), menuSettings(false, GAME_OPTIONSMENU)));
+		menu_vec.emplace_back(static_cast<Menu*>(new OptionMenu()), MenuSettings(false, GAME_OPTIONSMENU));
 	}
 };
 

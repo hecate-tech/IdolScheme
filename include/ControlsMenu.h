@@ -5,6 +5,7 @@
 
 #ifndef OFMAIN_H
 	#define OFMAIN_H
+	#include <utility>
 	#include "ofMain.h"
 #endif //!OFMAIN_H
 
@@ -21,12 +22,11 @@
 	#include "Menu.h"
 #endif //!MENU_H
 
-struct controlsGroup {
+struct ControlsGroup {
 	ofxGuiGroup group;
 	string name;
-	controlsGroup(string name_) {
-		name = name_;
-	};
+
+	explicit ControlsGroup(string controlName) : name(std::move(controlName)) {};
 };
 
 class ControlsMenu : Menu {
@@ -35,11 +35,11 @@ public:
 private:
 	ofxPanel gui;
 	/// control categories ---------------
-	vector<controlsGroup> controlsGroups {
-		controlsGroup("Xbox"),
-		controlsGroup("PlayStation"),
-		controlsGroup("Steam"),
-		controlsGroup("Keyboard")
+	vector<ControlsGroup> controlsGroups {
+		ControlsGroup("Xbox"),
+		ControlsGroup("PlayStation"),
+		ControlsGroup("Steam"),
+		ControlsGroup("Keyboard")
 	};
 };
 

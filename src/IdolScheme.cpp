@@ -1,4 +1,4 @@
-#include "../include/IdolScheme.h"
+#include "../include/Idolscheme.h"
 
 ////////////////////////////////////////////////////////////////
    /////////////////      Initialization      ///////////////
@@ -6,7 +6,7 @@
 
 void IdolScheme::setup() {
 	ofBackground(45, 45, 190, 255);
-	IdolScheme_State = GAME_ACTIVE;
+	idolSchemeState = GAME_ACTIVE;
 
 	/*--------------------debugging out--------------------*/
 	ofTrueTypeFont::setGlobalDpi(60);
@@ -15,18 +15,17 @@ void IdolScheme::setup() {
 
 	/*-----------------menu handle loading-----------------*/
 	gui.add(mainMenuBtns);
-	menuHandler.add((Menu*)&gui, false, GAME_MAINMENU);
+	menuHandler.add(static_cast<Menu*>(&gui), false, GAME_MAINMENU);
 
 	/*-------------------beatmap loading-------------------*/
-	vector<string> bmNames = BeatMapHandler::getMapNames();
+	auto bmNames = BeatMapHandler::getMapNames();
 
-	for (string &a : bmNames)
+	for (auto& a : bmNames)
 		cout << a << endl; // writing out all available beatmaps.
 
 	/*-----------------------conductor---------------------*/
 	mainConductor.startTimer();
 }
-
 
 ///////////////////////////////////////////////////////////////
    //////////////////      Game Loop      //////////////////
@@ -45,7 +44,7 @@ void IdolScheme::update() {
 void IdolScheme::draw() {
 	textOut.drawString("Current beat: " + ofToString(mainConductor.currBeat, 2) + "/" + ofToString(mainConductor.totalBeats), 10, 20);
 	textOut.drawString("Active Note TBEAT: " + (activeNote ? ofToString(activeNote->noteSettings.noteNum) : "None"), 10, 40);
-	textOut.drawString("Current time: " + ofToString(((float) mainConductor.timeDiff.count()) / 1000, 2) + "/" + ofToString(mainConductor._lengthInS), 10, 60);
+	textOut.drawString("Current time: " + ofToString(static_cast<float>(mainConductor.timeDiff.count()) / 1000, 2) + "/" + ofToString(mainConductor._lengthInS), 10, 60);
 	textOut.drawString("Beats since last refresh: " + ofToString(mainConductor.numBeatsSinceRefresh, 5), 10, 80);
 	textOut.drawString("FPS: " + ofToString(ofGetFrameRate()), 10, 100);
 	textOut.drawString("Score: " + ofToString(scoreKeeper.score), 400, 20);
@@ -60,28 +59,10 @@ void IdolScheme::draw() {
 }
 
 ///////////////////////////////////////////////////////////////
-   ///////////////      Misc. Functions      ///////////////
-///////////////////////////////////////////////////////////////
-
-float IdolScheme::yCoord(float coordinate) {
-	return coordinate * ofGetHeight();
-}
-
-//--------------------------------------------------------------
-float IdolScheme::xCoord(float coordinate) {
-	return coordinate * ofGetWidth();
-}
-
-//--------------------------------------------------------------
-ofPoint IdolScheme::qSetCoords(ofPoint coordinates) {
-	return ofPoint(coordinates.x * ofGetWidth(), coordinates.y * ofGetHeight());
-}
-
-///////////////////////////////////////////////////////////////
    //////////////////      Callbacks      //////////////////
 ///////////////////////////////////////////////////////////////
 
-void IdolScheme::keyPressed(int key) {
+void IdolScheme::keyPressed(const int key) {
 	switch (key) {
 		case 'o':
 			menuHandler.updateState(GAME_OPTIONSMENU);

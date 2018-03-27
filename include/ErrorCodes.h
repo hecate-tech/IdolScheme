@@ -3,7 +3,7 @@
 #ifndef ERRORCODES_H
 #define ERRORCODES_H
 
-namespace ErrorCodes { // find error codes easier with a namespace
+namespace error_codes { // find error codes easier with a namespace
 
 #define BAD_COORDINATE -97852563948
 #define BAD_LENGTH -93402564

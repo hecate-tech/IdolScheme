@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef CMATH
 	#include <cmath>
 #endif

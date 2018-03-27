@@ -42,58 +42,51 @@
  */
 class IdolScheme : public ofBaseApp {
 	public:
-		GameState IdolScheme_State; // describes what the game is doing.
+		GameState idolSchemeState; // describes what the game is doing.
 		ofTrueTypeFont textOut;
 
 		ofImage myImage;
 		
 		/// Game Objects
 		/// ------------
-		//BeatMapHandler bmHandler;
 		MenuHandler menuHandler;
 		Conductor mainConductor; // This will keep time.
         deque<Note> notes;
 		ScoreKeeper scoreKeeper;
 		Note *activeNote;
 
-		ISGUI::idolVecButton newVecBtn = ISGUI::idolVecButton(ofVec2f(200, 300), ofVec2f(200, 100), "My Button", ofColor(255, 0, 0, 255), ofColor(200, 0, 0, 255));
-		vector<ISGUI::idolButton*> mainMenuBtns = {
-			new ISGUI::idolButton("images/btn0.png", "images/btn0hov.png", ofPoint(100, 175), 100, 50),
-			new ISGUI::idolButton("images/btn1.png", "images/btn1hov.png", ofPoint(100, 250), 100, 50),
-			new ISGUI::idolButton("images/btn2.png", "images/btn2hov.png", ofPoint(100, 320), 100, 50),
-			new ISGUI::idolButton("images/btn3.png", "images/btn3hov.png", ofPoint(100, 395), 100, 50),
-			(ISGUI::idolButton*) &newVecBtn
+		ISGUI::IdolVecButton newVecBtn = ISGUI::IdolVecButton(ofVec2f(200, 300), ofVec2f(200, 100), "My Button", ofColor(255, 0, 0, 255), ofColor(200, 0, 0, 255));
+		vector<ISGUI::IdolButton*> mainMenuBtns = {
+			new ISGUI::IdolButton("images/btn0.png", "images/btn0hov.png", ofPoint(100, 175), 100, 50),
+			new ISGUI::IdolButton("images/btn1.png", "images/btn1hov.png", ofPoint(100, 250), 100, 50),
+			new ISGUI::IdolButton("images/btn2.png", "images/btn2hov.png", ofPoint(100, 320), 100, 50),
+			new ISGUI::IdolButton("images/btn3.png", "images/btn3hov.png", ofPoint(100, 395), 100, 50),
+			static_cast<ISGUI::IdolButton*>(&newVecBtn)
 		};
-		ISGUI::idolGuiGroup gui;
+		ISGUI::IdolGuiGroup gui;
 
 		/// initialization
 		/// --------------
-		void setup();
+		void setup() override;
 
 		/// game loop
 		/// ---------
-		void update();
-		void draw();
-
-		/// misc. functions
-		/// ---------------
-		float yCoord(float coordinate);
-		float xCoord(float coordinate);
-		ofPoint qSetCoords(ofPoint coordinates);
+		void update() override;
+		void draw() override;
 
 		/// callbacks
 		/// ---------
-		void keyPressed(int key);
-		void keyReleased(int key);
-		void mouseMoved(int x, int y);
-		void mouseDragged(int x, int y, int button);
-		void mousePressed(int x, int y, int button);
-		void mouseReleased(int x, int y, int button);
-		void mouseEntered(int x, int y);
-		void mouseExited(int x, int y);
-		void windowResized(int w, int h);
-		void dragEvent(ofDragInfo dragInfo);
-		void gotMessage(ofMessage msg);
+		void keyPressed(int key) override;
+		void keyReleased(int key) override;
+		void mouseMoved(int x, int y) override;
+		void mouseDragged(int x, int y, int button) override;
+		void mousePressed(int x, int y, int button) override;
+		void mouseReleased(int x, int y, int button) override;
+		void mouseEntered(int x, int y) override;
+		void mouseExited(int x, int y) override;
+		void windowResized(int w, int h) override;
+		void dragEvent(ofDragInfo dragInfo) override;
+		void gotMessage(ofMessage msg) override;
 };
 
 #endif //!IDOLSCHEME_H

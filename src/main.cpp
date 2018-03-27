@@ -17,14 +17,14 @@ int main() {
 	/// --------
 	settings.width = 800;
 	settings.height = 600;
-	settings.title = "Idol Scheme";
+	settings.title = "Idol Scheme - Windows";
 	settings.resizable = false;
 	/// creating the window
 	/// -------------------
 	ofCreateWindow(settings);
 #elif defined(TARGET_LINUX) // linux needs to be treated differently for now.
 	ofSetupOpenGL(800, 600, OF_WINDOW);
-	ofSetWindowTitle("Idol Scheme");
+	ofSetWindowTitle("Idol Scheme - Linux");
 #endif
 	/// other settings
 	/// --------------

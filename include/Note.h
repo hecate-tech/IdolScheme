@@ -34,21 +34,17 @@
  */
 class Shadow {
 protected:
-	const GLchar *sprite_dir = "images/shadow.png";
+	const GLchar *spriteDir = "images/shadow.png";
 public:
 	ofImage shadowSprite;
-	const char *shadow_dir = "images/shadow.png";
+	const char *shadowDir = "images/shadow.png";
 
-	Shadow() {}
-	~Shadow() {
-		shadow_dir = NULL;
-		sprite_dir = NULL;
-		delete shadow_dir;
-		delete sprite_dir;
-	}
+	Shadow();
+
+	~Shadow();
 	void resize(GLint width, GLint height);
 	void load();
-	void draw(GLfloat x, GLfloat y);
+	void draw(GLfloat x, GLfloat y) const;
 };
 
 /* @brief - Note
@@ -61,28 +57,28 @@ public:
 class Note {
 protected:
 	int lengthInBeats = BAD_LENGTH;
-	GLint note_size = (ofGetWindowWidth() + ofGetWindowHeight()) * 0.06; // for width and the height.
-	ofColor note_color = ofColor(255, 255, 255, 255);
-	const GLchar *sprite_dir = "images/note.png"; // directory to note image.
+	GLint noteSize = (ofGetWindowWidth() + ofGetWindowHeight()) * 0.06; // for width and the height.
+	ofColor noteColor = ofColor(255, 255, 255, 255);
+	const GLchar *spriteDir = "images/note.png"; // directory to note image.
 	ofImage noteSprite; // object for sprite.
 
 	ofVec2f startPos;
 	ofVec2f distToShadow;
-	GLfloat notex, notey, shadowX, shadowY; // current positions
-	Shadow *shadow; // The note shadow. (This object shouldn't move)
+	GLfloat notex{}, notey{}, shadowX{}, shadowY{}; // current positions
+	Shadow *shadow{}; // The note shadow. (This object shouldn't move)
 public:
 	/// Note settings
 	/// -------------
-	noteInfo noteSettings;
+	NoteInfo noteSettings;
 
 	/// Pointers
 	/// --------
-	ScoreKeeper *scoreKeeper;
-	Conductor *conductor;
+	ScoreKeeper *scoreKeeper{};
+	Conductor *conductor{};
 	
 	/// Constructors/Desconstructor
 	/// ---------------------------
-	Note() {}
+	Note();
 	Note(ofPoint initCoords, ofPoint shadowCoords, NoteType type_, NoteButton button_);
 	Note(ofPoint initCoords, ofPoint shadowCoords, NoteType type_);
 	~Note();
@@ -92,20 +88,20 @@ public:
 	void setup(ofPoint initCoords = ofPoint(0,0), ofPoint shadowCoords = ofPoint(0,0),
 		NoteType type_ = BUTTON, NoteButton button_ = BUTTON_EMPTY);
 	void calcNoteParams();
-	void setBeatRest(noteInfo settings);
-	void setBeatNote(noteInfo settings);
+	void setBeatRest(const NoteInfo& settings);
+	void setBeatNote(const NoteInfo& settings);
 	void setSize(GLint newSize);
 	void setPosition(GLfloat x = 0, GLfloat y = 0, GLfloat xS = 0, GLfloat yS = 0);
 	void init();
-	void draw(GLfloat nX = 0, GLfloat nY = 0, GLfloat sX = 0, GLfloat sY = 0); // draws the note and shadow objects.
+	void draw(GLfloat nX = 0, GLfloat nY = 0, GLfloat sX = 0, GLfloat sY = 0) const; // draws the note and shadow objects.
 	void moveByBeats(GLfloat currBeat);
-	void hit(NoteButton buttonPressed); // For catching key presses.
-	void updateScoreKeeper();
+	void hit(NoteButton buttonPressed) const; // For catching key presses.
+	void updateScoreKeeper() const;
 	void setColor(GLfloat r = 0, GLfloat g = 0, GLfloat b = 0, GLfloat a = 255); // not used ATM
 	bool destroy();
-	ofColor getColor();
+	ofColor getColor() const;
 	ofPoint calcPolarPoint(float angle);
-	Shadow *getShadow();
+	Shadow *getShadow() const;
 };
 
 #endif //!NOTE_H

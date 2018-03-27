@@ -39,50 +39,48 @@ enum WindowAspect {
  * This is a struct base for a resolution button.
  * This contains some extra properties.
  */
-struct resButton {
+struct ResButton {
 	ofxButton button;
 	WindowAspect ratio;
 	int w, h;
-	string getName() { return (ofToString(w) + "x" + ofToString(h)); };
-	string getRatioName() {
+	string getName() const { return (ofToString(w) + "x" + ofToString(h)); }
+	string getRatioName() const {
 		return (ratio == ASPECT_4_3   ? "4:3"
 			:	ratio == ASPECT_16_9  ? "16:9"
 			:	ratio == ASPECT_16_10 ? "16:10"
 			:	/*wowowowowowowowowow*/ "21:9");
 	}
-	resButton(int w_, int h_, WindowAspect r_) {
-		w 	  = w_;
-		h 	  = h_;
-		ratio = r_;
-	}
+	ResButton(const int w_, const int h_, const WindowAspect r_) : ratio(r_), w(w_), h(h_) {}
 };
 
-struct winChoice : idolChoice {
+struct WinChoice : IdolChoice {
 	
 	ofWindowMode windowMode;
-	bool fullScrn() { return windowMode == OF_WINDOW ? false : true; }
-	winChoice(string name_, bool chosen_ = false, ofWindowMode mode = OF_WINDOW) {
+	bool fullScrn() const { return windowMode == OF_WINDOW ? false : true; }
+
+	explicit WinChoice(const string& name_, const bool chosen_ = false, const ofWindowMode mode = OF_WINDOW) {
 		name = name_;
 		chosen = chosen_;
 		windowMode = mode;
 	}
 };
 
-struct winDropDown : idolDropDown {
-	choice_vec<winChoice> choices;
+struct winDropDown : IdolDropDown {
+	choice_vec<WinChoice> choices;
 	winDropDown() {
 		choices = {
-			winChoice("Fullscreen", ofGetWindowMode() == OF_FULLSCREEN ? true : false, OF_FULLSCREEN),
-			winChoice("Windowed", ofGetWindowMode() == OF_WINDOW ? true : false, OF_WINDOW),
-			winChoice("GameMode", ofGetWindowMode() == OF_GAME_MODE ? true : false, OF_GAME_MODE)
+			WinChoice("Fullscreen", ofGetWindowMode() == OF_FULLSCREEN ? true : false, OF_FULLSCREEN),
+			WinChoice("Windowed", ofGetWindowMode() == OF_WINDOW ? true : false, OF_WINDOW),
+			WinChoice("GameMode", ofGetWindowMode() == OF_GAME_MODE ? true : false, OF_GAME_MODE)
 		};
 	}
 };
 
-struct controlsGroup {
+struct ControlsGroup {
 	ofxGuiGroup group;
 	string name;
-	controlsGroup(string name_) {
+
+	explicit ControlsGroup(const string &name_) {
 		name = name_;
 	};
 };
@@ -97,9 +95,9 @@ class OptionMenu : public Menu {
 public:
 	void draw() override;
 	void setAspectRatio(WindowAspect ratio = ASPECT_4_3);
-	void setResolution(string resolution = "800x600");
-	WindowAspect getAspectRatio();
-	string getResolution();
+	void setResolution(const string& resolution = "800x600");
+	WindowAspect getAspectRatio() const;
+	string getResolution() const;
 	int getWinHeight();
 	int getWinWidth();
 	ofPoint getWinRes();
@@ -123,43 +121,43 @@ private:
 	};
 	
 	/// control categories ------------
-	vector<controlsGroup> controlsGroups {
-		controlsGroup("Xbox"),
-		controlsGroup("PlayStation"),
-		controlsGroup("Steam"),
-		controlsGroup("Keyboard")
+	vector<ControlsGroup> controlsGroups {
+		ControlsGroup("Xbox"),
+		ControlsGroup("PlayStation"),
+		ControlsGroup("Steam"),
+		ControlsGroup("Keyboard")
 	};
 
 	/// resolution buttons ------------
-	vector<resButton> resolutions = {
+	vector<ResButton> resolutions = {
 		
 		/// 4:3 --------------------------
-		resButton(800,  600, ASPECT_4_3),
-		resButton(960,  720, ASPECT_4_3),
-		resButton(1024, 768, ASPECT_4_3),
-		resButton(1280, 960, ASPECT_4_3),
+		ResButton(800,  600, ASPECT_4_3),
+		ResButton(960,  720, ASPECT_4_3),
+		ResButton(1024, 768, ASPECT_4_3),
+		ResButton(1280, 960, ASPECT_4_3),
 		
 		/// 16:9 --------------------------
-		resButton(1024, 576,  ASPECT_16_9),
-		resButton(1152, 648,  ASPECT_16_9),
-		resButton(1280, 720,  ASPECT_16_9),
-		resButton(1366, 768,  ASPECT_16_9),
-		resButton(1600, 900,  ASPECT_16_9),
-		resButton(1920, 1080, ASPECT_16_9),
-		resButton(2560, 1440, ASPECT_16_9),
-		resButton(3840, 2160, ASPECT_16_9),
+		ResButton(1024, 576,  ASPECT_16_9),
+		ResButton(1152, 648,  ASPECT_16_9),
+		ResButton(1280, 720,  ASPECT_16_9),
+		ResButton(1366, 768,  ASPECT_16_9),
+		ResButton(1600, 900,  ASPECT_16_9),
+		ResButton(1920, 1080, ASPECT_16_9),
+		ResButton(2560, 1440, ASPECT_16_9),
+		ResButton(3840, 2160, ASPECT_16_9),
 
 		/// 16:10 --------------------------
-		resButton(1280, 800,  ASPECT_16_10),
-		resButton(1440, 900,  ASPECT_16_10),
-		resButton(1680, 1050, ASPECT_16_10),
-		resButton(1920, 1200, ASPECT_16_10),
-		resButton(2560, 1600, ASPECT_16_10),
+		ResButton(1280, 800,  ASPECT_16_10),
+		ResButton(1440, 900,  ASPECT_16_10),
+		ResButton(1680, 1050, ASPECT_16_10),
+		ResButton(1920, 1200, ASPECT_16_10),
+		ResButton(2560, 1600, ASPECT_16_10),
 
 		/// 21:9 --------------------------
-		resButton(2560, 1080, ASPECT_21_9),
-		resButton(3440, 1440, ASPECT_21_9),
-		resButton(3840, 1600, ASPECT_21_9)
+		ResButton(2560, 1080, ASPECT_21_9),
+		ResButton(3440, 1440, ASPECT_21_9),
+		ResButton(3840, 1600, ASPECT_21_9)
 	};
 
 public:

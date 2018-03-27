@@ -5,7 +5,8 @@
 
 #ifndef OFMAIN_H
 	#define OFMAIN_H
-	#include "ofMain.h"
+#include <utility>
+#include "ofMain.h"
 #endif //!OFMAIN_H
 
 #ifndef OFXGUI_H
@@ -21,15 +22,14 @@
  * a component of idolDropDown.
  * used as a button inside of it.
  */
-struct idolChoice {
-public:
+struct IdolChoice {
 	ofxToggle toggle;
 	string name;
 	bool chosen = false;
 	bool prevState = false;
 	bool currState = false;
-	idolChoice() {}
-	idolChoice(string name_, bool chosen_ = false) : name(name_), chosen(chosen_) {}
+	IdolChoice() = default;
+	IdolChoice(string name_, const bool chosen_ = false) : name(std::move(name_)), chosen(chosen_) {}
 };
 
 /* @brief - idolDropDown
@@ -38,13 +38,12 @@ public:
  * true value at a time. 
  * Acts like a folding radio!
  */
-struct idolDropDown {
-public:
+struct IdolDropDown {
 	ofxGuiGroup panel;
 	bool folded = true;
 	template<typename T>
 	using choice_vec = vector<T>;
-	idolDropDown() {}
+	IdolDropDown() = default;
 };
 
 namespace ISGUI {
@@ -54,23 +53,23 @@ namespace ISGUI {
 	* functional button. This DOES NOT
 	* connect to an ofxGui panel!
 	*/
-	class idolButton {
+	class IdolButton {
 	public:
-		idolButton();
-		idolButton(string normdir, string hoverdir, ofPoint pos, float w, float h);
-		~idolButton();
+		IdolButton();
+		IdolButton(string normdir, string hoverdir, ofPoint pos, float w, float h);
+		virtual ~IdolButton();
 
 		virtual void draw();
 		void setImagePosition(ofPoint pos);
 		void setImagePosition(float x_, float y_);
-		void setImageDirectory(const string directory);
+		void setImageDirectory(const string& directory);
 		void setBounds(const ofPoint xy, float width, float height);
-		void set(string normdir, string hoverdir, ofPoint pos, float w, float h);
+		void set(string normdir, const string &hoverdir, ofPoint pos, float w, float h);
 		
 		virtual bool mouseDown();
 
-		ofPoint getPosition();
-		string getImageDirectory();
+		ofPoint getPosition() const;
+		string getImageDirectory() const;
 	protected:
 		ofImage buttonImage;
 		ofPoint imagePos;
@@ -88,7 +87,7 @@ namespace ISGUI {
 		void mouseDownEvent(ofMouseEventArgs &mouse);
 		void mouseMoveEvent(ofMouseEventArgs &mouse);
 		void mouseUpEvent(ofMouseEventArgs &mouse);
-		bool isInBounds(float x, float y);
+		virtual bool isInBounds(float x, float y);
 	};
 
 
@@ -98,44 +97,44 @@ namespace ISGUI {
 	 * buttons and other idolScheme
 	 * objects.
 	 */
-	class idolGuiGroup : public Menu {
+	class IdolGuiGroup : public Menu {
 	public:
-		idolGuiGroup() {}
+		IdolGuiGroup() = default;
 
 		void draw() override {
-			for (unsigned int i = 0; i < buttons.size(); i++) {
-				buttons.at(i)->draw();
+			for (auto& button : buttons) {
+				button->draw();
 			}
 		}
-		void add(idolButton* btn) {
+		void add(IdolButton* btn) {
 			buttons.push_back(btn);
 		}
-		void add(vector<idolButton*> btns) {
-			for (idolButton* a : btns)
+		void add(vector<IdolButton*> btns) {
+			for (auto a : btns)
 				add(a);
 		}
 		void clear() {
 			buttons.clear();
 			buttons.shrink_to_fit();
 		}
-		vector<idolButton*> getButtons() {
+		vector<IdolButton*> getButtons() const {
 			return buttons;
 		}
-		idolButton *getButton(unsigned int index) {
+		IdolButton *getButton(const unsigned int index) {
 			if (index > buttons.size())
-				return new idolButton();
+				return new IdolButton();
 			return buttons.at(index);
 		}
 	private:
-		vector<idolButton*> buttons;
+		vector<IdolButton*> buttons;
 	};
 
 	
-	class idolVecButton : public idolButton {
+	class IdolVecButton : public IdolButton {
 	public:
-		idolVecButton();
-		idolVecButton(ofVec2f pos, ofVec2f size, string btnText, ofColor nColor = ofColor(255, 255, 255, 255), ofColor hColor = ofColor(0, 0, 0, 255));
-		~idolVecButton();
+		IdolVecButton();
+		IdolVecButton(ofVec2f pos, ofVec2f size, string btnText, ofColor nColor = ofColor(255, 255, 255, 255), ofColor hColor = ofColor(0, 0, 0, 255));
+		~IdolVecButton();
 
 		void draw() override;
 		void setFontSize(int size);
@@ -151,11 +150,11 @@ namespace ISGUI {
 		void setHoverColor(ofColor color);
 		void set(ofVec2f pos, ofVec2f size, string btnText, ofColor nColor, ofColor hColor);
 
-		int getFontSize();
+		int getFontSize() const;
 		bool mouseDown() override;
-		double getFontKerning();
-		string getText();
-		string getFontFile();
+		double getFontKerning() const;
+		string getText() const;
+		string getFontFile() const;
 	protected:
 		double kerning = 1.037;
 		int fontSize = 20;
@@ -176,7 +175,7 @@ namespace ISGUI {
 		void onMouseMove(ofMouseEventArgs &mouse);
 		void onMouseDown(ofMouseEventArgs &mouse);
 		void onMouseUp(ofMouseEventArgs &mouse);
-		bool isInBounds(float x, float y);
+		bool isInBounds(float x, float y) const; // purposefully shadowing
 	};
 }
 

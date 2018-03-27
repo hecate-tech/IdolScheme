@@ -5,12 +5,12 @@
 
 #include "ofXml.h"
 
-namespace fs = ::filesystem;
+namespace fs = filesystem;
 
 /* note_info = [section][note][data] (first = data name) (second = data) */
-using note_info = map<int, map<int, map<int, pair<string, string>>>>;
+typedef map<int, map<int, map<int, pair<string, string>>>> note_info;
 /* vale_map = [section] (data) */
-using val_map   = map<int, int>;
+typedef map<int, int> val_map;
 
 class BeatMapHandler {
 private:
@@ -23,7 +23,7 @@ public:
 	static string getMapName(ofXml &doc);
 	static note_info getNoteVals(ofXml doc);
 	static ofXml getMap(const string &mapName);
-	static val_map getSectionVals(ofXml &doc, string value);
+	static val_map getSectionVals(ofXml &doc, const string& value);
 };
 
 #endif //!BEATMAPHANDLER_H

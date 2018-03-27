@@ -1,7 +1,7 @@
 #include "../include/ScoreKeeper.h"
 
-NoteAccuracy assessAccuracy(float currBeat, float targetBeat) {
-    float offByBeats = std::abs(targetBeat - currBeat);
+NoteAccuracy assessAccuracy(const float currBeat, const float targetBeat) {
+	const float offByBeats = std::abs(targetBeat - currBeat);
 
     if (offByBeats < 0.025)
         return WONDERFUL;
@@ -13,4 +13,6 @@ NoteAccuracy assessAccuracy(float currBeat, float targetBeat) {
         return BAD;
     else if (offByBeats < 1 && offByBeats > 0.2)
         return GARBAGE;
+	
+	return {};
 }

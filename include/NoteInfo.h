@@ -55,8 +55,7 @@ enum NoteButton {
 * A note holds all its arguments and in order
 * for it to be instantiated in-game.
 */
-struct noteInfo {
-public:
+struct NoteInfo {
 	float frac = 1.0f;
 	float noteNum;
 	int lineNum;   // note's line number in its .isbm file.
@@ -73,12 +72,12 @@ public:
 	NoteButton button;   // Note's assigned button (A, B, X, Y)
 	vector<string> args; // temporary args vector
 
-	void convert(float lastNum) {
+	void convert(const float lastNum) {
 		frac   = 1.0f / ofToFloat(args.at(1));
 		noteNum = frac + lastNum;
 		offset = ofToInt(args.at(2));
-		type   = (NoteType)ofToInt(args.at(3));
-		button = (NoteButton)ofToInt(args.at(4));
+		type   = NoteType(ofToInt(args.at(3)));
+		button = NoteButton(ofToInt(args.at(4)));
 		xS     = ofToFloat(args.at(5));
 		yS     = ofToFloat(args.at(6));
 		angle  = ofToFloat(args.at(7));
@@ -87,7 +86,7 @@ public:
 		args.shrink_to_fit();
 	}
 
-	noteInfo& operator= (const noteInfo &a) {
+	NoteInfo& operator= (const NoteInfo &a) {
 		lineNum  = a.lineNum;
 		offset	 = a.offset;
 		type	 = a.type;
@@ -104,8 +103,8 @@ public:
 		return *this;
 	}
 
-	noteInfo() {}
-	noteInfo(int lineNumber) { lineNum = lineNumber; }
+	NoteInfo() {}
+	NoteInfo(const int lineNumber) { lineNum = lineNumber; }
 };
 
 #endif //!NOTEINFO_H

@@ -4,16 +4,16 @@
    /////////////////      Private Methods      ///////////////
 /////////////////////////////////////////////////////////////////
 void BeatMapHandler::getPaths(const fs::path &root, const string &ext, vector<fs::path> &ret) {
-	if (!fs::exists(root) || !fs::is_directory(root))
+	if (!exists(root) || !is_directory(root))
 		return;
 	
 	/// iterators ---------------------------
 	fs::recursive_directory_iterator it(root);
-	fs::recursive_directory_iterator endit;
+	const fs::recursive_directory_iterator endit;
 
 	/// while there are still files ---------
 	while (it != endit) {
-		if (fs::is_regular_file(*it) && it->path().extension() == ext) ret.push_back(it->path());
+		if (is_regular_file(*it) && it->path().extension() == ext) ret.push_back(it->path());
 
 		++it;
 	}
@@ -22,11 +22,11 @@ void BeatMapHandler::getPaths(const fs::path &root, const string &ext, vector<fs
 //--------------------------------------------------------------------------------------
 int BeatMapHandler::getNumOfTags(ofXml &doc, const string &tag) {
 	int res = 0;
-	std::size_t f;
 
 	for (int i = 0; i < doc.getNumChildren(); i++) {
 		doc.setToChild(i);
-		f = doc.getName().find(tag);
+		const std::size_t f = doc.getName().find(tag);
+		
 		if (f != string::npos) res++;
 		doc.setToParent(1);
 	}
@@ -38,13 +38,13 @@ int BeatMapHandler::getNumOfTags(ofXml &doc, const string &tag) {
    /////////////////      Public Methods      ///////////////
 ////////////////////////////////////////////////////////////////
 vector<ofXml> BeatMapHandler::getXml() {
-	vector<fs::path> paths_;
-	BeatMapHandler::getPaths(ofToDataPath("beatmaps"), ".xml", paths_);
+	vector<fs::path> paths;
+	getPaths(ofToDataPath("beatmaps"), ".xml", paths);
 
 	vector<ofXml> xmlRes;
-	for (unsigned int i = 0; i < paths_.size(); i++) {
+	for (const auto& path : paths) {
 		ofFile file;
-		file.open(paths_.at(i));
+		file.open(path);
 
 		ofBuffer buffer = file.readToBuffer();
 		ofXml doc;
@@ -58,10 +58,10 @@ vector<ofXml> BeatMapHandler::getXml() {
 //--------------------------------------------------------------------------------------
 vector<string> BeatMapHandler::getMapNames() {
 	vector<string> names;
-	vector<ofXml> xmlDocs = BeatMapHandler::getXml();
+	vector<ofXml> xmlDocs = getXml();
 
 	for (ofXml &doc : xmlDocs) {
-		names.push_back(BeatMapHandler::getMapName(doc));
+		names.push_back(getMapName(doc));
 	}
 
 	return names;
@@ -80,13 +80,13 @@ string BeatMapHandler::getMapName(ofXml &doc) {
 //--------------------------------------------------------------------------------------
 note_info BeatMapHandler::getNoteVals(ofXml doc) {
 	note_info ret;
-	int sectionNum = BeatMapHandler::getNumOfTags(doc, "section");
+	const int sectionNum = getNumOfTags(doc, "section");
 
 	//------------------------------------------------------
 	for (int i = 0; i < sectionNum; i++) {
 
 		doc.setTo("section[" + std::to_string(i) + "]");
-		int noteNum = BeatMapHandler::getNumOfTags(doc, "note");
+		const int noteNum = getNumOfTags(doc, "note");
 		//--------------------------------------------------
 		for (int j = 0; j < noteNum; j++) {
 
@@ -125,19 +125,19 @@ note_info BeatMapHandler::getNoteVals(ofXml doc) {
 
 //--------------------------------------------------------------------------------------
 ofXml BeatMapHandler::getMap(const string & mapName) {
-	vector<ofXml> xmlDocs = BeatMapHandler::getXml();
+	vector<ofXml> xmlDocs = getXml();
 
 	for (ofXml &doc : xmlDocs)
-		if (BeatMapHandler::getMapName(doc).compare(mapName) == 0)
+		if (getMapName(doc) == mapName)
 			return doc;
 
 	return ofXml();
 }
 
 //--------------------------------------------------------------------------------------
-val_map BeatMapHandler::getSectionVals(ofXml &doc, string value) {
+val_map BeatMapHandler::getSectionVals(ofXml &doc, const string& value) {
 	val_map res;
-	for (int i = 0; i < BeatMapHandler::getNumOfTags(doc, "section"); i++)
+	for (int i = 0; i < getNumOfTags(doc, "section"); i++)
 		res[i] = ofToInt(doc.getValue("section[" + std::to_string(i) + "]/" + value));
 	
 	return res;

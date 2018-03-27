@@ -25,13 +25,13 @@ OptionMenu::OptionMenu() {
 	windowMode.panel.setName("Window Mode");
 	windowMode.panel.setHeaderBackgroundColor(ofColor::orange);
 	/// Adding the dropdown menu contents
-	for (unsigned int k = 0; k < windowMode.choices.size(); k++) {
-		windowMode.panel.add(windowMode.choices.at(k).toggle.setup(windowMode.choices.at(k).name, windowMode.choices.at(k).chosen));
+	for (auto& choice : windowMode.choices) {
+		windowMode.panel.add(choice.toggle.setup(choice.name, choice.chosen));
 	}
 
 	/// Adding all Ratios
 	for (unsigned int j = 0; j < ratioGroups.size(); j++) {
-		if (confirmValidRatio((WindowAspect)j))
+		if (confirmValidRatio(static_cast<WindowAspect>(j)))
 			graphics.add(ratioGroups.at(j).setup(ofToString(j)));
 		
 		/// Settings Names/Labels
@@ -54,11 +54,11 @@ OptionMenu::OptionMenu() {
 	}
 	
 	/// Adding all resolutions
-	for (unsigned int i = 0; i < resolutions.size(); i++) {
+	for (auto& resolution : resolutions) {
 		// if the button res is equal or smaller than the monitor res.
-		if (resolutions.at(i).h <= mode->height && resolutions.at(i).w <= mode->width) {
-			ratioGroups.at((int)resolutions.at(i).ratio).add(resolutions.at(i).button.setup(resolutions.at(i).getName()));
-			resolutions.at(i).button.setName(resolutions.at(i).getName());
+		if (resolution.h <= mode->height && resolution.w <= mode->width) {
+			ratioGroups.at(static_cast<int>(resolution.ratio)).add(resolution.button.setup(resolution.getName()));
+			resolution.button.setName(resolution.getName());
 		}
 	}
 	cout << endl; // this is just to separate the warnings
@@ -77,24 +77,32 @@ void OptionMenu::draw() {
 
 //-------------------------------------------
 void OptionMenu::buttonCheck() {
+	
 	if (ofGetWindowMode() == OF_WINDOW) { // only check when windowed.
-		for (unsigned int i = 0; i < resolutions.size(); i++) {
+		
+		for (auto& resolution : resolutions) {
 			// if the resolution button is equal or smaller than monitor resolution.
-			if (resolutions.at(i).h <= mode->height && resolutions.at(i).w <= mode->width) {
-				if (resolutions.at(i).button) { // if the button is pressed
+			
+			if (resolution.h <= mode->height && resolution.w <= mode->width) {
+				
+				if (resolution.button) { // if the button is pressed
 					// if the current res isn't equal to the button's res.
-					if (getResolution().compare(resolutions.at(i).getName()) != 0)
-						setResolution(resolutions.at(i).getName());
+					
+					if (getResolution() != resolution.getName())
+						setResolution(resolution.getName());
 
 					// if the current ratio isn't equal to the button's ratio.
-					if (resolutions.at(i).ratio != getAspectRatio())
-						setAspectRatio(resolutions.at(i).ratio);
+					if (resolution.ratio != getAspectRatio())
+						setAspectRatio(resolution.ratio);
 
 					// sets the resolution of the window to the button you pressed.
-					ofSetWindowShape(resolutions.at(i).w, resolutions.at(i).h);
+					ofSetWindowShape(resolution.w, resolution.h);
 				}
+
 			}
+
 		}
+
 	}
 
 	for (unsigned int j = 0; j < windowMode.choices.size(); j++) {
@@ -102,8 +110,8 @@ void OptionMenu::buttonCheck() {
 		windowMode.choices.at(j).currState = windowMode.choices.at(j).toggle;
 
 		/// On MouseDown
-		if (windowMode.choices.at(j).prevState == false 
-			&& windowMode.choices.at(j).currState == true) {
+		if (!windowMode.choices.at(j).prevState
+			&& windowMode.choices.at(j).currState) {
 			windowMode.choices.at(j).chosen = true;
 			
 			/// If the window modes are not equal to the toggle you pressed.
@@ -157,13 +165,13 @@ void OptionMenu::buttonCheck() {
 }
 
 //-------------------------------------------
-bool OptionMenu::confirmValidRatio(WindowAspect ratio) {
+bool OptionMenu::confirmValidRatio(const WindowAspect ratio) {
 	bool result = false;
 
-	for (unsigned int i = 0; i < resolutions.size(); i++) {
-		if    (resolutions.at(i).h     <= mode->height 
-			&& resolutions.at(i).w     <= mode->width
-			&& resolutions.at(i).ratio == ratio) {
+	for (auto& resolution : resolutions) {
+		if    (resolution.h     <= mode->height 
+			&& resolution.w     <= mode->width
+			&& resolution.ratio == ratio) {
 			result = true;
 		}
 	}
@@ -175,30 +183,30 @@ bool OptionMenu::confirmValidRatio(WindowAspect ratio) {
    /////////////////      Getters/Setters      ///////////////
 /////////////////////////////////////////////////////////////////
 
-WindowAspect OptionMenu::getAspectRatio() {
+WindowAspect OptionMenu::getAspectRatio() const {
 	return currentWindowAspectRatio;
 }
 
 //-------------------------------------------
-string OptionMenu::getResolution() {
+string OptionMenu::getResolution() const {
 	return currentWindowResolution;
 }
 
 //-------------------------------------------
-void OptionMenu::setAspectRatio(WindowAspect ratio) {
+void OptionMenu::setAspectRatio(const WindowAspect ratio) {
 	currentWindowAspectRatio = ratio;
 }
 
 //-------------------------------------------
-void OptionMenu::setResolution(string resolution) {
+void OptionMenu::setResolution(const string& resolution) {
 	currentWindowResolution = resolution;
 }
 
 //-------------------------------------------
 WindowAspect OptionMenu::getRatioOnMonitor() {
-	for (unsigned int i = 0; i < resolutions.size(); i++) {
-		if (resolutions.at(i).h == mode->height && resolutions.at(i).w == mode->width) {
-			return resolutions.at(i).ratio;
+	for (auto& resolution : resolutions) {
+		if (resolution.h == mode->height && resolution.w == mode->width) {
+			return resolution.ratio;
 		}
 	}
 	
@@ -217,10 +225,10 @@ int OptionMenu::getWinHeight() {
 
 //-------------------------------------------
 ofPoint OptionMenu::getWinRes() {
-	for(unsigned int i = 0; i < resolutions.size(); i++) {
-		if(resolutions.at(i).getName().compare(getResolution()) == 0) {
-			return ofPoint(resolutions.at(i).w, resolutions.at(i).h);
+	for (auto& resolution : resolutions) {
+		if(resolution.getName() == getResolution()) {
+			return { float(resolution.w), float(resolution.h) };
 		}
 	}
-	return ofPoint(1,1);
+	return {1,1};
 }

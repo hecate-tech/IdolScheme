@@ -4,32 +4,34 @@
        //////////////////      Constructors/Desconstructors      //////////////////
 ////////////////////////////////////////////////////////////////////////////////////////
 
-Note::Note(ofPoint initCoords, ofPoint shadowCoords, NoteType type_, NoteButton button_) 
+Note::Note() = default;
+
+Note::Note(ofPoint initCoords, ofPoint shadowCoords, const NoteType type_, const NoteButton button_) 
 	: notex(initCoords[0]), notey(initCoords[1]), shadowX(shadowCoords[0]), shadowY(shadowCoords[1]) {
 	noteSettings.type = type_;
 	noteSettings.button = button_;
-	noteSprite.load(sprite_dir);
+	noteSprite.load(spriteDir);
 	init();
 }
 
 //----------------------------------------------------------------------------------
-Note::Note(ofPoint initCoords, ofPoint shadowCoords, NoteType type_) 
+Note::Note(ofPoint initCoords, ofPoint shadowCoords, const NoteType type_) 
 	: notex(initCoords[0]), notey(initCoords[1]), shadowX(shadowCoords[0]), shadowY(shadowCoords[1]) {
 	noteSettings.type = type_;
-	noteSprite.load(sprite_dir);
+	noteSprite.load(spriteDir);
 	init();
 }
 
 //----------------------------------------------------------------------------------
-void Note::setBeatRest(noteInfo settings) {
+void Note::setBeatRest(const NoteInfo& settings) {
 	noteSettings = settings;
 	init();
 }
 
 //----------------------------------------------------------------------------------
-void Note::setBeatNote(noteInfo settings) {
+void Note::setBeatNote(const NoteInfo& settings) {
 	noteSettings = settings;
-	ofPoint setupParam = calcPolarPoint(noteSettings.angle);
+	const ofPoint setupParam = calcPolarPoint(noteSettings.angle);
 	setup(
 		ofPoint(setupParam.x, setupParam.y),
 		ofPoint(noteSettings.xS * ofGetWidth(), noteSettings.yS * ofGetHeight()),
@@ -38,10 +40,10 @@ void Note::setBeatNote(noteInfo settings) {
 }
 
 //----------------------------------------------------------------------------------
-void Note::setup(ofPoint initCoords, ofPoint shadowCoords, NoteType type_, NoteButton button_) {
+void Note::setup(ofPoint initCoords, ofPoint shadowCoords, const NoteType type_, const NoteButton button_) {
 	setPosition(initCoords[0], initCoords[1], shadowCoords[0], shadowCoords[1]);
 
-	noteSprite.load(sprite_dir);
+	noteSprite.load(spriteDir);
 	
 	noteSettings.type = type_;
 	noteSettings.button = button_;
@@ -55,9 +57,9 @@ Note::~Note() {
 
 //----------------------------------------------------------------------------------
 bool Note::destroy() {
-	sprite_dir = NULL;
-	shadow = NULL;
-	delete sprite_dir;
+	spriteDir = nullptr;
+	shadow = nullptr;
+	delete spriteDir;
 	delete shadow;
 
 	return false;
@@ -72,8 +74,8 @@ void Note::init() {
 	/// --------------------------------------------------
 	noteSprite.setAnchorPercent(.5, .5);
 
-	noteSprite.resize(note_size, note_size); // resizing the note.
-	shadow->resize(note_size, note_size); // resizing the shadow.
+	noteSprite.resize(noteSize, noteSize); // resizing the note.
+	shadow->resize(noteSize, noteSize); // resizing the shadow.
 }
 
 
@@ -82,7 +84,7 @@ void Note::init() {
    //////////////////      Functions      //////////////////
 ///////////////////////////////////////////////////////////////
 
-void Note::hit(NoteButton buttonPressed) {
+void Note::hit(const NoteButton buttonPressed) const {
 	/// This is when the user pressed the assigned note button.
 	/// -------------------------------------------------------
     if (buttonPressed != noteSettings.button) {
@@ -93,8 +95,8 @@ void Note::hit(NoteButton buttonPressed) {
     updateScoreKeeper();
 }
 
-void Note::updateScoreKeeper() {
-    	auto accuracy = assessAccuracy(conductor->currBeat, noteSettings.noteNum); 
+void Note::updateScoreKeeper() const {
+	const auto accuracy = assessAccuracy(conductor->currBeat, noteSettings.noteNum); 
 	switch(accuracy) {
 		case WONDERFUL:
 		    scoreKeeper->wonderfulCount += 1;
@@ -121,7 +123,7 @@ void Note::updateScoreKeeper() {
 }
 
 //----------------------------------------------------------------------------------
-void Note::draw(GLfloat nX, GLfloat nY, GLfloat sX, GLfloat sY) {
+void Note::draw(const GLfloat nX, const GLfloat nY, const GLfloat sX, const GLfloat sY) const {
 	/// checking if the x and y parameters are present.
 	/// -----------------------------------------------
 	if (nX != BAD_COORDINATE && nY != BAD_COORDINATE && sX != BAD_COORDINATE && sY != BAD_COORDINATE) {
@@ -134,14 +136,14 @@ void Note::draw(GLfloat nX, GLfloat nY, GLfloat sX, GLfloat sY) {
 }
 
 //----------------------------------------------------------------------------------
-void Note::moveByBeats(GLfloat currBeat) {
-	float time = currBeat - noteSettings.noteNum;
+void Note::moveByBeats(const GLfloat currBeat) {
+	const auto time = currBeat - noteSettings.noteNum;
 	
 	notex = startPos.x + time * distToShadow.x;
 	notey = startPos.y + time * distToShadow.y;
 
 	/// draw the notes after calculating the positions
-	ofSetColor(note_color);
+	ofSetColor(noteColor);
 	draw(notex, notey, shadowX, shadowY);
 	ofSetColor(255, 255, 255, 255); // sets color to normal
 }
@@ -155,20 +157,20 @@ void Note::calcNoteParams() {
 }
 
 //----------------------------------------------------------------------------------
-void Note::setColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a) {
-	note_color.r = r;
-	note_color.g = g;
-	note_color.b = b;
-	note_color.a = a;
+void Note::setColor(const GLfloat r, const GLfloat g, const GLfloat b, const GLfloat a) {
+	noteColor.r = r;
+	noteColor.g = g;
+	noteColor.b = b;
+	noteColor.a = a;
 }
 
 //----------------------------------------------------------------------------------
-ofColor Note::getColor() {
-	return note_color;
+ofColor Note::getColor() const {
+	return noteColor;
 }
 
 //----------------------------------------------------------------------------------
-void Note::setPosition(GLfloat x, GLfloat y, GLfloat xS, GLfloat yS) {
+void Note::setPosition(const GLfloat x, const GLfloat y, const GLfloat xS, const GLfloat yS) {
 	notex   = x;
 	notey   = y;
 	shadowX = xS;
@@ -176,22 +178,22 @@ void Note::setPosition(GLfloat x, GLfloat y, GLfloat xS, GLfloat yS) {
 }
 
 //----------------------------------------------------------------------------------
-void Note::setSize(GLint newSize) {
-	note_size = newSize;
+void Note::setSize(const GLint newSize) {
+	noteSize = newSize;
 
 	/// note resizing
 	/// -------------
-	noteSprite.load(sprite_dir); // reloads image
-	noteSprite.resize(note_size, note_size);
+	noteSprite.load(spriteDir); // reloads image
+	noteSprite.resize(noteSize, noteSize);
 	
 	/// shadow resizing
 	/// ---------------
-	getShadow()->shadowSprite.load(getShadow()->shadow_dir); // reloads image
-	getShadow()->shadowSprite.resize(note_size, note_size);
+	getShadow()->shadowSprite.load(getShadow()->shadowDir); // reloads image
+	getShadow()->shadowSprite.resize(noteSize, noteSize);
 }
 
 //----------------------------------------------------------------------------------
-Shadow *Note::getShadow() {
+Shadow *Note::getShadow() const {
 	return shadow; // returns the shadow object attached to the note.
 }
 
@@ -199,28 +201,28 @@ Shadow *Note::getShadow() {
 //----------------------------------------------------------------------------------
 ofPoint Note::calcPolarPoint(float angle) {
 	ofPoint result;
-	float halfC = 3.14169f / 180.f; // modifier to turn degrees to radians
+	auto halfC = 3.14169f / 180.f; // modifier to turn degrees to radians
 	float zMod, off = 0;
 	using namespace placeholders;
 	// lambdas for setting the coordinates of the result ofPoint
 	auto setResult = [&](float offset, float offset2, int val, int val2) {
-		result = ofPoint(offset + val, offset2 + val2);
+		result = ofPoint(offset + float(val), offset2 + float(val2));
 	};
 	auto sdCheck = [](float a) {
 		return ((a >= 60 && a < 120) ? 1 : (a >= 240 && a < 300) ? 2 : (a >= 120 && a < 240) ? 3 : 4);
 	};
-	auto mag = [&]() {
-		if (sdCheck(angle) <= 2) { zMod = ofGetWidth() / 2; off = 90 * halfC * (sdCheck(angle) == 2 ? 3 : 1); }
-		else { zMod = ofGetHeight() / 2; off = 0; }
-		return tan((angle * halfC) - off) * (zMod + note_size);
+	const auto mag = [&]() {
+		if (sdCheck(angle) <= 2) { zMod = float(ofGetWidth()) / 2; off = 90 * halfC * (sdCheck(angle) == 2 ? 3 : 1); }
+		else { zMod = float(ofGetHeight()) / 2; off = 0; }
+		return tan((angle * halfC) - off) * (zMod + noteSize);
 	};
-	auto sdSet = bind(setResult, _1, ofGetHeight()/2, note_size, _2);
-	auto nmSet = bind(setResult, ofGetWidth()/2, _1, _2, note_size);
+	auto sdSet = bind(setResult, _1, float(ofGetHeight())/2.f, noteSize, _2);
+	auto nmSet = bind(setResult, float(ofGetWidth())/2.f, _1, _2, noteSize);
 
-	if(sdCheck(angle) == 2) 	 sdSet((-1*(note_size * 2)), (-1*(mag())));
-	else if(sdCheck(angle) == 1) sdSet(ofGetWidth(), mag());
-	else if(sdCheck(angle) == 3) nmSet(ofGetHeight(), (-1*(mag())));
-	else 					     nmSet((-1*(note_size * 2)), mag());
+	if(sdCheck(angle) == 2) 	 sdSet(float((-1*(noteSize * 2))), int((-1*(mag()))));
+	else if(sdCheck(angle) == 1) sdSet(float(ofGetWidth()),		   int(mag()));
+	else if(sdCheck(angle) == 3) nmSet(float(ofGetHeight()),	   int((-1*(mag()))));
+	else 					     nmSet(float((-1*(noteSize * 2))), int(mag()));
 	
 	return result;
 }
@@ -230,17 +232,28 @@ ofPoint Note::calcPolarPoint(float angle) {
     //////////////////      Shadow      //////////////////
 //////////////////////////////////////////////////////////////
 
-void Shadow::draw(GLfloat x, GLfloat y) {
+void Shadow::draw(const GLfloat x, const GLfloat y) const {
 	this->shadowSprite.draw(x, y);
 }
 
 //----------------------------------------------------------------------------------
 void Shadow::load() {
 	shadowSprite.setAnchorPercent(.5, .5);
-	shadowSprite.load(shadow_dir);
+	shadowSprite.load(shadowDir);
 }
 
 //----------------------------------------------------------------------------------
-void Shadow::resize(GLint width, GLint height) {
+Shadow::Shadow() = default;
+
+//----------------------------------------------------------------------------------
+Shadow::~Shadow() {
+	shadowDir = nullptr;
+	spriteDir = nullptr;
+	delete shadowDir;
+	delete spriteDir;
+} 
+
+//----------------------------------------------------------------------------------
+void Shadow::resize(const GLint width, const GLint height) {
 	shadowSprite.resize(width, height);
 }
