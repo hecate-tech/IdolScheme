@@ -17,7 +17,7 @@
 #endif //!ERRORCODES_H
 
 #ifndef CONDUCTOR_H
-#define CONDUCTOR_H
+	#define CONDUCTOR_H
     #include "Conductor.h"
 #endif //!CONDUCTOR_H
 
@@ -25,25 +25,10 @@
 	#include "NoteInfo.h"
 #endif //!NOTEINFO_H
 
+#ifndef SHADOW_H
+	#include "Shadow.h"
+#endif //!SHADOW_H
 
-/* @brief - Shadow
- * The Shadow class is the second
- * half of the note object and is
- * essential that it does not move.
- * (Amazing brief)
- */
-class Shadow {
-public:
-	string shadowDir = ofToDataPath("images/shadow.png");
-	ofImage shadowSprite;
-
-	Shadow();
-	~Shadow();
-
-	void resize(GLint width, GLint height);
-	void load();
-	void draw(GLfloat x, GLfloat y) const;
-};
 
 /* @brief - Note
  * The Note class is what stores
@@ -95,7 +80,7 @@ public:
 	void moveByBeats(GLfloat currBeat);
 	void hit(NoteButton buttonPressed) const; // For catching key presses.
 	void updateScoreKeeper() const;
-	void setColor(GLfloat r = 0, GLfloat g = 0, GLfloat b = 0, GLfloat a = 255); // not used ATM
+	void setColor(GLfloat r = 0, GLfloat g = 0, GLfloat b = 0, GLfloat a = 255);
 	bool destroy();
 	ofColor getColor() const;
 	ofPoint calcPolarPoint(float angle);

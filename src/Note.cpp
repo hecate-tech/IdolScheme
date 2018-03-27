@@ -229,29 +229,3 @@ ofPoint Note::calcPolarPoint(float angle) {
 	
 	return result;
 }
-
-
-//////////////////////////////////////////////////////////////
-    //////////////////      Shadow      //////////////////
-//////////////////////////////////////////////////////////////
-
-void Shadow::draw(const GLfloat x, const GLfloat y) const {
-	this->shadowSprite.draw(x, y);
-}
-
-//----------------------------------------------------------------------------------
-void Shadow::load() {
-	shadowSprite.setAnchorPercent(.5, .5);
-	shadowSprite.load(shadowDir);
-}
-
-//----------------------------------------------------------------------------------
-Shadow::Shadow() = default;
-
-//----------------------------------------------------------------------------------
-Shadow::~Shadow() = default;
-
-//----------------------------------------------------------------------------------
-void Shadow::resize(const GLint width, const GLint height) {
-	shadowSprite.resize(width, height);
-}

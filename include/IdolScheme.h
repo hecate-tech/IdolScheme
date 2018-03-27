@@ -29,7 +29,9 @@
 	#include "GameStates.h"
 #endif //GAMESTATES_H
 
-#include "MenuItems.h"
+#ifndef IDOLGUI_H
+	#include "ISGUI/IdolGui.h"
+#endif //!IDOLGUI_H
 
 #ifndef IDOLSCHEME_H
 #define IDOLSCHEME_H
