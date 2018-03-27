@@ -55,6 +55,8 @@ class IdolScheme : public ofBaseApp {
 		ScoreKeeper scoreKeeper;
 		Note *activeNote;
 
+		Note myNote;
+
 		ISGUI::IdolVecButton newVecBtn = ISGUI::IdolVecButton(ofVec2f(200, 300), ofVec2f(200, 100), "My Button", ofColor(255, 0, 0, 255), ofColor(200, 0, 0, 255));
 		vector<ISGUI::IdolButton*> mainMenuBtns = {
 			new ISGUI::IdolButton("images/btn0.png", "images/btn0hov.png", ofPoint(100, 175), 100, 50),

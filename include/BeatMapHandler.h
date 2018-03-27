@@ -3,7 +3,10 @@
 #ifndef BEATMAPHANDLER_H
 #define BEATMAPHANDLER_H
 
-#include "ofXml.h"
+#ifndef OFMAIN_H
+	#define OFMAIN_H
+	#include "ofMain.h"
+#endif //!OFMAIN_H
 
 namespace fs = filesystem;
 
@@ -13,7 +16,6 @@ typedef map<int, map<int, map<int, pair<string, string>>>> note_info;
 typedef map<int, int> val_map;
 
 class BeatMapHandler {
-private:
 	static int  getNumOfTags(ofXml &doc, const string &tag);
 	static void getPaths(const fs::path &root, const string &ext, vector<fs::path> &ret);
 public:

@@ -58,9 +58,9 @@ vector<ofXml> BeatMapHandler::getXml() {
 //--------------------------------------------------------------------------------------
 vector<string> BeatMapHandler::getMapNames() {
 	vector<string> names;
-	vector<ofXml> xmlDocs = getXml();
+	auto xmlDocs = getXml();
 
-	for (ofXml &doc : xmlDocs) {
+	for (auto &doc : xmlDocs) {
 		names.push_back(getMapName(doc));
 	}
 
@@ -85,12 +85,12 @@ note_info BeatMapHandler::getNoteVals(ofXml doc) {
 	//------------------------------------------------------
 	for (int i = 0; i < sectionNum; i++) {
 
-		doc.setTo("section[" + std::to_string(i) + "]");
+		doc.setTo("section[" + ofToString(i) + "]");
 		const int noteNum = getNumOfTags(doc, "note");
 		//--------------------------------------------------
 		for (int j = 0; j < noteNum; j++) {
 
-			doc.setTo("note[" + std::to_string(j) + "]");
+			doc.setTo("note[" + ofToString(j) + "]");
 			//----------------------------------------------
 			for (int k = 0; k < doc.getNumChildren(); k++) {
 				doc.setToChild(k);
@@ -138,9 +138,7 @@ ofXml BeatMapHandler::getMap(const string & mapName) {
 val_map BeatMapHandler::getSectionVals(ofXml &doc, const string& value) {
 	val_map res;
 	for (int i = 0; i < getNumOfTags(doc, "section"); i++)
-		res[i] = ofToInt(doc.getValue("section[" + std::to_string(i) + "]/" + value));
+		res[i] = ofToInt(doc.getValue("section[" + ofToString(i) + "]/" + value));
 	
 	return res;
 }
-
-

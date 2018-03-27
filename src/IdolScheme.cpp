@@ -23,6 +23,8 @@ void IdolScheme::setup() {
 	for (auto& a : bmNames)
 		cout << a << endl; // writing out all available beatmaps.
 
+	myNote.setup(ofPoint(100, 100), ofPoint(200, 200), NoteType::BUTTON, NoteButton::BUTTON_A);
+
 	/*-----------------------conductor---------------------*/
 	mainConductor.startTimer();
 }
@@ -54,6 +56,8 @@ void IdolScheme::draw() {
 	textOut.drawString("BAD: " + ofToString(scoreKeeper.badCount), 400, 100);
 	textOut.drawString("GARBAGE: " + ofToString(scoreKeeper.garbageCount), 400, 120);
 	textOut.drawString("WRONG: " + ofToString(scoreKeeper.wrongCount), 400, 140);
+
+	myNote.draw(200, 200, 300, 300);
 
 	menuHandler.draw();
 }

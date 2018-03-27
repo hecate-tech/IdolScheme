@@ -6,18 +6,18 @@
 
 Note::Note() = default;
 
-Note::Note(ofPoint initCoords, ofPoint shadowCoords, const NoteType type_, const NoteButton button_) 
+Note::Note(ofPoint initCoords, ofPoint shadowCoords, const NoteType type, const NoteButton button) 
 	: notex(initCoords[0]), notey(initCoords[1]), shadowX(shadowCoords[0]), shadowY(shadowCoords[1]) {
-	noteSettings.type = type_;
-	noteSettings.button = button_;
+	noteSettings.type = type;
+	noteSettings.button = button;
 	noteSprite.load(spriteDir);
 	init();
 }
 
 //----------------------------------------------------------------------------------
-Note::Note(ofPoint initCoords, ofPoint shadowCoords, const NoteType type_) 
+Note::Note(ofPoint initCoords, ofPoint shadowCoords, const NoteType type) 
 	: notex(initCoords[0]), notey(initCoords[1]), shadowX(shadowCoords[0]), shadowY(shadowCoords[1]) {
-	noteSettings.type = type_;
+	noteSettings.type = type;
 	noteSprite.load(spriteDir);
 	init();
 }
@@ -40,13 +40,13 @@ void Note::setBeatNote(const NoteInfo& settings) {
 }
 
 //----------------------------------------------------------------------------------
-void Note::setup(ofPoint initCoords, ofPoint shadowCoords, const NoteType type_, const NoteButton button_) {
+void Note::setup(ofPoint initCoords, ofPoint shadowCoords, const NoteType type, const NoteButton button) {
 	setPosition(initCoords[0], initCoords[1], shadowCoords[0], shadowCoords[1]);
 
 	noteSprite.load(spriteDir);
 	
-	noteSettings.type = type_;
-	noteSettings.button = button_;
+	noteSettings.type = type;
+	noteSettings.button = button;
 	init();
 }
 
@@ -57,9 +57,7 @@ Note::~Note() {
 
 //----------------------------------------------------------------------------------
 bool Note::destroy() {
-	spriteDir = nullptr;
 	shadow = nullptr;
-	delete spriteDir;
 	delete shadow;
 
 	return false;
@@ -203,26 +201,31 @@ ofPoint Note::calcPolarPoint(float angle) {
 	ofPoint result;
 	auto halfC = 3.14169f / 180.f; // modifier to turn degrees to radians
 	float zMod, off = 0;
+
 	using namespace placeholders;
+	
 	// lambdas for setting the coordinates of the result ofPoint
 	auto setResult = [&](float offset, float offset2, int val, int val2) {
 		result = ofPoint(offset + float(val), offset2 + float(val2));
 	};
-	auto sdCheck = [](float a) {
+	
+	auto sideCheck = [](float a) {
 		return ((a >= 60 && a < 120) ? 1 : (a >= 240 && a < 300) ? 2 : (a >= 120 && a < 240) ? 3 : 4);
 	};
+	
 	const auto mag = [&]() {
-		if (sdCheck(angle) <= 2) { zMod = float(ofGetWidth()) / 2; off = 90 * halfC * (sdCheck(angle) == 2 ? 3 : 1); }
-		else { zMod = float(ofGetHeight()) / 2; off = 0; }
+		if (sideCheck(angle) <= 2) { zMod = static_cast<float>(ofGetWidth()) / 2; off = 90 * halfC * (sideCheck(angle) == 2 ? 3 : 1); }
+		else { zMod = static_cast<float>(ofGetHeight()) / 2; off = 0; }
 		return tan((angle * halfC) - off) * (zMod + noteSize);
 	};
-	auto sdSet = bind(setResult, _1, float(ofGetHeight())/2.f, noteSize, _2);
-	auto nmSet = bind(setResult, float(ofGetWidth())/2.f, _1, _2, noteSize);
-
-	if(sdCheck(angle) == 2) 	 sdSet(float((-1*(noteSize * 2))), int((-1*(mag()))));
-	else if(sdCheck(angle) == 1) sdSet(float(ofGetWidth()),		   int(mag()));
-	else if(sdCheck(angle) == 3) nmSet(float(ofGetHeight()),	   int((-1*(mag()))));
-	else 					     nmSet(float((-1*(noteSize * 2))), int(mag()));
+	
+	auto sideSet = bind(setResult, _1, static_cast<float>(ofGetHeight())/2.f, noteSize, _2);
+	auto normSet = bind(setResult, static_cast<float>(ofGetWidth())/2.f, _1, _2, noteSize);
+	
+	if(sideCheck(angle) == 2)	   sideSet(static_cast<float>((-1*(noteSize * 2))), static_cast<int>((-1*(mag()))));
+	else if(sideCheck(angle) == 1) sideSet(static_cast<float>(ofGetWidth()),		static_cast<int>(mag()));
+	else if(sideCheck(angle) == 3) normSet(static_cast<float>(ofGetHeight()),	    static_cast<int>((-1*(mag()))));
+	else /*wowowowowowowowowowow*/ normSet(static_cast<float>((-1*(noteSize * 2))), static_cast<int>(mag()));
 	
 	return result;
 }
@@ -246,12 +249,7 @@ void Shadow::load() {
 Shadow::Shadow() = default;
 
 //----------------------------------------------------------------------------------
-Shadow::~Shadow() {
-	shadowDir = nullptr;
-	spriteDir = nullptr;
-	delete shadowDir;
-	delete spriteDir;
-} 
+Shadow::~Shadow() = default;
 
 //----------------------------------------------------------------------------------
 void Shadow::resize(const GLint width, const GLint height) {

@@ -5,7 +5,7 @@
 
 #ifndef OFMAIN_H
 	#define OFMAIN_H
-	#include "../ofMain.h"
+	#include "ofMain.h"
 #endif //!OFMAIN_H
 
 #ifndef SCOREKEEPER_H
@@ -33,15 +33,13 @@
  * (Amazing brief)
  */
 class Shadow {
-protected:
-	const GLchar *spriteDir = "images/shadow.png";
 public:
+	string shadowDir = ofToDataPath("images/shadow.png");
 	ofImage shadowSprite;
-	const char *shadowDir = "images/shadow.png";
 
 	Shadow();
-
 	~Shadow();
+
 	void resize(GLint width, GLint height);
 	void load();
 	void draw(GLfloat x, GLfloat y) const;
@@ -59,7 +57,7 @@ protected:
 	int lengthInBeats = BAD_LENGTH;
 	GLint noteSize = (ofGetWindowWidth() + ofGetWindowHeight()) * 0.06; // for width and the height.
 	ofColor noteColor = ofColor(255, 255, 255, 255);
-	const GLchar *spriteDir = "images/note.png"; // directory to note image.
+	string spriteDir = ofToDataPath("images/note.png"); // directory to note image.
 	ofImage noteSprite; // object for sprite.
 
 	ofVec2f startPos;
@@ -79,14 +77,14 @@ public:
 	/// Constructors/Desconstructor
 	/// ---------------------------
 	Note();
-	Note(ofPoint initCoords, ofPoint shadowCoords, NoteType type_, NoteButton button_);
-	Note(ofPoint initCoords, ofPoint shadowCoords, NoteType type_);
+	Note(ofPoint initCoords, ofPoint shadowCoords, NoteType type, NoteButton button);
+	Note(ofPoint initCoords, ofPoint shadowCoords, NoteType type);
 	~Note();
 
 	/// Functions
 	/// ---------
 	void setup(ofPoint initCoords = ofPoint(0,0), ofPoint shadowCoords = ofPoint(0,0),
-		NoteType type_ = BUTTON, NoteButton button_ = BUTTON_EMPTY);
+		NoteType type = BUTTON, NoteButton button = BUTTON_EMPTY);
 	void calcNoteParams();
 	void setBeatRest(const NoteInfo& settings);
 	void setBeatNote(const NoteInfo& settings);
