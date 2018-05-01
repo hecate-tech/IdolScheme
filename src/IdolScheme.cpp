@@ -20,8 +20,25 @@ void IdolScheme::setup() {
 	/*-------------------beatmap loading-------------------*/
 	auto bmNames = BeatMapHandler::getMapNames();
 
-	for (auto& a : bmNames)
-		cout << a << endl; // writing out all available beatmaps.
+	auto note_data = BeatMapHandler::getNoteVals(BeatMapHandler::getMap(bmNames.at(0)));
+
+	for (unsigned int i = 0; i < note_data.size(); i++) {
+		for (unsigned int j = 0; j < note_data.at(i).size(); j++) {
+			for (unsigned int k = 0; k < note_data.at(i).at(j).size(); k++) {
+				cout << ":: SECTION[" + std::to_string(i) + "] ";
+				cout << ":: NOTE[" + std::to_string(j) + "] ";
+				cout << ":: DATA[" + note_data[i][j][k].first + "] ";
+				cout << "= " << note_data[i][j][k].second << endl;
+			}
+			cout << endl; // new note
+		}
+	}
+
+		//cout << "TEST: " << note_data.at(1).size() << endl
+		//	 << endl;
+
+	//for (auto& a : bmNames)
+	//	cout << a << endl; // writing out all available beatmaps.
 
 	myNote.setup(ofPoint(100, 100), ofPoint(200, 200), NoteType::BUTTON, NoteButton::BUTTON_A);
 

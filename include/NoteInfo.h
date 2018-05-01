@@ -49,6 +49,23 @@ enum NoteButton {
 	BUTTON_EMPTY,
 };
 
+struct noteInformation {
+	float frac = 1.f;
+	float startTime = 0.f;
+	float endTime = 0.f;
+	int index;
+	int bpm;
+	int offset; // offset in milliseconds.
+	float sX, sY;
+	float angle;
+
+	bool rest = false;
+	float restLength = 1.f;
+
+	NoteType type; 		 // axis or button
+	NoteButton button; 	 // Note's assigned button (A, B, X, Y)
+	unordered_map<string, string> args; // raw data
+};
 
 /* @brief - noteInfo
 * What makes up a note is quite a bit more.
